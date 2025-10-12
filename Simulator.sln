@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulator.Application", "Si
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulator.ViewModel", "Simulator.ViewModel\Simulator.ViewModel.csproj", "{F34F2B9B-9C7C-4827-1A29-5746EDD495E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulator.UIElements", "Simulator.UIElements\Simulator.UIElements.csproj", "{55388BC4-0A7F-F131-E3EA-68C6C0910699}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulator.Laboratory.ViewModel", "Simulator.Laboratory.ViewModel\Simulator.Laboratory.ViewModel.csproj", "{94E838AD-133A-E200-A039-632B1851D37B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{F34F2B9B-9C7C-4827-1A29-5746EDD495E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F34F2B9B-9C7C-4827-1A29-5746EDD495E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F34F2B9B-9C7C-4827-1A29-5746EDD495E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55388BC4-0A7F-F131-E3EA-68C6C0910699}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55388BC4-0A7F-F131-E3EA-68C6C0910699}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55388BC4-0A7F-F131-E3EA-68C6C0910699}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55388BC4-0A7F-F131-E3EA-68C6C0910699}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94E838AD-133A-E200-A039-632B1851D37B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94E838AD-133A-E200-A039-632B1851D37B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94E838AD-133A-E200-A039-632B1851D37B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94E838AD-133A-E200-A039-632B1851D37B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
