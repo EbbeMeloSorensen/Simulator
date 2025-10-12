@@ -1,0 +1,53 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Game.Rocket.UI.WPF"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <SolidColorBrush Color="LightSkyBlue" x:Key="BackgroundBrush"/>
+
+    <local:CustomizedShapeTemplateSelector x:Key="ShapeTemplateSelector"/>
+
+    <DataTemplate x:Key="Rocket">
+        <Canvas>
+            <Ellipse Fill="Black" Width="{Binding Width}" Height="{Binding Height}">
+                <Ellipse.RenderTransform>
+                    <MatrixTransform Matrix="{Binding 
+                        Path=DataContext.TransformationMatrix, 
+                        RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Line Stroke="WhiteSmoke" StrokeThickness="0.01"
+                  X2="{Binding Width}">
+                <Line.X1>
+                    <Binding Path="Width" Converter="{StaticResource DoubleScaler}">
+                        <Binding.ConverterParameter>
+                            <system:Double>0.5</system:Double>
+                        </Binding.ConverterParameter>
+                    </Binding>
+                </Line.X1>
+                <Line.Y1>
+                    <Binding Path="Height" Converter="{StaticResource DoubleScaler}">
+                        <Binding.ConverterParameter>
+                            <system:Double>0.5</system:Double>
+                        </Binding.ConverterParameter>
+                    </Binding>
+                </Line.Y1>
+                <Line.Y2>
+                    <Binding Path="Height" Converter="{StaticResource DoubleScaler}">
+                        <Binding.ConverterParameter>
+                            <system:Double>0.5</system:Double>
+                        </Binding.ConverterParameter>
+                    </Binding>
+                </Line.Y2>
+                <Line.RenderTransform>
+                    <TransformGroup>
+                        <MatrixTransform Matrix="{Binding RotationMatrix}"/>
+                        <MatrixTransform Matrix="{Binding 
+                            Path=DataContext.TransformationMatrix, 
+                            RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                    </TransformGroup>
+                </Line.RenderTransform>
+            </Line>
+        </Canvas>
+    </DataTemplate>
+
+</ResourceDictionary>

@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\Battery.png" />
+    <None Remove="Images\Flame.png" />
+    <None Remove="Images\Fragment.png" />
+    <None Remove="Images\GuyWithHat.png" />
+    <None Remove="Images\Meteor.png" />
+    <None Remove="Images\Projectile.png" />
+    <None Remove="Images\Pusheen.png" />
+    <None Remove="Images\Rocket.png" />
+    <None Remove="Images\Tanja.png" />
+    <None Remove="Images\Wall.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Craft.Logging.Log4Net" Version="1.0.2" />
+    <PackageReference Include="Craft.UIElements" Version="1.0.2" />
+    <PackageReference Include="StructureMap" Version="4.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Game.Rocket.ViewModel\Game.Rocket.ViewModel.csproj" />
+    <ProjectReference Include="..\Simulator.UIElements\Simulator.UIElements.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\Battery.png" />
+    <Resource Include="Images\Flame.png" />
+    <Resource Include="Images\Fragment.png" />
+    <Resource Include="Images\GuyWithHat.png" />
+    <Resource Include="Images\Meteor.png" />
+    <Resource Include="Images\Projectile.png" />
+    <Resource Include="Images\Pusheen.png" />
+    <Resource Include="Images\Rocket.png" />
+    <Resource Include="Images\Tanja.png" />
+    <Resource Include="Images\Wall.png" />
+  </ItemGroup>
+
+</Project>
