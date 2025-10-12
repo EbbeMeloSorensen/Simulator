@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\Cannon.png" />
+    <None Remove="Images\Enemy1.png" />
+    <None Remove="Images\Enemy2.png" />
+    <None Remove="Images\Enemy3.png" />
+    <None Remove="Images\Enemy4.png" />
+    <None Remove="Images\Enemy5.png" />
+    <None Remove="Images\Fjende.png" />
+    <None Remove="Images\Heart.png" />
+    <None Remove="Images\Kawaii Dino.png" />
+    <None Remove="Images\Money.png" />
+    <None Remove="Images\Projectile.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Craft.Logging.Log4Net" Version="1.0.2" />
+    <PackageReference Include="Craft.UIElements" Version="1.0.2" />
+    <PackageReference Include="StructureMap" Version="4.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Game.TowerDefense.ViewModel\Game.TowerDefense.ViewModel.csproj" />
+    <ProjectReference Include="..\Simulator.UIElements\Simulator.UIElements.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\Enemy2.png" />
+    <Resource Include="Images\Enemy3.png" />
+    <Resource Include="Images\Enemy4.png" />
+    <Resource Include="Images\Fjende.png" />
+    <Resource Include="Images\Kawaii Dino.png" />
+    <Resource Include="Images\Enemy5.png" />
+    <Resource Include="Images\Heart.png" />
+    <Resource Include="Images\Money.png" />
+    <Resource Include="Images\Projectile.png" />
+    <Resource Include="Images\Enemy1.png" />
+    <Resource Include="Images\Cannon.png" />
+  </ItemGroup>
+
+</Project>

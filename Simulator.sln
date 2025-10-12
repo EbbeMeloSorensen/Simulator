@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Rocket.UI.WPF", "Game.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.FlappyBird.UI.WPF", "Game.FlappyBird.UI.WPF\Game.FlappyBird.UI.WPF.csproj", "{8E9AA7AB-D447-1AF6-25FA-E0C584E2DB03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.TowerDefense.UI.WPF", "Game.TowerDefense.UI.WPF\Game.TowerDefense.UI.WPF.csproj", "{EDB3ED4E-0E13-B67B-1430-D466E691A689}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{8E9AA7AB-D447-1AF6-25FA-E0C584E2DB03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E9AA7AB-D447-1AF6-25FA-E0C584E2DB03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E9AA7AB-D447-1AF6-25FA-E0C584E2DB03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDB3ED4E-0E13-B67B-1430-D466E691A689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDB3ED4E-0E13-B67B-1430-D466E691A689}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDB3ED4E-0E13-B67B-1430-D466E691A689}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDB3ED4E-0E13-B67B-1430-D466E691A689}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
