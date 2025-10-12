@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.TowerDefense.ViewModel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Zelda.ViewModel", "Game.Zelda.ViewModel\Game.Zelda.ViewModel.csproj", "{FA3503A6-C6C6-6EBC-8E84-02A51014CBF1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.FlappyBird.ViewModel", "Game.FlappyBird.ViewModel\Game.FlappyBird.ViewModel.csproj", "{F6907299-9F1A-A868-42C1-DBC1A6C0FD82}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{FA3503A6-C6C6-6EBC-8E84-02A51014CBF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA3503A6-C6C6-6EBC-8E84-02A51014CBF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA3503A6-C6C6-6EBC-8E84-02A51014CBF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6907299-9F1A-A868-42C1-DBC1A6C0FD82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6907299-9F1A-A868-42C1-DBC1A6C0FD82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6907299-9F1A-A868-42C1-DBC1A6C0FD82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6907299-9F1A-A868-42C1-DBC1A6C0FD82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
