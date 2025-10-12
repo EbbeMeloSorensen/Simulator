@@ -1,0 +1,666 @@
+Done:
+* Hul igennem med at animere en kugle, specifikt ved at lade den følge musemarkøren
+* Tilføj en View model
+* Lav den eksisterende model mere generel, så den kan kalde en callback om at det er tid til at opdatere modellen
+* Opdater kuglens position fra den view model, der hoster GeometryViewModellen
+* Tildel kuglerne i view-modellen id hver, så de kan opdateres via det.
+* Lad et antal kugler følge noget fra view modellen baseret på deres id
+* Lav en funktion, der kan propagere en state
+* Du skal vedligeholde current state
+* Du skal kunne synce viewet med current state
+* Lav en engine i et uafhængigt modul, der regner ud, hvor kuglerne skal være
+* Sørg for at der hele tiden propageres, når en animation kører
+  o Når du plukker en state fra state sekvensen, så bør du trigge at der genereres flere states
+    .. hmm kunne du ikke gøre det sådan, at du bare holder den tråd i live, der genererer states
+	og i øvrigt også overlade til den at choppe sektioner af state-sekvensen?
+* Fjern obsolete states i forbindelse med at man opdaterer skærmen
+* Lad være med hele tiden at kalde Count
+* Tilføj mulighed for at pause, resette og genstarte, lige som i den gamle implementation
+* Tyngde-konstanterne skal hentes fra scene-klassen
+* Registrer og håndter sammenstød med boundaries
+  o Der skal være en metode, der registrerer, om der sker en kollision med en boundary givet de positionsforskydninger,
+    der er beregnet
+* Registrer og håndter kollisioner mellem kugler
+* Lav noget med nogle hoppende kugler
+* Der skal kunne tilføjes kugler til tilstanden
+  o I første omgang da bare tilføj kugler for hver scene - test det på en tom scene
+  o Lad nye kugler være specificeret af hver enkelt scene
+* Det skal være muligt at fjerne bodies fra scenen, når de kolliderer med en boundary af typen sink
+  o Når en body kolliderer med en sink boundary, skal den ikke med i næste state, den skal derimod tilføjes til en collection af ting, der skal fjernes
+* Gør det muligt at invalidere en del af den state-sekvens, der er lavet
+  o I første omgang så bare lav en knap til at invalidere. og det skal så fanges på den tråd, der propagerer states
+  o I anden omgang da opfang keyboard events og brug det til at styre en bold
+* Lav en boundary, der blot er et punkt
+* Lav en boundary, der er et liniestykke
+  o Implementer et check for om cirklen intersecter liniestykket (det gør den, hvis afstanden fra cirklens midte er mindre end radius)
+  o Lav en algoritme, der beregner, hvor langt den skal tilbage før den ikke længere intersecter
+    - Først beregn, hvor langt den skal tilbage før den ikke engang intersecter den LINIE, som liniestykket er en del af
+	  (det har du en formel til)
+	- Find så ud af om den tangerer liniestykket, når den er der - hvis det er tilfældet, så har den ramt selve linien 
+	  og altså ikke liniens ender. Hvis det ikke er tilfældet, så har den ramt en af liniens ender
+* Implementer stød mod punkt
+* Implementer stød mod liniestykke
+* Pres algoritmen med mange bolde og nogle kasser, de kan støde ind i
+* Lav en boundary, der blot er et liniestykke
+* Fix fejlen med at den risikerer at gå i uendelig løkke når den propagerer en state. Det kan vel kun skyldes, at det ikke lykkes
+  for den at eliminere et overlap... Det kan eksponeres med Ball Train, bouncing med deltaT sat til 0.005
+* Der skal være forskellige logs: En over beregningerne i forbindelse med state propagering, og en over samarbejdet mellem
+  state generatoren og state consumeren
+* Ryd op og flyt konstruktionerne til at generere states over til enginen
+* Lav en bedre konstruktion af state generatoren, hvor den ikke kører delay men derimod venter på et signal
+  o du kan passende bygge det i parallel med det eksisterende og så prøve at skifte over (OK)
+  o Man skal kunne stoppe tråden - prøv at gøre det uden overhovedet at sætte animationen i gang (OK)
+  o det må i øvrigt gerne bo i enginen, som så har til opgave at køre sin egen thread safety (OK)
+  o Ryd op (OK)
+* Fix somehow det med at det er ret tilfældigt, hvor meget lag der er, når man trykker på en piletast for at
+  få en body til at bevæge sig. Der lader til at gælde, at der er et stort lag, hvis man trykker på en tast umiddelbart før
+  der skal laves en refresh, hvilket jo er naturligt nok, at den stund at man invaliderer et antal tilstande, som så skal genberegnes.
+  Så er det muligvis bedre at vente med at håndtere det til næste refresh.
+  - Kan det tænkes at hænge sammen med det med at du i tilfælde af et keyboard event invaliderer alle de states, der er
+    efter LastIndexRequested? Det er jo nok i hvert fald ikke hensigtsmæssigt, da den jo altså ikke nødvendigvis er taget
+	af consumeren.
+* Lav noget mere snedigt mht at lade brugeren styre en kugle - det ser ikke godt ud, når man bevæger den et lille bitte notch
+* Sørg for at den opfører sig ensartet, når man bevæger kuglen i små ryk.
+  o Den skal somehow skelne mellem at brugeren holder en tast nede og at han bare trykker hurtigt på en tast
+  o Det at trykke hurtigt på en piletast skal udvirke, at kuglen flytter sig samme korte afstand hver gang.
+  o Du skal nok starte med at forstå, hvorfor den opfører sig, som den gør, nu - gerne under anvendelse af logging
+  .. state generatoren skal ikke bare reagere på hvert enkelt keyboard event. Den skal først reagere, når man
+     har identificeret et keyboard event som værende et hurtigt tryk eller at man holder tasten nede
+* Sørg for at farten for en body, der styres af brugeren, er uændret, selv om den bevæger sig skråt
+* Lav en dummy korrektion af World Window såsom et drift, ved hver refresh
+* Lav en korrektion af World Window, hvor den centrerer på systemets massemidtpunkt, og test det på Moon vs Earth samt Orbit
+* Man skal kun kunne styre udvalgte bodies - måske bare den første i listen - ud fra en konvention om at den er "protagonist"
+* Lav en korrektion af World Window, hvor den sikrer at protagonisten har en vis afstand fra kanten
+* Lav en korrektion af World Window, hvor den centrerer på centrum for første body - dog kun horisontalt, dvs lige som i Flappy bird
+  o Det bør også være muligt at angive, at centeret ikke skal ligge lige i midten af skærmen men f.eks. lidt mod venstre. Det er f.eks. relevant i Flappy Bird, 
+    hvor spilleren gerne skal kunne se, hvad der kommer.
+* Lav noget, hvor brugerinteraktionen får den til at opføre sig som Flappybird
+* Lav det sådan at brugerinteraktion afhænger af scenen med en callback-delegate
+* Lav nogle standard callbacks, som kan genbruges
+* Lav (eller find) en general purpose funktion til at logge en tilstanden
+* Efter hver ordinære propagering så log tilstanden, dvs position og velocity for alle bodies
+* Efter hver ekstraordinære (partly) propagering så log tilstanden, dvs position og velocity for alle bodies
+* Lav Fountain om, så det afgøres af en funktion erklæret i scenen, hvad der skal ske, når den rammer en boundary - i første omgang discard
+* Fix det issue, der ses i bl.a. Fountain III, hvor bolden ikke kommer særligt højt op pga de bolde, der hvilker på gulvet
+  o Observation: Hver gang man håndterer en body så tager man lidt af farten 
+  o Det gælder faktisk for ALLE bodies og helt fra starten, at de akkumulerer velocity hver gang en af dem nulstilles
+  o Find årsagen til at den fryser efter første kollision og fix det
+    - Når den beregner, hvor lang tid der er gået siden kollision, så får den et NEGATIVT tal, som dog er meget tæt på nul.
+	  Det skal den nok tolke som nul. Så skal den nok beholde sin position og i øvrigt have sat sin velocity til 0.
+	  Det lader til at skyldes, at 2 bolde skiftevis tildeles en velocity og således skiftes til at bounce ind i væggen, og derfor er progress hele tiden 0.
+	  hvordan faen fixer man det? Skal man operere med, at en bold, som får hastigheden sat til 0 ikke i SAMME iteration kan få den sat til en hastighed større end 0?
+	  Mnjaaeeh man kunne også sige, at en bold, der initielt RØRER ved en boundary, og som får tildelt en velocity i retning af boundaryen, den må ikke få sat sin hastighed til noget større end 0
+	  .. altså - når du undersøger, hvilke bolde, der kolliderer med boundaries, skal du også identificere dem, der indledningsvis rører ved boundaryen
+	  .. mon ikke problemet egentlig er, at du jo altså kun håndterer EEN body i en iteration? og så får alle andre bodies en velocity.
+	  ..måske skulle du hellere håndtere ALLE de bodies, der rører ved en boundary og i øvrigt har en hastighed ind imod den..
+	  Hvis du lige ser på den grundlæggende mekanisme, så går den på, at man kører fremad indtil der sker en hændelse i form af et stød, som man så håndterer for den kugle, det drejer sig om, hvorefter man kører videre.
+	  En løsning kunne være at MARKERE bodies som værende håndteret, når man håndterer en kollision, hvor man så senere bruger den information således at man UNDLADER at assigne en velocity til en body.
+	  Rationalet er jo reelt nok, at man jo SÆTTER en velocity i forbindelse med at man håndterer en hændelse og så bør man ikke kunne sætte velocity til noget andet, før man er kommet et stykke længere ned ad tidsaksen.
+	  Det vil så altså også sige, at man skal tømme samlingen af "håndterede" bodies, når man bevæger sig ned ad tidsaksen. I praksis skulle det gerne udmønte sig i, at bodies, der normalt tildeles en velocity pga
+	  at der virker en tyngdekraft på dem, en efter håndteres ved at deres velocity sættes til 0, og når så de alle er sat til 0, kan man propagere tilstanden frem.
+	  Princippet lader umiddelbart til at virke, men der sker nu noget relativt besynderligt i scenen "Fountain 2", idet de senere bodies kommer op i en betydeligt lavere højde end de første bolde,
+	  så mekanismen med at tilføje bodies til et hashset af håndterede bodies har åbenbart en utilsigtet effekt på bodies, der ellers ikke er i berøring med nogen boundaries. 
+	  .. Du må vel grave i årsagen til at bodyen med id 10 forstyrres
+* Lav en variant af Fountain, hvor collision medfører, at der sker block
+* Lav en variant af Fountain, hvor collision medfører, at der sker reflection
+* Fix Shoot 'em up II så den ikke crasher
+  o Den kalder RemoveCircle TO gange for circle 2
+  o Det lader til at skyldes, at listen idsOfDisposedBodies får indsat id'et 2 flere gange (ja - 5 gange er observeret)
+  o Samme id tilføjes til disposableBodyStates flere gange.. wtf?!
+  o Får man lavet mere end 1 body med det id?
+  o Hvordan fanden kan den sige om Body2 at den kolliderer EFTER at den bliver removed... foregår det ikke på samme tråd?
+  o !! Det kunne altså godt se ud som om at det relaterer sig til det med at du pga keyboard input invaliderer fremtidige states.
+    !! Når du "disposer" en body pga en kollision, så markerer du den jo bare til at skulle fjernes HVIS consumeren når hen til den tilstand.
+	!! Men hvis tilstanden invalideres, så når den jo aldrig derhen
+	!! Er løsningen så at invalidere den der kø af bodies, der skal disposes
+* Lav det sådan at man kører over i en "Game Over" tilstand (stopper animationen), når der sker en kollision i Flappy Bird
+  o Egentlig bør man bare Blocke eller nok snarere Freeze Player 1 og ellers køre videre, snarere end f.eks. at fryse hele scenen - det vil f.eks være 
+    hensigtsmæssigt, hvis projektiler fortsætter. Det er imidlertid vigtigt, at man informerer animationens "host", så den f.eks. kan stoppe animationen
+  o Det med at en kollision udvirker, at animationen pauses, skal foregå i henhold til et scenarie alla dette:
+    1) engine spørger om hvad konsekvensen af en given hændelse skal være
+	2) scenen svarer, at konsekvensen skal være, at animationen pauses (vel at mærke kun hvis den givne tilstand konsumeres)
+	3) engine tagger tilstanden med informationen og placerer den i sekvensen (en tilstand skal altså ikke bare være en collection af bodies - den skal kunne bære information ud over det.)
+* Lav det sådan at man kører over i Game Over, når der sker en kollision mellem Player 1 og en fjende i Shoot 'em up IV
+* Fix det i scenen "Jitter" med at nogle kugler bliver hængende i loftet...
+  o Alle projektilerne bliver disposed ifølge loggen, men nogen gange glipper det at fjerne de tilhørende cirkler
+  o PropagateState, som kaldes fra workertråden, tilføjer elementer til disposableBodyStates-køen - den venter vel at mærke ikke på nogen i den forbindelse.
+    TryGetState, som derimod kaldes fra gui-tråden, den spørger lige scenen, om der er nogen anledning til at invalidere future states. Det er der sædvanligvis,
+	hvis brugeren har gjort noget, såsom at skifte bevægelsesretning. Hvis disse states skal invalideres, så trimmer man dem væk, og derudover så trimmer man
+	også enden af _disposableBodyStates-køen
+* Lav noget, hvor den skyder med en eller anden frekvens, hvis man holder space nede
+  o Pt så stopper kuglerne, hvis man ændrer velocity, dvs hvis man invaliderer de beregnede fremtidige states
+    .. det må vel netop være fordi man hele tiden invaliderer de tilstande, hvor der er tilføjet projektiler.
+	.. måske skulle man hellere operere med, at man altså pine død tilføjer et projektil, når man når op
+	på et givet index
+* Lav noget, så den, man styrer, kan skyde, når der trykkes på en tast. Konkret bare, hvor den skyder fremad
+  o Der skal nok vedligeholdes en TILSTAND, gerne i scenen, der angiver, om man skyder
+  o I første omgang kan du bare lade den skyde hele tiden med en eller anden frekvens. Mekanismen skal nok være i stil med det der add extra ball, du allerede har
+  o Det at man skyder behøver ikke at invalidere beregnede fremtidige tilstande - invalidering sker, når man ÆNDRER på om fire-knappen er trykket ned.
+  o Det at der tilføjes et projektil til scenen, sker i Propagate-funktionen, gerne på en måde, hvor engine spørger scenen hvad der skal ske.
+* Lav spillet med boldene således at palyer 1 og projektiler ikke påvirkes af tyngdekraft
+* Gør det muligt at man kan ignorere nogle kollisioner mellem bodies (såsom player1 og projektil) men ikke andre (såsom mellem player1 og enemies)
+  o Humlen i det må være, at man for hvert par spørger, om der skal sammenlignes FØR man checker, om de kolliderer, frem for at detektere kollision og så ignorere.
+    mekanismen må være den samme som tidligere, hvor man spørger scenen med en callback funktion
+* Man skal ikke kunne skyde hurtigere end rate of fire ved at dapse hurtigt på space-tasten
+* Check lige Ghost'n Goblins Resurrection ud - den kan åbenbart købes til Steam
+* Lav kontrol, så man identificerer, hvis man kommer til at tilføje en state til sekvensen efter at der i forbindelse med invalidering er fjernet states derfra
+  .. check generelt, at man hele tiden får fat i en state med det id, som man forventer (ikke gjort, men lavede en anden stabiliserende ændring)
+* Få det til at virke at en Rectangular body bouncer mod lige halfplanes
+* Ryd lidt op i Engine for .. IdentifyFirstCollisionWithABoundary
+* Identificer kollision mellem en rectangularbody og et boundary point og håndter det med simpel reflektion, dvs hvor den bare skydes tilbage i samme retning.
+* Lav specialiserede LineSegment klasser (horisontal og vertikal)
+* Lav en scene, hvor der er kollision med en RectangularBody og et Horizontal LineSegment
+* Lav check af collision med boundary polymorfisk, så det kan placeres uden for switch case ladderen
+* Lave kollision check om, så du ikke beregner afstanden, men blot checker, om der er intersection
+* Lav en variant af HalfPlane, som er en left facing halfplane
+* Lav en variant af HalfPlane, som er en right facing halfplane
+* Lav en variant af HalfPlane, som er en down facing halfplane
+* Lav en variant af HalfPlane, som er en up facing halfplane
+* Lav en variant af LineSegment, som er horisontal
+* Lav en variant af LineSegment, som er vertikal
+* Lav en body, som er et rektangel
+* Kig på scenen Moving Brick V - lav en funktion, der fører et rektangel tilbage bag en linie, givet en retning
+* Lav scenen Moving Brick V færdig, så den bouncer dundt mellem 4 linieender
+* Lav en scene ved navn Moving Brick VI, som minder om scenen "Pool table, 1 ball, 1 boundary line segment"
+* Bær information om effektiv surface normal tilbage på body staten frem for at gøre det ved siden af
+* Lad PropagateState-metoden rapportere tilbage, hvilke kollisioner, der har fundet sted under propageringen
+* Få fixet det der lort i Commando, hvor den crasher, hvis du står lige ved siden af en boundary og skyder mod den...
+  o Det er fordi man prøver at fjerne en cirkel, der ikke engang er blevet tilføjet endnu
+* De der surface normals skal ikke bære rundt af body states
+* Saml information om kollisioner i overordnet datastruktur, der tømmes, hver gang man konsumerer en state
+* Brug historik om kollisioner til at vedligeholde tilstanden for player 1, specifikt om man står på jorden eller ej
+* Registrer, når der sker en kollision - vel at mærke når den høstes
+  - du skal somehow kommunikere tilbage til enginen, at informationen om at der er sket en kollision er noteret
+  - måske er du nødt til ikke bare at gemme den sidste kollision men faktisk alle de kollisioner, der er sket siden sidst... ja - hvis du f.eks. rammer meget tæt på et hjørne, 
+    så registrerer du slet ikke, at du også har ramt den horisontale..
+* Når en body kolliderer med en boundary, skal den tagges med den effektive surfaceNormal for kollisionen, og måske også med boundaryen, så den kan høstes senere
+  o Lav en mekanisme for at tælle hver gang man konsumerer en body, der er kollideret med en boundary - test det af på "Moving Brick I"
+* I Scenen Commando - bevæger man sig tæt på en væg og skyder ind mod den, så crasher spillet
+* Lav Block-funktionen om, så den ikke bare nulstiller hastigheden, men kun nulstiller komponenten mod boundaryen
+* Få taget hul på det med skins, gerne hvor man på polymorfisk vis lader en DataTemplate afhænge af, hvilken underliggende klasse man har med at gøre.
+  o Lav i første omgang en spike på det
+  .. faktisk så gør du noget tilsvarende i DMI.Data.Studio.UI.WPF, hvor du i App.xaml angiver, hvilke DataTemplates, der skal bruges til hvilke typer!
+  .. det lader imidlertie ikke umiddelbart til at kunne bruges for en ItemsControl. Der lader man til at skulle bruge en ItemTemplateSelector
+  o Lav det sådan at tegning af rektangel eller ellipse afhønger af en template og ikke af 2 forskellige collections (i Geometry2DEditor)
+* WTF??!! Hvis du kører det på windows 7 maskinen, så vises den linie, der angiver bodyens orientering, forkert!... højst besynderligt, og det må i øvrigt være 
+  højeste prioritet at fixe. Virker det overhovedet på hjemme-PC'en efter et friskt udtræk? og hvad med på computeren i kælderen?
+  I kælderen var der også problemer. Årsagen var tilsyneladende, at den converterparameter, der stod direkte i xaml-filen,
+  blev tolket afhængigt af, om system-opsætningen var dansk eller engelsk, og løsningen var explicit at angive, hvilken type det er
+* Hvad med at sige, at artificial velocity pr definition er i forhold til orientation? det vil sgu da give god mening, hva?
+  F.eks. for BallInteraction1, hvor orientation hele tiden er 0, da skal artificial velocity på (1, 0) ikke forstås som værende mod højre, men NEDAD.
+* I doom mode skal man kunne operere med at figuren bevæger sig baglæns
+* Få styr på det med at skyde
+  - Pt vedligeholder scenen variablen currentKeyboardState, for at kunne fastslå, om space blev trykket ned siden sidste refresh - det er bare en dum måde
+    at gøre det på, da man jo kan misse et tryk på space
+  - semi automatic skydning virker ok nu, men automatisk har du MEGET svært ved at få til at virke
+  - mon ikke det kan tænkes, at du mangler en constraint på, hvor hurtigt man må påbegynde næste salve efter at have afsluttet en? 
+* Lav en scene, der bare slutter efter et stykke tid
+  o Scenen skal have en FinalStateIndex. Når enginen bliver bedt om at propagere den, skal den bare ignorere requestet (men den skal fortsætte, da det jo kan
+    ske, at det beregnede invalideres).
+* Lav Extra Bodies callback om, så den også håndterer fjender OG lad den manipulere currentstate frem for at returnere noget
+* ExtraBodiesCallBack skal have et bedre navn, og den skal passe information om hændelser i den netop overståede propagering. Desuden skal den kunne modtage
+  en besked om at tildele en expiration time til animationen
+* Informationen om at animationen skal expire, skal ikke komme via collision callback men en anden callback
+* Lav en scene, hvor man gemmer et outcome, som sættes afhængigt af, hvilken boundary man rammer
+* Brug outcome-konstruktionen til at sætte Game Over eller You Win i FlappyBird i laboratory applikationen
+* Gør det muligt for en boundary at være usynlig
+* Prøv at undgå at bruge body id fra BoundaryCollision-klassen 
+* Efter refaktorering er den nu gal igen med at bolde ikke nødvendigvis høstes i f.eks. Jitter
+  .. Det lader til at relatere sig til at de slet ikke fjernes fra selve STATEN og i øvrigt til at man INVALIDERER (pga user interaction)
+  Hvad er det for et scenarie, der leder til at man ikke får fjernet en body fra STATEN, selv om den kolliderer?
+  1) I forbindelse med et kald til PostPropagationCallBackMan tilføjes en body med id 1001 til en state med index 567
+  2) I forbindelse med propagering af state 713 (i beregneren) konstaterer man, at givne body rammer en boundary
+  3) I forbindelse med kaldet til PostPropagationCallBack umiddelbart efter propagering af state 713 fjerner man body 1001 fra staten - den er altså ikke med i state 714
+  4) I forbindelse et kald til InteractionCallback returnerer man true for at invalidere fremtidige states - det foranmlediger bl.a. at state 714 kappes af
+  .. så skulle der gerne ske det at man igen propagerer en tidligere state fremad, hvor body 1001 er med (OG HVOR DEN HAR EN FREMADRETTET HASTIGHED)
+  ..... Hmm det må jo somehow være fordi du får nulstillet hastigheden for bodyen, hvad du jo gør ved at returnere BLOCK til CollisionBetweenBodyAndBoundaryOccuredCallBack
+  I et konkret, realiseret scenarie: 
+  1) Ved propagering af state 1089 kolliderer Body 1196 med en boundary - dens hastighed nulstilles
+  2) Beregningstråden kører videre, og når hen til at propagere state 1139, før der invalideres fra 1090 og frem
+  3) Nu skal man så propagere state 1089 IGEN, men NU er dens hastighed 0!
+  dvs i forbindelse med propagering af en state, har man fået MANIPULERET staten, hvilket er ulovligt!
+  Når du nulstiller hastigheden, så ændrer du i VALUE-feltet i propagatedBodyStateMap. VALUE er den OPRINDELIGE, mens key er den PROPAGEREDE,
+  så det er nok ikke skide hensigtsmæssigt at gøre det på den måde...
+  Hvad faen var det nu lige din ide var mht sætte hastigheden til 0?
+  .. Du oplevede jo, at hvis der skete flere kollisioner i samme propagering, så kunne de ligesom holde hinanden i live inden for rammerne af samme propagering
+  .. derfor lavede du en konstruktion, hvor en body, der kolliderede, fik nulstillet sin hastighed og blev markeret som "handled", hvilket medførte, at den blev udeladt
+  af kraft-, accelerations- og hastighedsberegningerne.
+  men hvorfor faen ændrer du på den OPRINDELIGE
+  Det gør jo ikke rigtigt noget, MEDMINDRE man skal bruge den oprindelige igen...
+  ER det nu også den oprindelige, du ændrer på?.. du bruger bodystates i et dictionary
+* Levels: Gerne ophøj SceneListViewModel til en general purpose ting, hvor man PROGRAMMATISK kan skifte til en anden scene. Det vil være også værdifuldt under spiludvikling
+  o Refaktorer SceneList-view og viewmodel, så den ikke bruger den der sindsyge InvokeCommandAction (OK)
+  o Tilføj et dictionary til SceneList, så man kan forsyne dem med en tag og få fat i dem via tagget
+  o Når en scene stopper så skift til den scene, der starter med Outcome-tagget og sæt scenen i gang med det samme
+* Engine skal have en string property, som den kan bruge i en callback, når SpawnNewThread kaldes
+* Levetid for bodies, hvor de så forsvinder
+* Der er nogle ting galt med din "maze"-kontruktion. Dels lykkedes det at få en null reference exception, og dels er der en lille glitch, når du
+  skifter til en anden scene, hvor man lige kort ser bodyens almindelige placering
+* Levetid for bodies, hvor de forsvinder og erstattes med et antal andre, der bevæger sig i forskellige retninger (fireworks)
+* Hit points/Energy for bodies
+* Lav det med at man ikke bare blokeres hårdt, når man rammer et punkt eller enden af et liniestykke. Den skal bare eliminere den del af farten,
+  der vender i retning af punktet
+* Hvad med lige at shortcutte i øjeblikket og sige, at sammenstød ikke håndteres ved elastisk kollision men bare ved at man mister energi
+  .. i hvert fald så skal du nok generalisere det med at man kan ignorere det at 2 bodies kolliderer. I øjeblikket gør du det i forbindelse med 
+     at en enemy rammes af et projektil, men det virker kun, fordi du altid fjerner projektilet i samme propagering. Du kan ikke gøre det samme,
+	 når en enemy f.eks. kolliderer med playeren. Der bør du somehow bæe informationen om at de kolliderer med til næste propagering.
+	 Man kan også operere med, at HVIS 2 bodies overlapper allerede ved starten af en iteration, SÅ regner man det ikke for en kollision - 
+	 det skulle kunne laves som et check, når man identificerer en "potential" kollision
+* Se om du kan undvære den der "handledBodyCollisions" collection - ikke rigtigt nej
+* Lav SceneListViewModel om til en General Purpose ting
+* Lav mere end 1 scene i raket-spillet
+* SceneViewManager::UpdateCurrentState skal benytte en callback, som er sat af MainWindowViewModel (som er host for SceneViewManager) for at kunne tildele en Specialisering af ShapeViewModel
+  til en given Body
+* Lav det sådan at man ser en Welcome screen for (og kun for) State 1
+* Rund Rocket lidt mere af
+  o Man skal starte spillet ved at trykke på en tast, måske lige som i det rigtige FlappyBird spil
+    - Man skal trykke space for at starte
+  o Når man skifter bane, skal der vises noget alla "Stage 2"
+    - Det kunne være som et backdrop, der kun er synligt i et kort stykke tid - i hvert fald helt styret af View-modellen
+* Fix det der shit i Rocket med at man ikke kan vælge en bane med musen og spille den
+* Når man vælger en bane manuelt, skal man selv starte den (OGSÅ FORDI DET GØR AT MAN FLYTTER INPUT FOKUS VÆK FRA APPLICATION STATE LISTEN)
+* Der skal ikke være en reset knap i Rocket
+* Lav det med at man kan se en raketstråle i Rocket
+  o RocketViewModel skal have en boolsk, der afgør, om raketstrålen skal vises
+  o Den boolske skal sættes i forbindelse med at man kalder SceneViewManager::UpdateCurrentState, som vel at mærke er en general purpose ting
+* Lav en konstruktion så man kan skalere og translatere et billede i forhold til den underliggende body
+* Shapes skal ALTID genereres under anvendelse af ShapeSelectorCallback og ShapeUpdateCallback. 
+  - Hvis ikke man forsyner SceneViewManager med en, så skal den bruge en, der er default
+* Undersøg hvorfor det fucker op, hvis man prøver at skifte direkte fra level 1 til level 2 - det er det der skide magnification
+  - det er ikke skide let at gennemskue - fixet indtil videre med en try catch blok i value converteren
+* Man skal kunne påvirke tilstanden med mouse click events
+* Fix bug: I GenerateSceneAddBodiesByClicking4 kan man stoppe skydning ved f.eks. at sætte en masse kanoner hurtigt efter hinanden.
+  Det hænger jo nok sammen med at du discarder fremtidige states... i hvert fald så minder det om det, du havde under ShootEmUp serien.
+  Det var jo faktisk lige det du sloges så meget med for Jitter. Jitter har til formål at verificere, at tingene stadig virker, selv
+  om man invliderer future states i vildskab. Hvorfor virker det så i Jitter? Lige lidt detaljer først: I Jitter invaliderer du HVER
+  GANG Interaction Callback kaldes.
+* Lav en general purpose samling af operatorer til f.eks. at finde tætteste body af en given type (i stedet for at have det som lokale 
+  funktioner i viewmodel-klassen). Det kunne måske passende være extension methods til State
+* Placering af kanoner - der skal man kun sammenligne med andre kanoner og ikke projektiler
+* Sørg for, at man kun kan placere kanoner i særlige områder
+  - Lav ruten som et antal props
+* Introducer et view med unlocked levels. Hvis ingen baner er unlocked, går man direkte fra Welcome Screen til bane 1. Hvis et antal baner er
+  unlocked, går man fra Welcome screen til unlocked levels screen.
+* Lav en variant af platformer scenerne, hvor det ser ud som om den går, når den bevæger sig. Brug evt princippet fra Rocket, hvor du viser
+  en flamme fra raketmotoren, når man trykker pil opad.
+* Lav det sådan at placering af body i en scene afhænger af, hvor man kommer fra. Du gør allerede noget af sin art i Maze-scenerne, hvor du bruger 
+  Initialize callback funktionen
+* Lav det sådan at den "slider" fra en scene til en anden. Brug det samme som i time series kontrollen, hvor den fokuserer på et bestemt punkt
+
+Todo:
+* Der skal ikke bruges BodyStateClassic til Zelda
+* Lav noget general purpose funktionalitet til at checke for om en cirkel intersecter et liniestykke.
+  Husk du har en test for, om en circular body intersecter et line Segment
+
+* Gør det smidigt at sikre, at der er overensstemmelse mellem outcomes fra en scene og den state maskine, der gør sig gældende. 
+  Måske skal du ikke bruge strings til navigation.
+* Gør det muligt at skrue hastigheden op, så man kan teste uden at vente en evighed
+* Fix problemet med at energien pludselig hopper fra 50 til 55 for scenen "Bouncing Ball 2"
+  Kollisionen detekteres umiddelbart efter iterationen. Position og hastighed propageres korrekt (hvor den effektivt bruger "før"-tilstanden),
+  men når man så skal reflektere hastigheden, bruger den efter tilstanden, som jo er for høj.
+  Løsningen må vel være, at man faktisk bør MANIPULERE propagatedBodyStateMap, når man kører partiel propagering.. hvad er det lige du gør nu?
+  --> metoden PropagateStatePartly manipulerer faktisk propagatedBodyStateMap, men den manipulerer vel at mærke kun "før"-tilstanden.
+  ... og hvorfor pokker skulle det i øvrigt være relevant? Hvad bruger den før-tilstanden til efterfølgende?
+    ... var det ikke mere naturligt at manipulere "efter"-tilstanden - før-tilstanden burde jo ligesom have udspillet sin rolle der.
+      I øvrigt.. du bør vel holde fast i princippet om at du skal have tilstanden ved de der fast tidspunkter.. (af hensyn til consumeren)
+  --> Der er sgu noget, der tyder på, at det slet ikke gør nogen forskel at du manipulerer start-tilstanden.... fordi den slet ikke bruges efterfølgende.....
+    by the way, hvorfor opererer du med, at før-tilstanden gemmes i values og ikke i keys?
+	--> måske er det netop fordi du gerne vil manipulere dem, og det er lissom ikke naturligt at manipulere nøgler....
+	Observation: Efter iteration 60, så er bolden i en højde af -0,5 og har en hastighed på 10 m/s - det er jo så forkert, idet hastigheden burde være
+	burde være -9,5- og højden burde i øvrigt være -0,4875, idet deb burde være blevet beregnet ud fra et gennemsnit af før-og efter-hastigheden snarere end
+	bare med efter-hastigheden. Så du bryder med dit Euler-princip, når du håndterer kollision - måske skulle du tegne et sekvens-diagram
+	propagatedBodystateMap beregnes åbenbart FORKERT i anden iteration..
+	Det relaterer sig til at accelerationen vurderes at være 0 (selv om dn burde være 10), og det er igen fordi kraften vurderes at være 0,
+	hvilket jo så er forkert.
+	Tilsyneladende relaterer det sig til, at pågældende body markeres som værend HÅNDTERET ("handled") og det udvirker så, at man sætter kraften til 0
+	frem for at bruge den værdi, der er i force mappet. Derfor opfører algoritmen sig effektivt sådan, at bolden ikke er påvirket af tyngdefkraften i
+	pågældende iteration, og så er det klart, at energien stiger..
+	...Hvad var din ide med den der konstruktion om at bodies skulle kunne markeres som håndterede? Det var vist nok den der scene, du bøvlede en del
+	med, hvor et antal bolde rammer en kant samtidigt.
+	-------> Prøv lige at opere med, at man altså skal bruge kraften fra force-mappet uanset om bolden er "håndteret"
+	Man kan i hvert fald sige om handled, at den tjener det formål at sørge for, at kræfter effektivt ikke virker på bodies, der er handled.
+	..så kan jeg så ikke huske, hvad der er det sunde rationale for det..
+	Prøv lige helt at slå brugen af den der "handled" collection fra, og se hvad der sker.
+	--->Sjovt nok så fungerer Bouncing Ball 2 nu så fint, men bouncing ball 1 går i uendelig løkke..... well - så er det i hvert fald let at reproducere
+	----->Det er også relativt let at forklare. Før skete der det for scenen, at når bolden ramte gulvet, så sagde scenen, at den bare skulle blokere.
+	      Derfor blev dens hastighed sat til 0, og den blev markeret som værende håndteret, således at den ikke forstyrrede resten af beregningerne, hvad 
+		  den jo vil gøre, hvis den er påvirket af en kraft, som så giver den en hastighed, der udvirker en forskydning, som gør, at den vurderes at støde
+		  ind i noget - og så har vi den uendelige løkke...
+		  Så handled-konstruktionen giver i nogle henseender fin mening, men i andre går det galt.
+		  Du skal også holde øje med den scene, der bare handler om en bold, der ligger på gulvet i et gravity felt. Her er det fint med en test for at 
+		  den ikke går i uendelig løkke.
+		  Hvad skal der ske for en bold, der rammer gulvet og bare blokeres?
+		  -> Den skal have nulstillet sin hastighed i retning af det, den blokeres af
+		  -> Det skal sikres, at den ikke inden for rammerne af samme increment flytter sig mere.
+		  .. Måske er det gjort med bare at sige, at hvis den er håndteret OG dens hastighed er 0, så skal kræfter, der virker på den, ignoreres
+		  .... Det vil så muligvis influere på håndteringen af bolde, der støder ind i hinanden...
+
+
+* Prøv lige at ændre calculatoren, så den bruger gennemsnit af før/efter hastighed, når den fremskriver en position. For de scener,
+  hvor accelerationen ændrer sig, giver det sikkert også mening at opdatere hastigheden under anvendelse af en gennemsnitlig acceleration
+* Flyt NaturalVelocity hen på BodyStateClassic eller i hvert fald hen på en nedarvet klasse - for mange bodies er den ikke i brug. 
+  Specielt når der er interaktion. Og nogle bodies bevæger sig ikke engang, f.eks. kanonerne i Tower Defense
+* Lav en specialisering af BodyState, hvor den følger en bane
+  - den bør IKKE have en NaturalVelocity, for den er ligeglad med, hvilke kræfter, der virker
+* Bedre state mascine i rocket
+* Unlock af baner i rocket
+* Når der vælges noget i Unlocked Levels, skal den starte den bane, svarende til at man vælger i den anden liste og trykker start
+* Den kan stadig gå i uendelig løkke, selv om den er ret stabil - du skal nok have nogle fail fast guards ind..
+* Lav en side, hvor man ser alle baner samt den seneste og kan låse op for flere
+* Lav en Zelda style transition fra en level til den næste
+* Du skal kunne stille ApplicationState et spørgsmål alla: Er der transitions fra app state 1 til andre app states?
+* Hvad med Tag.. er der behov for at operere med en callback, der kun benyttes for body states?
+  du er sgu nok nødt til at bibeholde konstruktionen med at have en callback, der passer en body state, fordi
+  der skal være mulighed for at SPECIALISERE body state, så du kan customize håndteringen i callback-funktionen
+  Apropos så gælder der i øvrigt, at både Body og især BodyState har fået alt for mange properties at slæbe rundt på -
+  det bør du fixe ved at lave basis-klasser, som så specialiseres efter, hvad der er behov for
+* ShapeSelectorCallback og ShapeUpdateCallback skal IKKE passe en bodyState med som parameter (men hvad gør du så med orientering?). 
+  (hvis du generaliserer det, kan du bruge det til at tilføje props, der ikke knytter sig til en body og dens state)
+  o Det betyder, at ShapeViewModels properties skal kunne sættes uden at det sker via constructoren, og den skal have en default constructor
+  .. og så på den anden siden er det ikke sikkert at det er hensigtsmæssigt at udelade. Måske skal du hellere supplere med en, der tager udgangspunk i noget andet end en body state
+* Lav det sådan at du kan smide andre ting i scenen
+  o Du har forurenet Craft.ViewModels (specifikt Geometry2D) med konstruktioner, der rettelig hører hjemme i Simulator, 
+    specielt det med at de har en orientering og noget tekst. Det har vanskeliggjort det med at udbygge med simple elementer
+* Det bør ikke være strengt nødvendigt at tildele et id til en shapeviewmodel
+* Overvej at lade Geometry dele sine collections i noget statisk og i noget dynamisk
+* Start knappen skal kun være synlig i Rocket, når man selv har valgt en bane
+* Lav en passende mekanisme, hvor det at skifte til en ny application state ikke nødvendigvis indebærer, at man clearer scenen
+* Ryd lidt op i Rocket, så du genbruger så meget som muligt
+  o Der er masser af TextBlock sektioner i MainWindow.xaml som blot er små variationer af hinanden 
+* Lav et platformerspil, hvor det ser ud som om at spilleren går afsted
+* Overvej at lave body states som specialiseringer - så de ikke skal bære på alt muligt unødvendigt
+* Lav det sådan at man kan låse baner op i Rocket. Det kunne være fint med en speciel bane som i "Kingdom Rush", "Overcooked" eller "Candy Crush"
+* Lav det sådan at man kan vælge en level i listen og så spille den, lige som hvis man valgte den i det gamle list view
+* Lav en ApplicationStateListViewModel i stil med SceneListViewModel
+  o man skal kunne vælge state lige som man kan med SceneListViewModel, og nogle af dem skal aktivere en scene, svarende til når man vælger i den eksisterende
+* Hvad med at lave en generel state machine for applikationen, hvor man f.eks. har en state, der er velkomstskærm og en state, der er, at spille en given level..
+  I øjeblikket cykler du blot direkte rundt mellem de forskellige scener. Men du skal lave noget GENERELT, så den kan være i en ANDEN tilstand end en scene
+  Design krav: 
+    - State maskinen skal konfigureres i MainWindowViewModel, da den sagtens kan variere fra spil til spil, så du skal nok snarere basere dig på en klasse end en enum
+	- Når en animation STOPPER, skal der være mulighed for at gå over i en GENEREL state, som ikke nødvendigvis er en ny scene
+	- En state kan være noget, der har en vis tidslængde og hvor den så automatisk skifter til næste state
+  Implementeringssteps:
+  1) Application skal HAVE en state, som andre kan abonnere på
+  2) Et view skal kunne binde Visibility til state propertyen - så du skal lave en value converter
+  3) Når man trykker på space, skal den skifte til næste state
+  4) Måske skal du erstatte SceneListView med en StateListView..
+* Lav en generel mekanisme til at vise et startbillede eller et billede mellem scecner, hvor der kan stå noget på alla "Splash - Press play to start" "Stage 2"
+* Lav et spil som Splash
+  o Man skal kunne samle miner op
+  o Man skal kunne samle power ups op til sit skud
+  o Man skal kunne samle liv op
+  o Det kunne være sjovt, hvos man skulle male noget af baggrunden lige som i det rigtige spil
+* Lav det sådan at man kan smide grafiske elementer ind, der blot ligger i scenen men ikke influerer
+* Gør dig nogle overvejelser om hvordan man kan introducere noget paralax af en art
+* Du kan fremprovokere en fejltilstand ved bare at mosle player-kuglen ind i fjenderne, i øvrigt uden at løsne et eneste skud. 
+  Det minder lidt om det, der skete, da Anton spillede. Det skyldes jo nok noget i retning af, at artificial velocity jo bibeholdes, 
+  o Lav et miljø, hvor du relativt let kan reproducere situationen ved at mosle en player ind blandt et antal andre bodies
+  o Prøv at ændre på styringen, så du ikke sætter artificial velocity efter om taster trykkes eller slippes, men blot efter, hvilke taster 
+    der ER trykket ned, når man kalder interaction callback
+  o Forstå hvorfor tingene fryser
+  o Lav en håndtering af artificial velocity i forbindelse med elastisk stød
+  når playeren er involveret i et stød. 
+* Du har somehow fået wrecket "Brick Interaction I", så den fryser eller laver andre mærkelige ting, når du rammer enden af et liniestykke
+* Rambo minder pt om Brick Interaction I, men med den forbedrede håndtering af kollision med punkt kan rambo lige så godt være en kugle
+* Fix det med at Shoot 'em up 7 fryser (pt så reproduceres det automatisk)
+  o Det relaterer sig åbenbart til at det kan hænde at man beregner en NEGATIV tid til at 2 bodies støder sammen, og så kommer bliver den aldrig færdig med en given propagering
+    men kører i uendelig løkke. Du har vist set noget lignende før i tiden.
+* Når man skifter scene vil det være hensigtsmæssigt hvis man kan bibeholde spillerens velocity
+* Når man stopper en animation skal der ikke bare ligge et Outcome i form af streng - det skal være et objekt med: Previous scene, Next Scene og Message.
+* Det vil være fint, hvis der er mulighed for at have en lille cut scene mellem levels
+* Der skal kunne tegnes ting, der ikke influerer på spillet, gerne 3D wise, check evt Among Us, overvej noget 3D lightweight
+* Det vil være fint, hvis der er mulighed for at angive, hvor player 1 skal være, når man initialiserer en ny scene
+* Hvad faen sker der lige med scenen "Orbit I" månerne slynges åbenbart længere og længere væk...
+* Lav et bedre design omkring den der AutoResetEvent (_proWaitEvent) - pt sender du lige rigeligt mange signaler til state produceren om at den kan fortsætte.
+  Ofte får den tilsyneladende et signal, selv om bufferen er fuld..
+* Der skal stå game over, når man dør i FlappyBird eller i raketspillet
+  o Der skal være mulighed for at scenen kan sende en besked til dens host, f.eks. via application objektet eller enginen om at der er sket noget
+    specielt, såsom at spillet er slut, eller at man skal skifte til en anden scene!
+	og husk lige, at det er når man KONSUMERER staten, at de ting skal ske
+	... PropagateState kommunikerer tilbage, om der er sket specielle hændelser såsom kollisioner eller det at nogle legemer er blevet fjernet
+	.. det må være naturligt, hvis det også er den måde hvorpå det kommunikeres tilbage, at spillet er slut - i stedet for at hægte det på selve staten
+* I Shoot'em up skal der stå You win, hvis man skyder alle
+* Når man i doom mode blokeres af en halfplane, så går det i kuk, hvis man ændrer orientering, mens man rører ved væggen. Mærkeligt nok så virker det
+  fint, hvis man blokeres af et LineSegment...
+* Du har en uhensigtsmæssig effekt, når man i doom spillet går langs en væg og når hen til et hjørne, hvor man så sidder fast
+* Tilføj strafing til Doom spillet
+* Nå, men ellers er højeste prioritet at få et mode på banen, hvor man styrer en body lige som i Doom, dvs hvor man kan styre retning, og hvor det at bevæge sig 
+  fremad indebærer, at man bevæger sig i samme retning som man peger. Før har det i høj grad været sådan, at velocity ENTEN tildeles som en funktion af kræfter,
+  der virker ELLER ved at velocity bare blev sat i forbindelse med interaction callback, men du bliver ved med at kredse om, at det måske snarere skal være en
+  KOMBINATION af de 2 typer velocity. Du har faktisk en case i scenen "Platformer (Moving while jumping)", hvor man med piletasterne kan styre højre/venstre og i
+  øvrigt overskrive hastighedens vertikale komponent, i forbindelse med at man hopper, men ellers afhænger figurens hastighed af tyngdekraften, og af om figuren
+  står på et underlag. Forestil dig nu, at figuren kan stille sig på et TRANSPORTBÅND, som jo så vil bidrage til figurens hastighed med en horisontal komponent.  
+  Man kan også forestille sig, at figuren befinder sig i en horisontal luftstrøm, hvor det jo så heller ikke vil være hensigtsmæssigt bare at overskrive den
+  horisontale komponent af dens hastighed.
+  Løsningsdesign: Velocity sammensættes af en komponent, der hidrører fra KRÆFTER såsom tyngdekraft og en komponent, der er ARTIFICIAL, og som tildeles
+  i forbindelse med kald af InteractionCallback funktionen.
+  Hvorfor gik det galt i første forsøg? Mon ikke det var fordi du jo opererer med at farten bibeholdes? Du startede med at sætte velocity til den TIDLIGERE velocity,
+  og så lagde du artificial velocity til. Når så du gjorde det samme i den efterfølgende iteration, så røg artificial velocity med således at velocity steg
+  balstyrisk hurtigt..
+  .. Hvad med at vedligeholde de 2 helt uafhængigt af hinanden? og så bruge summen af dem til at propagere figuren
+* Det lykkedes dig at lave noget proof of concept, hvor du fik en naturlig bevægelse ud af at operere med at velocity hele tiden peger i samme retning som 
+  orientation. Så har du bøvlet ad helvede til med lave en konstruktion, hvor du kombinerer den "naturlige"/"force-inducerede" velocity med en "artificial"
+  en af slagsen. Pt har du 2 grundliggende forskellige måder at assigne velocity på: En, hvor den blot bestemmes af kræfter såsom tyngdekraften, og en, hvor
+  den bare sættes i forbindelse med interaction callback funktionen
+* Introducer noget artificial velocity for hver bodystate
+
+* Lav en scene, hvor main body hele tiden har en velocity, som peger i samme retning som orientation. Det vil være en alternativ måde at tildele velocity på
+  end den eksisterende. Hastigheden skal justeres i hver propagering (ikke i forbindelse med interaction callback)
+  .. pt sættes hastighed UDEFRA, eller den beregnes som funktion af acceleration. I dette mode er der ingen acceleration, og derfor er hastigheden uændret mellem propageringer.
+  Kan man kombinere det med at der virker kræfter? Det burde man kunne.
+  I øjeblikket er velocity den samme som den, der var der umiddelbart før, og hvis der så virker en kraft, kan velocity ændres.
+  I det følgende, er velocity hele tiden i samme retning som bevægelsesretningen
+  Hvad når man svømmer? som i Piku Niku?
+  Og hvad med platformerne, hvis man f.eks. står på et transportbånd eller befinder sig i et blæsevejr.. så har du jo en kraft
+  ..hmmm, hvis der IKKE virker nogen kræfter, så er hastigheden uændret fra gang til gang (gode gamle Newton), Det kan du jo ændre til, at hvis der ikke virker nogen 
+    kræfter, så er hastigheden uændret (BORTSET FRA), at du kan operre med et mode, hvor den hele tiden peger i samme retning som orientation.
+	Hmm der bør altså være mulighed for at kombinere en bevægelse med at der virker kræfter (som når man svømmer eller befinder sig i en luftstrøm (Rayman Legends)), 
+	så måske skal du bare konsekvent beregne hastigheden som en kombination af 2 elementer: En grundlæggende, og en, der hidrører fra kræfter
+	Det duer i hvert fald ikke, hvis den velocity, som en body får, fordi der f.eks. virker en tyngdekraft, den pludselig drejes i en anden retning, 
+	bare fordi man opererer med, at velocity skal pege i samme retning som orienteringen.
+	Hvad med at operere med, at du kan have en komponent, du kalder for "artificial velocity"? Hver gang man så skal sætte en ny velocity, så lægger man 
+	artificial velocity sammen med den "force-inducede". FlappyBird er jo sådan set en god case - der virker en tyngdekraft, og når man så trykker på en tast,
+	så sætter du bare en helt ny hastighed, hvor du benhårdt overruler den "force-inducede velocity" - det skal der jo også være mulighed for.
+	Skal bodystate så bære rundt på det? det vil muligvis være lidt hidsigt. I det hele taget så er det måske nok lige rigeligt hidsigt at lave de der 
+	beregninger for ALLE bodies, da det jo sædvanligvis kun er relevant for den player-kontrollerede body. mnjaaah du kunne jo også forestille dig en
+	enemy, hvor det var relevant med artificial forces.
+
+* InteractionCallback skal ikke returnere en velocity. Den skal derimod manipulere selve tilstanden. Den kan så returnere en boolsk, der angiver, om
+  der er ændret noget. Refaktorer "Shoot 'em up IV (continuous fire)"
+  .. På et tidspunkt kaldte du kun InteractionCallback fra enginen, hvis der var kommet input fra keyboardet siden sidste refresh, men det ændrede du på,
+     så den ALTID kalder, uanset om der er sket noget - det betyder formentlig, at du invaliderer lige rigeligt ofte... (du skal nok have det med i loggen)
+	 Det bør vel være sådan, at der returneres en boolsk, der angiver, om noget er ændret
+* Lav FlappyBird som et særskilt projekt, hvor du bruger flappy-fuglen som player1 (OK)
+  o Sørg for at fuglen positioneres så tæt på den underliggende game engine kugle som muligt
+* Refaktorer MainWindowViewModel i FlappyBird og i Simulator.ViewModel-assemblyet, så relevante ansvar flyttes ned mod kernen af arkitekturen
+* I Dodgeball, FlappyBird og Shoot'em Up skal der være en timer, der tæller op, og som så stopper, når spillet slutter. Der skal også stå game over, hvis man dør
+* I Shoot'em up skal der stå You Win, hvis det lykkes at skyde alle
+* I Interaction Callback funktionen skal den kommunikere current state med tilbage
+* Refaktorer, så det ikke længere er SCENEN, der skal holde styr på, hvorledes keyboard state har ændret sig - det må ligge hos Engine
+* Lav en mulighed for at lave en optælling af whatever, så man f.eks. kan tælle antallet af hændelser af en given art
+  Det skal være sådan at Scenen kan notificere hosten, måske i form af event, som hosten kan subscribe til
+* Prøv at introducere det at der kan virke nogle kræfter på en body afhængigt af kriterier af forskellig art, f.eks:
+  * Hvis man er i vand eller en luftstrøm, er der en opdrift af en eller anden størrelsesorden
+  * Hvis man er på en stige, så er der en normalkraft, der udligner tyngdekraften. Det kan muligvis endda bruges til at undgå en myriade af kollisioner, når en body bare hviler på en platform
+  * Hvis en bestemt tast er trykket ned, og man stadig har fuel, så virker der en kraft i den retning som en given Body peger i
+* Prøv at tælle kollisioner
+* Man kan altså godt gå fra at være grounded til at være i luften uden at hoppe, nemlig ved bare at løbe ud over en kant...
+  o Hvad med at side, at man altså ikke har lov til at ændre på player1s VERTIKALE hastighed - det vil også svare til, hvordan det gøres i det der Scratch spil
+  o Mnjaah, men hvad nu hvis du vil lave det Ghost'n Goblins style og forhindre player 1 i at ændre retning i luften.. Somehow er du altså nødt til at vide, om man er airborne
+    .. Hvad med at udlede, at man er airborne, hvis der INGEN kollisioner har været siden sidst? Man må vel gå ud fra, at den "hele tiden" kolliderer med jorden, når man står eller går
+	(derfor skal du operere med at kunne tælle kollisioner, om ikke andet så for at kunne diagnosticere), men ja det lader til at virke
+  o Nu er der så bare en relativt lille ting tilbage i platformeren, og det er, at hvis man løber ud over en kant, så falder man i en parabelbue, hvilket er ok,
+    men hvis man står stille ved kanten og træder et skridt ud, så falder man (nogle gange) i SAMME parabelbue, hvilket jo afspejler, at man kan ændre sin hastighed fra 0 til sin normale 
+	hastighed på et splitsekund - det er jo ikke videre realistisk, så måske skal du operere med at man kan accelerere (nok gerne ret hurtigt op på sin maximale hastighed)
+	Check i øvrigt, hvordan det gøres i andre platformer spil - lav også Scratch versionen og prøv at lave noget med dobbelthop.
+* Det kan godt være, at det vil være annoying at skulle operere med acceleration - det er det jo på en måde også i classic Mario, men hvad så med at registrere, HVOR LANGT player1 har
+  bevæget sig siden han stod stille, og bruge DET til at afgøre, hvilken bue han skal falde i.
+* Du skal også i gang med at lave det der raket-spil, hvor du somehow skal styre player 1s rotation.
+  o Det kunne også være en facet af et platformer spil, hvor man f.eks. havde en raket på ryggen, lige som det der gamle Commodore 64 spil, hvor man skulle ned i huler.
+* Prøv i øvrigt at lave noget, hvor man skifter mellem levels - måske skal det bare være en mekanisme til at skifte mellem scener
+* Lav en variant af platformeren, hvor man kun blokeres nedadtil (Lige som i bl.a. Devious Dungeon, hvor man kan hoppe vertikalt fra en platform til en oven over)
+  - du har før bøvlet med at ignorere kollisioner, specielt mellem bodies
+  - du har også været temmelig konsekvent mht at undgå tilstande, hvor en body intersecter med en boundary (du har konsekvent backtracket).
+  - kunne man gøre det sådan, at man kun checker for kollision under givne forudsætninger, såsom hvis bsBefore er OVER platformen?
+    .. det ville jo minde lidt om din CheckForCollisionBetweenBodiesCallback metode, hvor du for hver kombination af 2 bodies spørger, om der skal checkes for kollision
+	   indtil videre har du bare ladet det afhænge af deres typer, men det kunne jo også være noget andet.
+* Scenen "Ball interaction III" - der hænger bolden stadig fast i liniestykket (nogle gange)
+  - måske er det noget skrald med den der tidsfaktor - er det mon bedre at gøre det geometrisk? (også for ikke at forstyrre alle de andre bodies..)
+  - det virker tilsyneladende at beregne et t, hvor den ikke tangerer men derimod er en mirkometer ved siden af - det er vel fair nok
+* Der er noget galt med ball interaction ? hvor den blokeres af en firkant med skrå sider
+* Få det til at virke i platformeren at hop kun skal kunne ske, hvis man står på jorden. Det skal nok virke lige som det at skyde og muligvis baseres på en state-maskine
+  Det med at hoppe skal nok være lidt lige som at skyde semi automatisk, dvs man registrerer, at en bestemt tast trykkes ned. Så skal du imidlertid vide, om figuren står
+  på jorden, og det kan man kun finde ud af, ved at man konsumerer en tilstand, hvor det for hver enkelt body fremgår, om de er kollideret med ground siden sidste hop.
+  Fuldstændig lige som når du diposer bodies, der jo først sker, når du konsumerer den tilstand, hvor de er disposed. Man kunne jo f.eks. tagge hver enkelt body med den 
+  sidste boundary, de kolliderede med. Man kunne måske også tagge dem med at de er kia - det gjorde du vist før, men det er du holdt op med, men måske var det ikke så tosset
+  et design
+* I forbindelse med kollision mellem rectangularbody og boundarypoint, så prøv at kommunikere tilbage,
+  om den rammer med hjørne, med side osv og brug informationen i forbindelse med håndteringen af kollisionen.
+  Samme princip skulle kunne bruges i forbindelse med kollision mellem rectangularbody og (lige) liniestykke
+* Kig på scenen Moving Brick II. effekten af en kollision med et punkt skal afhænge af, om rektanglet rammer med en horisontal eller en vertikal side.
+  Samme princip skal bruges, når man kolliderer med et liniestykke - kig på scenen moving brick V
+* Der skal være en generel metode for BodyState, måske endda for Body, der beregner afstanden fra et punkt inde i figuren til figurens kant i en given retning.
+  For en RectangularBody skal der også returneres information om, hvilken side eller hvilket hjørne der er ramt. For at dække CircularBody kunne man jo holde det 
+  generelt og sige, at metoden skal returnere normalvektoren for bodyens kant der hvor den intersecter! (det tror jeg er en ok id) 
+  returnere
+* Overvej at operere med squared distances i stedet for almindelige distances, når du checker for kollision (for at undgå kvadratrod)
+* Lav en LeftFacingLineSegment i stil med LeftFacingHalfPlane og få det til at virke med CircularBody
+* Se om ikke du kan klappe de 4 lige halfplanes sammen i een klasse
+* Placer de variable, der har med state-sekvense at gøre, på en dedikeret klasse og lad den forvalte ansvaret for sin state
+* Fix det med at den pludselig fryser, når man kører en af de 2 ball train scener og efterfølgende resetter og genstarter.
+  o Det skyldes, at den går i uendelig løkke i forbindelse med at den kalder PropagateState
+  o Der lader til at være en underliggende problemstilling i, at beregning af TIDSPUNKT for kollision mellem 2 bodies, ikke er korrekt
+    .. og så ikke alligevel.. måske er problemet "blot", at du får smidt nogle bolde i scenen, som overlapper bolde, der allerede er der - så er all bets off
+    ..naah, du har i hvert fald observeret, at t bliver større end timeLeftInCurrentIncrement for "Shoot 'em up with enemies", men du er nødt til at kunne
+	eksponere det med en scene, hvor der ikke interageres. Det sker faktisk også (efter lang tid) for scenen "Ball Train bouncing"
+	Fedt..... nu virker Jitter krafteddersparke mig heller ikke (igen) - og det er vel at mærke uanset om du opererer med < eller <= i InvalidateFutureStates-metoden
+* Boundaries skal ikke nødvendigvis være synlige
+* Hver scene skal have en beskrivelse, der vises i brugergrænsefladen
+* Lav et ubådsspil i stil med det gamle commodore 64 spil (Seafox)
+* Lav et spil, hvor man skal styre en raket ud af en grotte
+  o En body skal have en orientation, der vises
+  o Der skal være mulighed for at styre en bodys orientation med tastaturet
+  o En body skal kunne påvirkes af en "raket"-kraft i samme retning som dens orientation
+* Lav en body, der bevæger sig således at den følger efter en anden body med en vist forsinkelse - det bruges i et antal spil som f.eks. Ninja Spirit og Ghost'n Goblins (sidste boss, dvs den kinesiske drage)
+* Lav et Snakes spil
+* Lav et dungeon crawler spil
+  o Fjender skal bevæge sig på en passende måde
+* Lav noget dokumentation af alt det her gejl.
+* Lav et beat 'em up spil i stil med Castle Crashers
+* Lav en version af Shoot 'em up, hvor fjenderne også skyder, lige som i 1942
+* Lav en version af Shoot'em up, hvor man bevæger sig mod højre, lige som i nogle af de gamle Commodore 64 spil (find en konkret titel)
+* Lav et Brick Breaker game lige som Krakout eller det det simple app-spil på telefonen (hvad var navnet lige..)
+* Gør det muligt at bodies såsom projektiler kun har en begrænset levetid, uanset om de rammer en barriere
+* Gør det muligt at en body deler sig i et antal andre efter et stykke tid eller som resultat af en hændelse, lige som i arcade spillet Splash
+* Lav et spil alla Splash
+* Lav et tennis spil - det der super gamle - som forberedelse til at lave et Brick breaker spil
+* Lav det sådan at den for hver tilstand beregner systemets samlede energi, dvs kinetisk plus potentiel, så du kan påvise at energien vokser
+* Fix det med at bodyen i scenen BouncingBall hopper højere og højere?!!
+  .. Bolden har en hastighed til tiden 0, som du fører den opad med
+  En interessant observation: Hvis bolden starter fra gulvet og skydes opad med en fart på 5 m/s, så når den faktisk op på en fart, der er en smule
+  højere, nemlig 5,0164 m/s kort tid før den rammer gulvet igen. Det er lidt mærkeligt, da energien jo gerne skulle være bevaret for systemet.
+  (potentiel og kinetisk). Desuden er der noget der tyder på, at hastigheden bliver endnu højere i forbindelse med håndtering af kollision med gulvet.
+  Well - der lader faktisk til at gælde, at højden generelt bliver højere og højere, når man propagerer i increments, sammenlignet med et analytisk approach.
+  og jo mindre increment, jo tættere vil det være på det analytiske resultat. Det er sikkert fint nok til spil og simpel modellering.
+* Der skal meldes tilbage til scenen med en callback funktion, når der sker en kollision
+  o Det skal først ske, når man HØSTER en state, efter at der er sket en kollision. På en måde ligner det det med at bodies, der nappes af f.eks. en sink boundary,
+    først skal håndteres, når man høster
+  o Hvad der sked med en body, når den rammer en boundary eller en anden body, bør afhænge af scenen og ikke afgøres i enginen. Måske behøver du slet ikke operere med en sink.
+    Det burde også gøre det muligt at lave specialiseringer af bodies, såsom bullets, hvor scenen så har nogle dedikerede funktioner til at håndtere, når en bullet rammer en væg.
+	Scenarie: En body rammer en boundary. Engine spørger, hvad der så skal ske. Scenen konstaterer, at det er en bullet, der rammer en væg, og at den derfor skal fjernes. 
+	Engine placerer den på 
+* En body skal have en orientering, som vises
+* Man skal kunne påvirke orienteringen af en body med keyboardet 
+* Lav en scene, hvor der er et stort antal bolde, der ikke kolliderer lige med det samme
+* Mål systemets samlede energi
+* Find ud af hvorfor farten tilsyneladende stiger
+* Lav en klasse, der repræsenterer en horisontal linie
+* Lav en klasse, der repræsenterer en vertikal linie
+* Lav om på det med at Scene-klassens constructor kræver en hulens masse parametre
+  o Callback skal sættes som en property (OK)
+  o Det med hvorledes World Window justeres skal sættes som property eller i forbindelse med kald af en initialiseringsfunktion
+* Lav noget, hvor det bevæger sig steadily frem lige som i Gunsmoke eller 1942
+* Lav noget justering af World Window alla Tiny Wings appen, hvor man zoomer ud, hvis fuglen er højt oppe
+  o Det kan evt laves lige som interaction callback, hvor der er nogle standardmåder og hvor man i øvrigt kan kustomisere
+* Lav noget, hvor brugerinteraktionen får den til at opføre sig som i et platformer-spil
+* Lav noget alla det der platform spil vi har på ps4'eren, hvor man hele tiden opgraderer rustning og våben
+* Lav noget lige som i snakes, hvor der følger en hale efter en body
+* En bodystate kan have en orientering som skal vises med en pil
+* Lav noget, hvor brugerinteraktionen får den til at opføre sig som en raket, hvor man ændrer fremdrift of orientering
+* Lav noget, hvor man kan skyde et projektil afsted fra protagonisten
+  o Reager på at man trykker en "trigger"-tast ned ved at tilføje et projektil til tilstanden
+  o Sørg for at projektilet fjernes fra scenen, når det rammer en barriere
+  o Tilføj en status for, om trigger tasten er trykket ned, så du kan etablere en regulær strøm at projektiler
+  o Lav håndtering af, hvad der sker, når et projektil rammer en fjende
+* Fix fejlen med at der genereres NAN-positioner efter et stykke tid. Kan eksponeres med de 2 ball train scener
+  o Bedre logging af, hvad der sker i en iteration
+  o Fejl skal kunn eksponeres også uden at man behøver køre animationen
+* Du bør ikke både have et point og en vector i Math - det må være nok med en vektor.
+  Det er spild af tid at omregne mellem 2 klasser, der effektivt er ens
+* Når du smider ekstra bolde ind, så skal det ske i henhold til et tidspunkt og ikke et index. Ellers ændrer simulationen
+  sig markant, hvis man justerer deltaT
+* Overvej at bygge en lille korrektion ind, så man er sikker på at eliminere overlap i forbindelse med stød
+* Når man kolliderer med en barrier, skal det kun være den del af farten, der peger ind mod barrieren, der elimineres
+* Lav en alternativ måde at styre en body på (raket style)
+* Lav et mode, hvor man hele tiden centrerer på acting body
+* Gør det muligt at korrigere, hvis massemidtpunktet flytter sig
+* Lav et mode, hvor acting body skal holde sig inden for et område
+* Lav et mode, hvor man hele tiden vertikalt eller horisontalt "centrerer" på acting body
+* Lav en scene, hvor der sker en del andet ud over at man styrer en bold, så du kan se det med at den invaliderer states
+* Find ud af hvorfor garbage collectoren går amok ved Fountain scenen
+* Prøv at bruge en queue i stedet for en list
+* Prøv at nøjes med at dispose states til der er en god chunk at dispose
+* Få bedre styr på enheder, f.eks. deltaT, meter pr pixel osv.
+* Gør det muligt at trække i en kugle
+
+Løst og fast:
+* Det burde være muligt at undgå at gemme alle de beregnede states, f.eks. hvis man opererer med kun at tage dem, der svarer
+  til det forventede index
+
+-----------
+ Hændelser
+-----------
+
+  Eksempler:
+  * Kollision mellem body of boundary => Scenen afgør, hvad effekten er, i kraft af en callback funktion - det indkorporeres i en (beregnet) state
+  * Kollision mellem 2 bodies => Scenen afgør, hvad effekten er, i kraft af en callback funktion - det indkorporeres i en (beregnet) state
+  * Spilleren hopper
+  * Spilleren skifter retning
+  * Spilleren løsner et skud
+  * Spilleren begynder at skyde kontinuerligt
+  * Spilleren dør (f.eks. i FlappyBird, når man ryger ind i en forhindring) => 
+  * Spilleren vinder (f.eks. i Shoot'en Up, hvis man besejrer alle enemies) => 
+  * Spilleren går ud af en udgang => Application skal informeres, så den kan skifte til en anden scene.
+
+
+--------
+ Tanker
+--------
+Engang tænkte du, at det var smart at operere både med "natural" velocity og "artificial" velocity,
+og så har du endda en property, der bare hedder velocity, som lægger de 2 sammen. Imidlertid så har du vel 
+ikke en eneste scene, hvor både natural velocity og artificial velocity er større end 0. Er det egentlig
+ikke unødigt komplekst? Hvor faen bruger du overhovedet Velocity, dvs den sammenlagte?
+-> Den bruges i Propagate
+-> Den bruges også i Calculator.IdentifyFirstCollisionWithABoundary til beregning af, om en body fra staten 
+   støder ind i en boundary i scenen.
+Måske skulle du bare operere med at en Body bare har en Velocity and that's it. Kræfter påvirker den via
+acceleration, og derudover kan den sættes efter forgodtbefindende... Hvis ikke der er nogen kræfter, så
+er den reelt artificial. Men men men husk lige, at den artificial velocity, som du pt opererer med - den 
+knytter sig til orientering...
+
+Du har faktisk et antal scener, hvor du kombinerer natural velocity og artificial velocity, f.eks. dine
+platformer scener, så det giver god mening at bruge begge dele, men det skal alligevel ryddes op.
+Humlen må være, at Calculator-klassen og evt andre brugere af BodyState-klassen ikke bør gøre sig nogen
+antagelser mht hvilke properties, BodyState har. Calculator bør derimod overlade det til virtuelle
+properties og methods på BodyState at gøre, hvad der er brug for, såsom at beregne
+
+Velocity, som kombinerer "natural" velocity og artificial velocity, bruges i BodyState.Propagate,
+og ellers bruges den kun i Calculator. Bemærk, at du i Calculator har en kommentar om at prøve
+at erstatte de der switch case ladders med noget polymorfisk, men det er måske lidt svært, når det
+jo mestendels er KOMBINATIONER af bodies, bodystates og boundaries, der afgør, hvad der skal ske...
+
+Måske skal Calculator have lov til fortsat at bruge Velocity, men hvor den bare ændrer betydning,
+således at den ER noget andet, når der haves en artificial component... du prøvede det uden at have
+held med det, men det skyldes nok andre ting.
+
+

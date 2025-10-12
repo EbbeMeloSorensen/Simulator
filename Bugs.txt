@@ -1,0 +1,51 @@
+Bug #1
+Buffer size kan blive negativ.. Det burde ikke kunne ske..
+  Buffersize bliver kun mindre, når man fratrækker nDisposableStates
+  nDisposableStates beregnes ud fra LastIndexRequested, som kan have overhalet LastIndexGenerated - derfor kan den blive negativ
+
+Bug #2
+Selv når du har noget så simpelt som en enkelt kugle, der bare bevæger sig i en lige linie, så hakker det gevaldigt i det.
+
+Bug #3
+Det duer ikke at du bare fjerner de body states med det samme, for så bliver de jo bare hentet ind igen. De skal somehow knytte sig til 
+staten. Det er jo egentlig meget fint at holde det som en queue, hvor man vel at mærke holder styr på indexet hvor de skal fjernes -
+så de fjernes i den rækkefølge som de rent faktisk skal fjernes i
+
+Bug #4
+Det kan åbenbart ske at en body kolliderer med en halfplane og at den så efter at kollisionen er håndteret STADIG intersecter 
+half-planen (en lille smule, ja, men det er ikke sikkert, at det giver problemer..)
+Der er imidlertid et problem i den måde, som du propagerer fremad på, når det sker PARTLY. I første omgang så satte du
+den nye hastighed til en vægtning mellem den oprindelige og den propagerede. Det gik i fuck. Dernæst satte du den til den 
+propagerede, hvilket naturligvis også går i fuck. Det rigtige må være at sætte den til den oprindelige hastighed, da du jo skal 
+føre tilstanden tilbage til umiddelbart før stødet
+
+Bug #5
+På et tidspunkt vurderer den, at state generatoren ikke har kunnet følge med, men det må være pga en fejlagtig beregning
+
+Bug #6
+Hvis du kører scenen "Fountain" og undervejs flytter på vinduet, så fjernes bodies ikke. Mon ikke det skyldes, at du altså skal
+fjerne bodies i forbindelse med at du disposer historiske states? mnjaaah
+Ifølge loggen gælder der tilsyneladende, at cirklerne fjernes, men ikke desto mindre så stiger antallet af cirkler, selv om det gerne skulle holde sig på ca 32
+Af en eller anden årsag så kan det sker, at de tilføjes igen. Når det sker første gang, så sker det tilsyneladende konsekvent fremadrettet.
+Første gang det sker lader til at være i en situation, hvor der fjernes flere (f.eks. 3) cirkler på een gang, hvilket antyder, at der har været et relativt 
+stort tidsinterval siden sidste refresh (hvilket i øvrigt er naturligt, når det trigges af at man flytter vinduet)
+.. Er du for sent ude mht at trimme historiske states væk? du må hellere få det med i loggen
+
+Bug #7
+Hvis man invaliderer et antal gange for Bouncing Ball scenen, så daler bolden stille og roligt i højden. Det skyldes
+muligvis, at man bare smider den senest propagerede state ned i sekvensen uanset om de seneste er blevet invaliderede.
+Du skal altså have en kontrolmekanisme på plads for om den state, der tilføjes sekvensen, rent faktisk følger umiddelbart 
+efter den seneste state i sekvensen. Måske burde du simpelthen lade indexet være en egenskab for staten, så du ikke er
+så afhængig af at synkroniseringen virker?
+
+Bug #8
+Fountain virker ikke med invalidering
+
+Issue #1
+Scenen med rækken af bolde, der kolliderer med hinanden, tager ret konsekvent frameskip, når man invaliderer
+.. skulle man alligevel vente til efter næste refreh
+
+Issue #2
+Det kunne altså godt se ud som om at den hakker lidt mere i det, når man har sat en Interaction Callback, f.eks. for Scenen MovingBall.
+Kan det være rigtigt?.. Den skulle jo altså gerne kun kaldes, når der rent faktisk er en ny keyboard state, dvs ikke,
+hvis man ikke interagerer...
