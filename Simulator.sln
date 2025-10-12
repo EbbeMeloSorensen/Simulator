@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.FlappyBird.ViewModel",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Rocket.UI.WPF", "Game.Rocket.UI.WPF\Game.Rocket.UI.WPF.csproj", "{7BDBC135-908A-9A8C-2C1B-1C932FA100A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.FlappyBird.UI.WPF", "Game.FlappyBird.UI.WPF\Game.FlappyBird.UI.WPF.csproj", "{8E9AA7AB-D447-1AF6-25FA-E0C584E2DB03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{7BDBC135-908A-9A8C-2C1B-1C932FA100A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BDBC135-908A-9A8C-2C1B-1C932FA100A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BDBC135-908A-9A8C-2C1B-1C932FA100A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E9AA7AB-D447-1AF6-25FA-E0C584E2DB03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E9AA7AB-D447-1AF6-25FA-E0C584E2DB03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E9AA7AB-D447-1AF6-25FA-E0C584E2DB03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E9AA7AB-D447-1AF6-25FA-E0C584E2DB03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

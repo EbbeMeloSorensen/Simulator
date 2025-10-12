@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\Chicken1.png" />
+    <None Remove="Images\Chicken2.png" />
+    <None Remove="Images\Grissi.png" />
+    <None Remove="Images\Gubas.png" />
+    <None Remove="Images\Hippo.png" />
+    <None Remove="Images\Hunni.png" />
+    <None Remove="Images\Julekugle.png" />
+    <None Remove="Images\Kylle.png" />
+    <None Remove="Images\Kyllerylli.png" />
+    <None Remove="Images\Lion.png" />
+    <None Remove="Images\Panda.png" />
+    <None Remove="Images\Parrot.png" />
+    <None Remove="Images\Rudolf.png" />
+    <None Remove="Images\Seal.png" />
+    <None Remove="Images\snowman.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Craft.Logging.Log4Net" Version="1.0.2" />
+    <PackageReference Include="Craft.UIElements" Version="1.0.2" />
+    <PackageReference Include="StructureMap" Version="4.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Game.FlappyBird.ViewModel\Game.FlappyBird.ViewModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\Chicken1.png" />
+    <Resource Include="Images\Chicken2.png" />
+    <Resource Include="Images\Grissi.png" />
+    <Resource Include="Images\Gubas.png" />
+    <Resource Include="Images\Hippo.png" />
+    <Resource Include="Images\Hunni.png" />
+    <Resource Include="Images\Julekugle.png" />
+    <Resource Include="Images\Kylle.png" />
+    <Resource Include="Images\Kyllerylli.png" />
+    <Resource Include="Images\Lion.png" />
+    <Resource Include="Images\Panda.png" />
+    <Resource Include="Images\Parrot.png" />
+    <Resource Include="Images\Rudolf.png" />
+    <Resource Include="Images\Seal.png" />
+    <Resource Include="Images\snowman.png" />
+  </ItemGroup>
+
+</Project>

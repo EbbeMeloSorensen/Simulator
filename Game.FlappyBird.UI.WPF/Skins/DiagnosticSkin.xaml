@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Game.FlappyBird.UI.WPF">
+    <SolidColorBrush Color="LightSkyBlue" x:Key="BackgroundBrush"/>
+
+    <local:CustomizedShapeTemplateSelector x:Key="ShapeTemplateSelector"/>
+
+    <DataTemplate x:Key="Bird">
+        <Ellipse Fill="Black" Width="{Binding Width}" Height="{Binding Height}">
+            <Ellipse.RenderTransform>
+                <MatrixTransform Matrix="{Binding 
+                        Path=DataContext.TransformationMatrix, 
+                        RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+    </DataTemplate>
+
+</ResourceDictionary>
