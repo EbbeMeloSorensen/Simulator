@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\Fjende, ulv.png" />
+    <None Remove="Images\Wall.png" />
+    <None Remove="Images\Zelda - Copy.png" />
+    <None Remove="Images\Zelda.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Craft.Logging.Log4Net" Version="1.0.2" />
+    <PackageReference Include="Craft.UIElements" Version="1.0.2" />
+    <PackageReference Include="StructureMap" Version="4.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Game.Zelda.ViewModel\Game.Zelda.ViewModel.csproj" />
+    <ProjectReference Include="..\Simulator.UIElements\Simulator.UIElements.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\Fjende, ulv.png" />
+    <Resource Include="Images\Zelda - Copy.png" />
+    <Resource Include="Images\Zelda.png" />
+    <Resource Include="Images\Wall.png" />
+  </ItemGroup>
+
+</Project>
