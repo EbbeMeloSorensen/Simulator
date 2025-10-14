@@ -159,7 +159,7 @@ namespace Simulator.ViewModel
             //    scene.InitialWorldWindowSize(),
             //    false);
 
-            var lineThickness = 0.01;
+            var lineThickness = 1;
 
             _application.Engine.Scene.Boundaries.ForEach(b =>
             {
