@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Craft.DataStructures" Version="1.0.6" />
-    <PackageReference Include="Craft.Logging" Version="1.0.6" />
-    <PackageReference Include="Craft.Utils" Version="1.0.6" />
+    <PackageReference Include="Craft.DataStructures" Version="1.0.7" />
+    <PackageReference Include="Craft.Logging" Version="1.0.7" />
+    <PackageReference Include="Craft.Utils" Version="1.0.7" />
   </ItemGroup>
 
   <ItemGroup>
