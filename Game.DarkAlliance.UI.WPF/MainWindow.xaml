@@ -4,10 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Game.DarkAlliance.UI.WPF"
+        xmlns:scrollFree="clr-namespace:Craft.UIElements.Geometry2D.ScrollFree;assembly=Craft.UIElements"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         DataContext="{Binding Path=MainWindowViewModel, Source={StaticResource BootStrapper}}">
     <Grid>
-        <Button Content="{Binding Greeting}"></Button>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Height="20" Content="{Binding Greeting}"/>
+        <scrollFree:GeometryEditorView Grid.Row="1"/>
     </Grid>
 </Window>

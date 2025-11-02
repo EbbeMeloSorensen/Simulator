@@ -4,6 +4,14 @@
              xmlns:local="clr-namespace:Game.DarkAlliance.UI.WPF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <ObjectDataProvider x:Key="BootStrapper" ObjectType="local:BootStrapper"/>
+        <ResourceDictionary>
+            <ObjectDataProvider x:Key="BootStrapper" ObjectType="local:BootStrapper"/>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Craft.UIElements;component/Geometry2D/ScrollFree/Resources.xaml"/>
+                <ResourceDictionary Source="Skins/MainSkin.xaml"/>
+                <!--<ResourceDictionary Source="Skins/DiagnosticSkin.xaml"/>-->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

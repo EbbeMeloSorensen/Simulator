@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Craft.Logging.Log4Net" Version="1.0.7" />
+    <PackageReference Include="Craft.UIElements" Version="1.0.7" />
     <PackageReference Include="StructureMap" Version="4.7.1" />
   </ItemGroup>
 
