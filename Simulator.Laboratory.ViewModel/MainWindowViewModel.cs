@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Media.Animation;
+using Simulator.Domain.Bodies;
 
 namespace Simulator.Laboratory.ViewModel
 {

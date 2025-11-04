@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Craft.Math;
+﻿using Craft.Math;
 
 namespace Simulator.Domain
 {

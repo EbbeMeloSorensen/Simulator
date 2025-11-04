@@ -1,4 +1,5 @@
 ﻿using Simulator.Domain;
+using Simulator.Domain.Bodies;
 
 namespace Simulator.Laboratory.ViewModel.Bodies
 {

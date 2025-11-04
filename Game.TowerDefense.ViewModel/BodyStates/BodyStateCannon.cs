@@ -1,6 +1,7 @@
 ﻿using System;
 using Craft.Math;
 using Simulator.Domain;
+using Simulator.Domain.Bodies;
 using Simulator.Domain.BodyStates.Interfaces;
 using Simulator.Domain.BodyStates;
 

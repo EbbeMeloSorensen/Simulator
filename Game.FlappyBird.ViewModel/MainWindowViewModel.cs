@@ -8,6 +8,7 @@ using Simulator.Domain;
 using Simulator.Domain.Boundaries;
 using Simulator.Domain.BodyStates;
 using Simulator.Application;
+using Simulator.Domain.Bodies;
 using Simulator.ViewModel;
 
 namespace Game.FlappyBird.ViewModel

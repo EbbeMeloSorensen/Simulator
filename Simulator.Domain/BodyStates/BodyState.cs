@@ -1,4 +1,5 @@
 ﻿using Craft.Math;
+using Simulator.Domain.Bodies;
 
 namespace Simulator.Domain.BodyStates
 {

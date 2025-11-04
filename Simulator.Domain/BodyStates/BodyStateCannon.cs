@@ -1,5 +1,5 @@
-﻿using System;
-using Craft.Math;
+﻿using Craft.Math;
+using Simulator.Domain.Bodies;
 using Simulator.Domain.BodyStates.Interfaces;
 
 namespace Simulator.Domain.BodyStates

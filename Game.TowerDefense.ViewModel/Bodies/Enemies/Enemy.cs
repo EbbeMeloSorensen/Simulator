@@ -1,4 +1,5 @@
 ﻿using Simulator.Domain;
+using Simulator.Domain.Bodies;
 
 namespace Game.TowerDefense.ViewModel.Bodies.Enemies;
 

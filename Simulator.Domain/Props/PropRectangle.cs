@@ -1,5 +1,4 @@
-﻿using System;
-using Craft.Math;
+﻿using Craft.Math;
 
 namespace Simulator.Domain.Props
 {

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using Craft.Math;
+﻿using Craft.Math;
+using Simulator.Domain.Bodies;
 using Simulator.Domain.BodyStates;
 using Simulator.Domain.Boundaries;
 using Simulator.Domain.Props;

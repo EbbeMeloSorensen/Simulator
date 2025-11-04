@@ -1,4 +1,4 @@
-﻿namespace Simulator.Domain
+﻿namespace Simulator.Domain.Bodies
 {
     public class RectangularBody : Body
     {

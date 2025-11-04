@@ -1,4 +1,4 @@
-﻿namespace Simulator.Domain
+﻿namespace Simulator.Domain.Bodies
 {
     public abstract class Body
     {

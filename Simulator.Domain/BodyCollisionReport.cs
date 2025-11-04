@@ -1,4 +1,6 @@
-﻿namespace Simulator.Domain
+﻿using Simulator.Domain.Bodies;
+
+namespace Simulator.Domain
 {
     public class BodyCollisionReport
     {

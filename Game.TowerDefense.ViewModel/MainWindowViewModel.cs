@@ -17,6 +17,7 @@ using Simulator.ViewModel.ShapeViewModels;
 using Game.TowerDefense.ViewModel.Bodies;
 using Game.TowerDefense.ViewModel.Bodies.Enemies;
 using Game.TowerDefense.ViewModel.ShapeViewModels;
+using Simulator.Domain.Bodies;
 using Application = Simulator.Application.Application;
 using ApplicationState = Craft.DataStructures.Graph.State;
 using BodyStateCannon = Game.TowerDefense.ViewModel.BodyStates.BodyStateCannon;
