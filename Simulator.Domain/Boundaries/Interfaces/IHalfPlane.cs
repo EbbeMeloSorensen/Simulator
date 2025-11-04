@@ -1,6 +1,6 @@
 ﻿using Craft.Math;
 
-namespace Simulator.Domain.Boundaries
+namespace Simulator.Domain.Boundaries.Interfaces
 {
     public interface IHalfPlane : IBoundary
     {

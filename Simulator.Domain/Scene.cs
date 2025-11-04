@@ -2,6 +2,7 @@
 using Simulator.Domain.Bodies;
 using Simulator.Domain.BodyStates;
 using Simulator.Domain.Boundaries;
+using Simulator.Domain.Boundaries.Interfaces;
 using Simulator.Domain.Props;
 
 namespace Simulator.Domain

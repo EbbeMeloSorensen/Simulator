@@ -1,7 +1,7 @@
 ﻿using Craft.Math;
 using Simulator.Domain.BodyStates;
 
-namespace Simulator.Domain.Boundaries
+namespace Simulator.Domain.Boundaries.Interfaces
 {
     public interface ILineSegment : IBoundary
     {
