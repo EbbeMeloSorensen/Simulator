@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using Craft.Utils;
 using GalaSoft.MvvmLight;
-using Craft.Utils;
 using Simulator.Domain;
+using System.Collections.ObjectModel;
 
-namespace Simulator.ViewModel
+namespace Simulator.Laboratory.ViewModel
 {
     public class SceneListViewModel : ViewModelBase
     {
