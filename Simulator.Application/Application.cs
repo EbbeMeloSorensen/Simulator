@@ -38,7 +38,9 @@ namespace Simulator.Application
     // En Application HAR desuden en observable ApplicationState
     // Application objektets host kan spørge om, hvilke udveje der er fra den aktuelle state
     // .. det bruges til at checke, om der er mulighed for at gå direkte til en unlocked level (der opereres med en dynamisk state model)
-    // Application objektets host kan bede om at 
+    // Application objektets host kan bede om at skifte state til en navngiven applicationstate
+    // Application objektets host kan abonnere på applikationens state. Når den ændrer sig, udvirker det sædvanligvis, at scenen skifter eller skjules
+    // (Hvordan kan den ellers skfte?)
 
     public class Application
     {
