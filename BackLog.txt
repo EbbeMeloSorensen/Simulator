@@ -288,6 +288,8 @@ Done:
 * Lav det sådan at den "slider" fra en scene til en anden. Brug det samme som i time series kontrollen, hvor den fokuserer på et bestemt punkt
 
 Todo:
+* Ændr navnene på ApplicationState og State i Application klassen
+* Introducer en abstrakt ViewModelWithStateControl, som får lov til at overtage de der state ting
 * Skær det der state machine gejl ud af Application-klassen (det bruges jo f.eks. ikke af FlappyBird)
 * Flyt klasserne fra Simulator.Application hen i Simulator.Domain og derfra hen i et nyt Craft projekt ved navn Craft.Simulation
 * Der skal ikke bruges BodyStateClassic til Zelda
