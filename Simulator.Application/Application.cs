@@ -58,7 +58,7 @@ namespace Simulator.Application
         public bool AnimationRunning { get; private set; }
         public bool AnimationComplete { get; private set; }
 
-        public ObservableObject<Craft.DataStructures.Graph.State> ApplicationState { get; }
+        public ObservableObject<Craft.DataStructures.Graph.State> ApplicationState { get; private set; }
         public Craft.DataStructures.Graph.State PreviousState { get; private set; }
 
         public CurrentStateChangedCallback CurrentStateChangedCallback { get; set; }
@@ -73,8 +73,7 @@ namespace Simulator.Application
         public event EventHandler AnimationCompleted;
 
         public Application(
-            ILogger logger,
-            Craft.DataStructures.Graph.State initialState = null)
+            ILogger logger)
         {
             _logger = logger;
 
@@ -83,23 +82,25 @@ namespace Simulator.Application
 
             Engine = new Engine(logger);
             Stopwatch = new Stopwatch();
-
-            if (initialState != null)
-            {
-                _stateMachine = new StateMachine(initialState);
-                ApplicationState = new ObservableObject<Craft.DataStructures.Graph.State> {Object = initialState};
-            }
         }
 
         public void AddApplicationState(
             Craft.DataStructures.Graph.State applicationState)
         {
-            if (_stateMachine.Vertices.Any(_ => _.Name == applicationState.Name))
+            if (_stateMachine == null)
             {
-                throw new InvalidOperationException("The name of the application state has to be unique");
+                _stateMachine = new StateMachine(applicationState);
+                ApplicationState = new ObservableObject<Craft.DataStructures.Graph.State> { Object = applicationState };
             }
+            else
+            {
+                if (_stateMachine.Vertices.Any(_ => _.Name == applicationState.Name))
+                {
+                    throw new InvalidOperationException("The name of the application state has to be unique");
+                }
 
-            _stateMachine.AddVertex(applicationState);
+                _stateMachine.AddVertex(applicationState);
+            }
         }
 
         public void AddApplicationStateTransition(

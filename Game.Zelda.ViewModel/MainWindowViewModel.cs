@@ -201,8 +201,9 @@ namespace Game.Zelda.ViewModel
             var gameOver = new ApplicationState("Game Over");
             var youWin = new ApplicationState("You Win");
 
-            Application = new Application(_logger, welcomeScreen);
+            Application = new Application(_logger);
 
+            Application.AddApplicationState(welcomeScreen);
             Application.AddApplicationState(unlockedLevelsScreen);
             Application.AddApplicationState(level1a);
             Application.AddApplicationState(level1b);

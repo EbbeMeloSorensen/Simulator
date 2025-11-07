@@ -433,8 +433,9 @@ namespace Game.Rocket.ViewModel
             var gameOver = new Craft.DataStructures.Graph.State("Game Over");
             var youWin = new Craft.DataStructures.Graph.State("You Win");
 
-            Application = new Simulator.Application.Application(_logger, welcomeScreen);
+            Application = new Simulator.Application.Application(_logger);
 
+            Application.AddApplicationState(welcomeScreen);
             Application.AddApplicationState(unlockedLevelsScreen);
             Application.AddApplicationState(level1a);
             Application.AddApplicationState(level1b);
