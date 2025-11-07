@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Craft.Logging;
@@ -16,8 +13,6 @@ using Simulator.Application;
 using Simulator.ViewModel;
 using Game.Rocket.ViewModel.Bodies;
 using Game.Rocket.ViewModel.ShapeViewModels;
-using ApplicationState = Craft.DataStructures.Graph.State;
-using Application = Simulator.Application.Application;
 
 namespace Game.Rocket.ViewModel
 {
@@ -32,9 +27,9 @@ namespace Game.Rocket.ViewModel
         private bool _rocketIgnited;
         private bool _geometryEditorVisible = true;
 
-        private Dictionary<ApplicationState, List<Tuple<ApplicationState, ApplicationState>>> _transitionActivationMap;
+        private Dictionary<Craft.DataStructures.Graph.State, List<Tuple<Craft.DataStructures.Graph.State, Craft.DataStructures.Graph.State>>> _transitionActivationMap;
 
-        public Application Application { get; }
+        public Simulator.Application.Application Application { get; }
 
         public UnlockedLevelsViewModel UnlockedLevelsViewModel { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
@@ -384,8 +379,8 @@ namespace Game.Rocket.ViewModel
                 return response;
             };
 
-            var welcomeScreen = new ApplicationState("Welcome Screen");
-            var unlockedLevelsScreen = new ApplicationState("Unlocked Levels Screen");
+            var welcomeScreen = new Craft.DataStructures.Graph.State("Welcome Screen");
+            var unlockedLevelsScreen = new Craft.DataStructures.Graph.State("Unlocked Levels Screen");
 
             var level1a = new Level("Level 1")
             {
@@ -409,7 +404,7 @@ namespace Game.Rocket.ViewModel
                     postPropagationCallBack)
             };
 
-            var level1Cleared = new ApplicationState("Level 1 Cleared");
+            var level1Cleared = new Craft.DataStructures.Graph.State("Level 1 Cleared");
 
             var level2 = new Level("Level 2")
             {
@@ -422,7 +417,7 @@ namespace Game.Rocket.ViewModel
                     postPropagationCallBack)
             };
 
-            var level2Cleared = new ApplicationState("Level 2 Cleared");
+            var level2Cleared = new Craft.DataStructures.Graph.State("Level 2 Cleared");
 
             var level3 = new Level("Level 3")
             {
@@ -435,10 +430,10 @@ namespace Game.Rocket.ViewModel
                     postPropagationCallBack)
             };
 
-            var gameOver = new ApplicationState("Game Over");
-            var youWin = new ApplicationState("You Win");
+            var gameOver = new Craft.DataStructures.Graph.State("Game Over");
+            var youWin = new Craft.DataStructures.Graph.State("You Win");
 
-            Application = new Application(_logger, welcomeScreen);
+            Application = new Simulator.Application.Application(_logger, welcomeScreen);
 
             Application.AddApplicationState(unlockedLevelsScreen);
             Application.AddApplicationState(level1a);
@@ -464,15 +459,15 @@ namespace Game.Rocket.ViewModel
             Application.AddApplicationStateTransition(gameOver, welcomeScreen);
             Application.AddApplicationStateTransition(youWin, welcomeScreen);
 
-            _transitionActivationMap = new Dictionary<ApplicationState, List<Tuple<ApplicationState, ApplicationState>>>
+            _transitionActivationMap = new Dictionary<Craft.DataStructures.Graph.State, List<Tuple<Craft.DataStructures.Graph.State, Craft.DataStructures.Graph.State>>>
             {
-                {level1Cleared, new List<Tuple<ApplicationState, ApplicationState>>
+                {level1Cleared, new List<Tuple<Craft.DataStructures.Graph.State, Craft.DataStructures.Graph.State>>
                 {
                     new (welcomeScreen, unlockedLevelsScreen),
                     new (unlockedLevelsScreen, level1a),
                     new (unlockedLevelsScreen, level2)
                 }},
-                {level2Cleared, new List<Tuple<ApplicationState, ApplicationState>>
+                {level2Cleared, new List<Tuple<Craft.DataStructures.Graph.State, Craft.DataStructures.Graph.State>>
                 {
                     new (unlockedLevelsScreen, level3)
                 }}
@@ -842,7 +837,7 @@ namespace Game.Rocket.ViewModel
         }
 
         private void UnlockLevels(
-            ApplicationState applicationState)
+            Craft.DataStructures.Graph.State applicationState)
         {
             if (!_transitionActivationMap.ContainsKey(applicationState)) return;
 
