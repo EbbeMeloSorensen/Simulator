@@ -29,19 +29,19 @@ namespace Game.TowerDefense.UI.WPF
             switch (e.Key)
             {
                 case System.Windows.Input.Key.Up:
-                    ViewModel.Application.HandleKeyEvent(KeyboardKey.UpArrow, KeyEventType.KeyPressed);
+                    ViewModel.Bonnet.HandleKeyEvent(KeyboardKey.UpArrow, KeyEventType.KeyPressed);
                     break;
                 case System.Windows.Input.Key.Down:
-                    ViewModel.Application.HandleKeyEvent(KeyboardKey.DownArrow, KeyEventType.KeyPressed);
+                    ViewModel.Bonnet.HandleKeyEvent(KeyboardKey.DownArrow, KeyEventType.KeyPressed);
                     break;
                 case System.Windows.Input.Key.Left:
-                    ViewModel.Application.HandleKeyEvent(KeyboardKey.LeftArrow, KeyEventType.KeyPressed);
+                    ViewModel.Bonnet.HandleKeyEvent(KeyboardKey.LeftArrow, KeyEventType.KeyPressed);
                     break;
                 case System.Windows.Input.Key.Right:
-                    ViewModel.Application.HandleKeyEvent(KeyboardKey.RightArrow, KeyEventType.KeyPressed);
+                    ViewModel.Bonnet.HandleKeyEvent(KeyboardKey.RightArrow, KeyEventType.KeyPressed);
                     break;
                 case System.Windows.Input.Key.Space:
-                    ViewModel.Application.HandleKeyEvent(KeyboardKey.Space, KeyEventType.KeyPressed);
+                    ViewModel.Bonnet.HandleKeyEvent(KeyboardKey.Space, KeyEventType.KeyPressed);
                     break;
             }
         }
@@ -53,19 +53,19 @@ namespace Game.TowerDefense.UI.WPF
             switch (e.Key)
             {
                 case System.Windows.Input.Key.Up:
-                    ViewModel.Application.HandleKeyEvent(KeyboardKey.UpArrow, KeyEventType.KeyReleased);
+                    ViewModel.Bonnet.HandleKeyEvent(KeyboardKey.UpArrow, KeyEventType.KeyReleased);
                     break;
                 case System.Windows.Input.Key.Down:
-                    ViewModel.Application.HandleKeyEvent(KeyboardKey.DownArrow, KeyEventType.KeyReleased);
+                    ViewModel.Bonnet.HandleKeyEvent(KeyboardKey.DownArrow, KeyEventType.KeyReleased);
                     break;
                 case System.Windows.Input.Key.Left:
-                    ViewModel.Application.HandleKeyEvent(KeyboardKey.LeftArrow, KeyEventType.KeyReleased);
+                    ViewModel.Bonnet.HandleKeyEvent(KeyboardKey.LeftArrow, KeyEventType.KeyReleased);
                     break;
                 case System.Windows.Input.Key.Right:
-                    ViewModel.Application.HandleKeyEvent(KeyboardKey.RightArrow, KeyEventType.KeyReleased);
+                    ViewModel.Bonnet.HandleKeyEvent(KeyboardKey.RightArrow, KeyEventType.KeyReleased);
                     break;
                 case System.Windows.Input.Key.Space:
-                    ViewModel.Application.HandleKeyEvent(KeyboardKey.Space, KeyEventType.KeyReleased);
+                    ViewModel.Bonnet.HandleKeyEvent(KeyboardKey.Space, KeyEventType.KeyReleased);
                     break;
             }
         }
@@ -74,7 +74,7 @@ namespace Game.TowerDefense.UI.WPF
             object sender,
             CancelEventArgs e)
         {
-            ViewModel.Application.HandleClosing();
+            ViewModel.Bonnet.HandleClosing();
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Game.TowerDefense.ViewModel
         string aux1,
         string aux2);
 
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelWithStateControl
     {
         // Constants that apply to every level
         const double _initialBalance = 300.0;
@@ -73,7 +73,7 @@ namespace Game.TowerDefense.ViewModel
             }
         }
 
-        public Simulator.Application.Application Application { get; }
+        public Simulator.Application.Application Bonnet { get; }
 
         public UnlockedLevelsViewModel UnlockedLevelsViewModel { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
@@ -105,7 +105,7 @@ namespace Game.TowerDefense.ViewModel
 
             UnlockedLevelsViewModel.LevelSelected += (s, e) =>
             {
-                Application.SwitchState(e.Level.Name);
+                SwitchState(Bonnet.Engine, e.Level.Name);
             };
 
             CollisionBetweenBodyAndBoundaryOccuredCallBack collisionBetweenBodyAndBoundaryOccuredCallBack = body =>
@@ -231,24 +231,24 @@ namespace Game.TowerDefense.ViewModel
             var gameOver = new Craft.DataStructures.Graph.State("Game Over");
             var youWin = new Craft.DataStructures.Graph.State("You Win");
 
-            Application = new Simulator.Application.Application(_logger);
+            Bonnet = new Simulator.Application.Application(_logger);
 
-            Application.AddApplicationState(welcomeScreen);
-            Application.AddApplicationState(unlockedLevelsScreen);
-            Application.AddApplicationState(level1);
-            Application.AddApplicationState(level1Cleared);
-            Application.AddApplicationState(level2);
-            Application.AddApplicationState(gameOver);
-            Application.AddApplicationState(youWin);
+            AddApplicationState(welcomeScreen);
+            AddApplicationState(unlockedLevelsScreen);
+            AddApplicationState(level1);
+            AddApplicationState(level1Cleared);
+            AddApplicationState(level2);
+            AddApplicationState(gameOver);
+            AddApplicationState(youWin);
 
-            Application.AddApplicationStateTransition(welcomeScreen, level1);
-            Application.AddApplicationStateTransition(level1, gameOver);
-            Application.AddApplicationStateTransition(level1, level1Cleared);
-            Application.AddApplicationStateTransition(level1Cleared, level2);
-            Application.AddApplicationStateTransition(level2, gameOver);
-            Application.AddApplicationStateTransition(level2, youWin);
-            Application.AddApplicationStateTransition(gameOver, welcomeScreen);
-            Application.AddApplicationStateTransition(youWin, welcomeScreen);
+            AddApplicationStateTransition(welcomeScreen, level1);
+            AddApplicationStateTransition(level1, gameOver);
+            AddApplicationStateTransition(level1, level1Cleared);
+            AddApplicationStateTransition(level1Cleared, level2);
+            AddApplicationStateTransition(level2, gameOver);
+            AddApplicationStateTransition(level2, youWin);
+            AddApplicationStateTransition(gameOver, welcomeScreen);
+            AddApplicationStateTransition(youWin, welcomeScreen);
 
             _transitionActivationMap = new Dictionary<Craft.DataStructures.Graph.State, List<Tuple<Craft.DataStructures.Graph.State, Craft.DataStructures.Graph.State>>>
             {
@@ -261,33 +261,33 @@ namespace Game.TowerDefense.ViewModel
             };
 
             // If the user hits the space key while the application is in a state that is not a level then switch application state
-            Application.KeyEventOccured += (s, e) =>
+            Bonnet.KeyEventOccured += (s, e) =>
             {
                 if (e.KeyboardKey != KeyboardKey.Space ||
                     e.KeyEventType != KeyEventType.KeyPressed ||
-                    Application.ApplicationState.Object is Level ||
-                    Application.ApplicationState.Object == unlockedLevelsScreen)
+                    ApplicationState.Object is Level ||
+                    ApplicationState.Object == unlockedLevelsScreen)
                 {
                     return;
                 }
 
-                if (Application.ApplicationState.Object == welcomeScreen &&
-                    Application.ExitsFromCurrentApplicationState().Contains("Unlocked Levels Screen"))
+                if (ApplicationState.Object == welcomeScreen &&
+                    ExitsFromCurrentApplicationState().Contains("Unlocked Levels Screen"))
                 {
-                    Application.SwitchState("Unlocked Levels Screen");
+                    SwitchState(Bonnet.Engine, "Unlocked Levels Screen");
                 }
                 else
                 {
-                    Application.SwitchState();
+                    SwitchState(Bonnet.Engine);
                 }
             };
 
-            Application.ApplicationState.PropertyChanged += (s, e) =>
+            ApplicationState.PropertyChanged += (s, e) =>
             {
                 // Applikationen har skiftet tilstand (det, der vedligeholdes af state maskinen)
-                if (Application.ApplicationState.Object is Level level)
+                if (ApplicationState.Object is Level level)
                 {
-                    if (Application.PreviousState is Level)
+                    if (PreviousState is Level)
                     {
                         // Nu vil vi så gerne "slide" fra, hvor World Window pt er, og hen til det fokus, der gør sig gældende for næste levels scene
                         var previousWorldWindowFocus = GeometryEditorViewModel.WorldWindowFocus;
@@ -315,18 +315,18 @@ namespace Game.TowerDefense.ViewModel
                 }
                 else
                 {
-                    if (Application.ApplicationState.Object == welcomeScreen)
+                    if (ApplicationState.Object == welcomeScreen)
                     {
                         _sceneViewManager.ActiveScene = null;
                     }
                 }
             };
 
-            Application.AnimationCompleted += (s, e) =>
+            Bonnet.AnimationCompleted += (s, e) =>
             {
-                Application.SwitchState(Application.Engine.Outcome);
+                SwitchState(Bonnet.Engine, Bonnet.Engine.Outcome);
 
-                UnlockLevels(Application.ApplicationState.Object);
+                UnlockLevels(ApplicationState.Object);
             };
 
             // Aktiver nogle, så du ikke hele tiden skal gennemføre level 1
@@ -343,13 +343,13 @@ namespace Game.TowerDefense.ViewModel
 
             GeometryEditorViewModel.MouseClickOccured += (s, e) =>
             {
-                Application.HandleMouseClickEvent(new Point2D(
+                Bonnet.HandleMouseClickEvent(new Point2D(
                     e.CursorWorldPosition.X,
                     e.CursorWorldPosition.Y));
             };
 
             _sceneViewManager = new SceneViewManager(
-                Application,
+                Bonnet,
                 GeometryEditorViewModel,
                 shapeSelectorCallback,  
                 shapeUpdateCallback);
@@ -357,9 +357,9 @@ namespace Game.TowerDefense.ViewModel
 
         private void UpdateModel()
         {
-            if (Application.AnimationRunning)
+            if (Bonnet.AnimationRunning)
             {
-                Application.UpdateModel();
+                Bonnet.UpdateModel();
             }
             else
             {
@@ -394,12 +394,12 @@ namespace Game.TowerDefense.ViewModel
 
         private void StartOrResumeAnimation()
         {
-            Application.StartOrResumeAnimation();
+            Bonnet.StartOrResumeAnimation();
         }
 
         private bool CanStartOrResumeAnimation()
         {
-            return Application.CanStartOrResumeAnimation;
+            return Bonnet.CanStartOrResumeAnimation;
         }
 
         private static Scene GenerateScene1(
@@ -952,7 +952,7 @@ namespace Game.TowerDefense.ViewModel
                     UnlockedLevelsViewModel.AddLevel(_.Item2 as Level);
                 }
 
-                Application.AddApplicationStateTransition(_.Item1, _.Item2);
+                AddApplicationStateTransition(_.Item1, _.Item2);
             });
 
             _transitionActivationMap.Remove(applicationState);
