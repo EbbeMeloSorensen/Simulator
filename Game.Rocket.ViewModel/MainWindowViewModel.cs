@@ -16,7 +16,7 @@ using Game.Rocket.ViewModel.ShapeViewModels;
 
 namespace Game.Rocket.ViewModel
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelWithStateControl
     {
         private static int _nextWallId = 100000;
 
