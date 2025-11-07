@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -269,13 +266,13 @@ namespace Game.TowerDefense.ViewModel
             {
                 if (e.KeyboardKey != KeyboardKey.Space ||
                     e.KeyEventType != KeyEventType.KeyPressed ||
-                    Application.State.Object is Level ||
-                    Application.State.Object == unlockedLevelsScreen)
+                    Application.ApplicationState.Object is Level ||
+                    Application.ApplicationState.Object == unlockedLevelsScreen)
                 {
                     return;
                 }
 
-                if (Application.State.Object == welcomeScreen &&
+                if (Application.ApplicationState.Object == welcomeScreen &&
                     Application.ExitsFromCurrentApplicationState().Contains("Unlocked Levels Screen"))
                 {
                     Application.SwitchState("Unlocked Levels Screen");
@@ -286,10 +283,10 @@ namespace Game.TowerDefense.ViewModel
                 }
             };
 
-            Application.State.PropertyChanged += (s, e) =>
+            Application.ApplicationState.PropertyChanged += (s, e) =>
             {
                 // Applikationen har skiftet tilstand (det, der vedligeholdes af state maskinen)
-                if (Application.State.Object is Level level)
+                if (Application.ApplicationState.Object is Level level)
                 {
                     if (Application.PreviousState is Level)
                     {
@@ -319,7 +316,7 @@ namespace Game.TowerDefense.ViewModel
                 }
                 else
                 {
-                    if (Application.State.Object == welcomeScreen)
+                    if (Application.ApplicationState.Object == welcomeScreen)
                     {
                         _sceneViewManager.ActiveScene = null;
                     }
@@ -330,7 +327,7 @@ namespace Game.TowerDefense.ViewModel
             {
                 Application.SwitchState(Application.Engine.Outcome);
 
-                UnlockLevels(Application.State.Object);
+                UnlockLevels(Application.ApplicationState.Object);
             };
 
             // Aktiver nogle, så du ikke hele tiden skal gennemføre level 1

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Craft.Logging;
 using Craft.Math;
 using Craft.Utils;
 using Craft.DataStructures.Graph;
 using Simulator.Domain;
-using ApplicationState = Craft.DataStructures.Graph.State;
-using State = Simulator.Domain.State;
 
 namespace Simulator.Application
 {
@@ -32,7 +27,7 @@ namespace Simulator.Application
     }
 
     public delegate void CurrentStateChangedCallback(
-        State currentState);
+        Domain.State currentState);
 
     // En Application HAR en StateMachine, som egentlig bare ER en graf
     // En Application HAR desuden en observable ApplicationState
@@ -63,8 +58,8 @@ namespace Simulator.Application
         public bool AnimationRunning { get; private set; }
         public bool AnimationComplete { get; private set; }
 
-        public ObservableObject<ApplicationState> State { get; }
-        public ApplicationState PreviousState { get; private set; }
+        public ObservableObject<Craft.DataStructures.Graph.State> ApplicationState { get; }
+        public Craft.DataStructures.Graph.State PreviousState { get; private set; }
 
         public CurrentStateChangedCallback CurrentStateChangedCallback { get; set; }
 
@@ -79,7 +74,7 @@ namespace Simulator.Application
 
         public Application(
             ILogger logger,
-            ApplicationState initialState = null)
+            Craft.DataStructures.Graph.State initialState = null)
         {
             _logger = logger;
 
@@ -92,12 +87,12 @@ namespace Simulator.Application
             if (initialState != null)
             {
                 _stateMachine = new StateMachine(initialState);
-                State = new ObservableObject<ApplicationState>{Object = initialState};
+                ApplicationState = new ObservableObject<Craft.DataStructures.Graph.State> {Object = initialState};
             }
         }
 
         public void AddApplicationState(
-            ApplicationState applicationState)
+            Craft.DataStructures.Graph.State applicationState)
         {
             if (_stateMachine.Vertices.Any(_ => _.Name == applicationState.Name))
             {
@@ -108,8 +103,8 @@ namespace Simulator.Application
         }
 
         public void AddApplicationStateTransition(
-            ApplicationState from,
-            ApplicationState to)
+            Craft.DataStructures.Graph.State from,
+            Craft.DataStructures.Graph.State to)
         {
             _stateMachine.AddTransition(from, to);
         }
@@ -299,7 +294,7 @@ namespace Simulator.Application
 
             _stateMachine.SwitchState(name);
 
-            State.Object = _stateMachine.CurrentState;
+            ApplicationState.Object = _stateMachine.CurrentState;
         }
 
         private int DetermineCurrentIndex(

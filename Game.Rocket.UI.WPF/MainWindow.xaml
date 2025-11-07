@@ -26,7 +26,7 @@
 
         <Grid>
             <Grid.Visibility>
-                <Binding Path="Application.State.Object" 
+                <Binding Path="Application.ApplicationState.Object" 
                          Converter="{StaticResource ApplicationStateToVisibilityConverter}">
                     <Binding.ConverterParameter>
                         <system:String>Unlocked</system:String>
@@ -39,7 +39,7 @@
         <!--Welcome Screen-->
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock.Visibility>
-                <Binding Path="Application.State.Object" 
+                <Binding Path="Application.ApplicationState.Object" 
                          Converter="{StaticResource ApplicationStateToVisibilityConverter}">
                     <Binding.ConverterParameter>
                         <system:String>Welcome Screen</system:String>
@@ -54,7 +54,7 @@
         <!--Level Cleared-->
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock.Visibility>
-                <Binding Path="Application.State.Object" 
+                <Binding Path="Application.ApplicationState.Object" 
                          Converter="{StaticResource ApplicationStateToVisibilityConverter}">
                     <Binding.ConverterParameter>
                         <system:String>Cleared</system:String>
@@ -69,7 +69,7 @@
         <!--Game Over-->
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock.Visibility>
-                <Binding Path="Application.State.Object" 
+                <Binding Path="Application.ApplicationState.Object" 
                          Converter="{StaticResource ApplicationStateToVisibilityConverter}">
                     <Binding.ConverterParameter>
                         <system:String>Game Over</system:String>
@@ -82,7 +82,7 @@
         <!--You Win-->
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock.Visibility>
-                <Binding Path="Application.State.Object" 
+                <Binding Path="Application.ApplicationState.Object" 
                          Converter="{StaticResource ApplicationStateToVisibilityConverter}">
                     <Binding.ConverterParameter>
                         <system:String>You Win</system:String>
