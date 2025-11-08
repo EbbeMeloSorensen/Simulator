@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading;
-using Craft.Logging;
+﻿using Craft.Logging;
 using Simulator.Domain;
 
 namespace Simulator.Application

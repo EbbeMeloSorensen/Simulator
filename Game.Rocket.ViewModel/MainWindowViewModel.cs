@@ -435,17 +435,6 @@ namespace Game.Rocket.ViewModel
 
             Bonnet = new Simulator.Application.Application(_logger);
 
-            Bonnet.AddApplicationState(welcomeScreen);
-            Bonnet.AddApplicationState(unlockedLevelsScreen);
-            Bonnet.AddApplicationState(level1a);
-            Bonnet.AddApplicationState(level1b);
-            Bonnet.AddApplicationState(level1Cleared);
-            Bonnet.AddApplicationState(level2);
-            Bonnet.AddApplicationState(level2Cleared);
-            Bonnet.AddApplicationState(level3);
-            Bonnet.AddApplicationState(gameOver);
-            Bonnet.AddApplicationState(youWin);
-
             AddApplicationState(welcomeScreen);
             AddApplicationState(unlockedLevelsScreen);
             AddApplicationState(level1a);
@@ -456,20 +445,6 @@ namespace Game.Rocket.ViewModel
             AddApplicationState(level3);
             AddApplicationState(gameOver);
             AddApplicationState(youWin);
-
-            Bonnet.AddApplicationStateTransition(welcomeScreen, level1a);
-            Bonnet.AddApplicationStateTransition(level1a, gameOver);
-            Bonnet.AddApplicationStateTransition(level1a, level1b);
-            Bonnet.AddApplicationStateTransition(level1b, gameOver);
-            Bonnet.AddApplicationStateTransition(level1b, level1Cleared);
-            Bonnet.AddApplicationStateTransition(level1Cleared, level2);
-            Bonnet.AddApplicationStateTransition(level2, gameOver);
-            Bonnet.AddApplicationStateTransition(level2, level2Cleared);
-            Bonnet.AddApplicationStateTransition(level2Cleared, level3);
-            Bonnet.AddApplicationStateTransition(level3, gameOver);
-            Bonnet.AddApplicationStateTransition(level3, youWin);
-            Bonnet.AddApplicationStateTransition(gameOver, welcomeScreen);
-            Bonnet.AddApplicationStateTransition(youWin, welcomeScreen);
 
             AddApplicationStateTransition(welcomeScreen, level1a);
             AddApplicationStateTransition(level1a, gameOver);

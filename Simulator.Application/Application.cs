@@ -2,7 +2,6 @@
 using Craft.Logging;
 using Craft.Math;
 using Craft.Utils;
-using Craft.DataStructures.Graph;
 using Simulator.Domain;
 
 namespace Simulator.Application
@@ -40,7 +39,6 @@ namespace Simulator.Application
     public class Application
     {
         public const double MinTimeBetweenRefresh = 0.005; // 5 milliseconds
-        private StateMachine _stateMachine;
 
         private ILogger _logger;
 
@@ -82,37 +80,6 @@ namespace Simulator.Application
 
             Engine = new Engine(logger);
             Stopwatch = new Stopwatch();
-        }
-
-        public void AddApplicationState(
-            Craft.DataStructures.Graph.State applicationState)
-        {
-            if (_stateMachine == null)
-            {
-                _stateMachine = new StateMachine(applicationState);
-                ApplicationState = new ObservableObject<Craft.DataStructures.Graph.State> { Object = applicationState };
-            }
-            else
-            {
-                if (_stateMachine.Vertices.Any(_ => _.Name == applicationState.Name))
-                {
-                    throw new InvalidOperationException("The name of the application state has to be unique");
-                }
-
-                _stateMachine.AddVertex(applicationState);
-            }
-        }
-
-        public void AddApplicationStateTransition(
-            Craft.DataStructures.Graph.State from,
-            Craft.DataStructures.Graph.State to)
-        {
-            _stateMachine.AddTransition(from, to);
-        }
-
-        public IEnumerable<string> ExitsFromCurrentApplicationState()
-        {
-            return _stateMachine.ExitsFromCurrentState();
         }
 
         public void HandleKeyEvent(
@@ -281,21 +248,6 @@ namespace Simulator.Application
             LastIndexConsumed = 0;
             IndexDifference = 0;
             FrameSkipCount = 0;
-        }
-
-        public void SwitchState(
-            string name = null)
-        {
-            if (Engine.Scene != null)
-            {
-                Engine.PreviousScene = Engine.Scene.Name;
-            }
-
-            PreviousState = _stateMachine.CurrentState;
-
-            _stateMachine.SwitchState(name);
-
-            ApplicationState.Object = _stateMachine.CurrentState;
         }
 
         private int DetermineCurrentIndex(

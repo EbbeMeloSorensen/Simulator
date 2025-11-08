@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Craft.Logging;
+﻿using Craft.Logging;
 using Craft.Math;
 using Simulator.Domain;
 using Simulator.Domain.Bodies;

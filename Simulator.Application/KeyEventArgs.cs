@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Simulator.Application
+﻿namespace Simulator.Application
 {
     public class KeyEventArgs : EventArgs
     {
