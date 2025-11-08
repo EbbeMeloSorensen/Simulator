@@ -7,7 +7,6 @@ using Craft.Logging;
 using Craft.Math;
 using Craft.Utils;
 using Craft.ViewModels.Geometry2D.ScrollFree;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Game.Zelda.ViewModel.BodyStates;
 using Simulator.Domain;
@@ -16,12 +15,10 @@ using Simulator.Domain.Props;
 using Simulator.Application;
 using Simulator.ViewModel;
 using Game.Zelda.ViewModel.ShapeViewModels;
-using Application = Simulator.Application.Application;
-using ApplicationState = Craft.DataStructures.Graph.State;
 
 namespace Game.Zelda.ViewModel
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelWithStateControl
     {
         private static double _zeldaRadius = 0.25;
 
@@ -34,9 +31,9 @@ namespace Game.Zelda.ViewModel
         private Vector2D _worldWindowTranslation;
         private Stopwatch _stopwatch;
 
-        private Dictionary<ApplicationState, List<Tuple<ApplicationState, ApplicationState>>> _transitionActivationMap;
+        private Dictionary<Craft.DataStructures.Graph.State, List<Tuple<Craft.DataStructures.Graph.State, Craft.DataStructures.Graph.State>>> _transitionActivationMap;
 
-        public Application Application { get; }
+        public Simulator.Application.Application Bonnet { get; }
 
         public UnlockedLevelsViewModel UnlockedLevelsViewModel { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
@@ -68,7 +65,7 @@ namespace Game.Zelda.ViewModel
 
             UnlockedLevelsViewModel.LevelSelected += (s, e) =>
             {
-                Application.SwitchState(e.Level.Name);
+                SwitchState(Bonnet.Engine, e.Level.Name);
             };
 
             CollisionBetweenBodyAndBoundaryOccuredCallBack collisionBetweenBodyAndBoundaryOccuredCallBack = body =>
@@ -151,8 +148,8 @@ namespace Game.Zelda.ViewModel
                 return response;
             };
 
-            var welcomeScreen = new ApplicationState("Welcome Screen");
-            var unlockedLevelsScreen = new ApplicationState("Unlocked Levels Screen");
+            var welcomeScreen = new Craft.DataStructures.Graph.State("Welcome Screen");
+            var unlockedLevelsScreen = new Craft.DataStructures.Graph.State("Unlocked Levels Screen");
 
             var level1a = new Level("Level 1")
             {
@@ -178,7 +175,7 @@ namespace Game.Zelda.ViewModel
                     postPropagationCallBack)
             };
 
-            var level1Cleared = new ApplicationState("Level 1 Cleared");
+            var level1Cleared = new Craft.DataStructures.Graph.State("Level 1 Cleared");
 
             var level2 = new Level("Level 2")
             {
@@ -188,7 +185,7 @@ namespace Game.Zelda.ViewModel
                     postPropagationCallBack)
             };
 
-            var level2Cleared = new ApplicationState("Level 2 Cleared");
+            var level2Cleared = new Craft.DataStructures.Graph.State("Level 2 Cleared");
 
             var level3 = new Level("Level 3")
             {
@@ -198,83 +195,83 @@ namespace Game.Zelda.ViewModel
                     postPropagationCallBack)
             };
 
-            var gameOver = new ApplicationState("Game Over");
-            var youWin = new ApplicationState("You Win");
+            var gameOver = new Craft.DataStructures.Graph.State("Game Over");
+            var youWin = new Craft.DataStructures.Graph.State("You Win");
 
-            Application = new Application(_logger);
+            Bonnet = new Simulator.Application.Application(_logger);
 
-            Application.AddApplicationState(welcomeScreen);
-            Application.AddApplicationState(unlockedLevelsScreen);
-            Application.AddApplicationState(level1a);
-            Application.AddApplicationState(level1b);
-            Application.AddApplicationState(level1c);
-            Application.AddApplicationState(level1Cleared);
-            Application.AddApplicationState(level2);
-            Application.AddApplicationState(level2Cleared);
-            Application.AddApplicationState(level3);
-            Application.AddApplicationState(gameOver);
-            Application.AddApplicationState(youWin);
+            AddApplicationState(welcomeScreen);
+            AddApplicationState(unlockedLevelsScreen);
+            AddApplicationState(level1a);
+            AddApplicationState(level1b);
+            AddApplicationState(level1c);
+            AddApplicationState(level1Cleared);
+            AddApplicationState(level2);
+            AddApplicationState(level2Cleared);
+            AddApplicationState(level3);
+            AddApplicationState(gameOver);
+            AddApplicationState(youWin);
 
-            Application.AddApplicationStateTransition(welcomeScreen, level1a);
-            Application.AddApplicationStateTransition(level1a, gameOver);
-            Application.AddApplicationStateTransition(level1a, level1b);
-            Application.AddApplicationStateTransition(level1b, gameOver);
-            Application.AddApplicationStateTransition(level1b, level1a);
-            Application.AddApplicationStateTransition(level1b, level1c);
-            Application.AddApplicationStateTransition(level1c, gameOver);
-            Application.AddApplicationStateTransition(level1c, level1b);
-            Application.AddApplicationStateTransition(level1c, level1Cleared);
-            Application.AddApplicationStateTransition(level1Cleared, level2);
-            Application.AddApplicationStateTransition(level2, gameOver);
-            Application.AddApplicationStateTransition(level2, level2Cleared);
-            Application.AddApplicationStateTransition(level2Cleared, level3);
-            Application.AddApplicationStateTransition(level3, gameOver);
-            Application.AddApplicationStateTransition(level3, youWin);
-            Application.AddApplicationStateTransition(gameOver, welcomeScreen);
-            Application.AddApplicationStateTransition(youWin, welcomeScreen);
+            AddApplicationStateTransition(welcomeScreen, level1a);
+            AddApplicationStateTransition(level1a, gameOver);
+            AddApplicationStateTransition(level1a, level1b);
+            AddApplicationStateTransition(level1b, gameOver);
+            AddApplicationStateTransition(level1b, level1a);
+            AddApplicationStateTransition(level1b, level1c);
+            AddApplicationStateTransition(level1c, gameOver);
+            AddApplicationStateTransition(level1c, level1b);
+            AddApplicationStateTransition(level1c, level1Cleared);
+            AddApplicationStateTransition(level1Cleared, level2);
+            AddApplicationStateTransition(level2, gameOver);
+            AddApplicationStateTransition(level2, level2Cleared);
+            AddApplicationStateTransition(level2Cleared, level3);
+            AddApplicationStateTransition(level3, gameOver);
+            AddApplicationStateTransition(level3, youWin);
+            AddApplicationStateTransition(gameOver, welcomeScreen);
+            AddApplicationStateTransition(youWin, welcomeScreen);
 
-            _transitionActivationMap = new Dictionary<ApplicationState, List<Tuple<ApplicationState, ApplicationState>>>
+            _transitionActivationMap = new Dictionary<Craft.DataStructures.Graph.State, List<Tuple<Craft.DataStructures.Graph.State, Craft.DataStructures.Graph.State>>>
             {
-                {level1Cleared, new List<Tuple<ApplicationState, ApplicationState>>
+                {level1Cleared, new List<Tuple<Craft.DataStructures.Graph.State, Craft.DataStructures.Graph.State>>
                 {
                     new (welcomeScreen, unlockedLevelsScreen),
                     new (unlockedLevelsScreen, level1a),
                     new (unlockedLevelsScreen, level2)
                 }},
-                {level2Cleared, new List<Tuple<ApplicationState, ApplicationState>>
+                {level2Cleared, new List<Tuple<Craft.DataStructures.Graph.State, Craft.DataStructures.Graph.State>>
                 {
                     new (unlockedLevelsScreen, level3)
                 }}
             };
 
             // If the user hits the space key while the application is in a state that is not a level then switch application state
-            Application.KeyEventOccured += (s, e) =>
+            Bonnet.KeyEventOccured += (s, e) =>
             {
                 if (e.KeyboardKey != KeyboardKey.Space ||
                     e.KeyEventType != KeyEventType.KeyPressed ||
-                    Application.ApplicationState.Object is Level ||
-                    Application.ApplicationState.Object == unlockedLevelsScreen)
+                    ApplicationState.Object is Level ||
+                    ApplicationState.Object == unlockedLevelsScreen)
                 {
                     return;
                 }
 
-                if (Application.ApplicationState.Object == welcomeScreen &&
-                    Application.ExitsFromCurrentApplicationState().Contains("Unlocked Levels Screen"))
+                if (ApplicationState.Object == welcomeScreen &&
+                    ExitsFromCurrentApplicationState().Contains("Unlocked Levels Screen"))
                 {
-                    Application.SwitchState("Unlocked Levels Screen");
+                    SwitchState(Bonnet.Engine, "Unlocked Levels Screen");
                 }
                 else
                 {
-                    Application.SwitchState();
+                    SwitchState(Bonnet.Engine);
                 }
             };
 
-            Application.ApplicationState.PropertyChanged += (s, e) =>
+            ApplicationState.PropertyChanged += (s, e) =>
             {
                 // Applikationen har skiftet tilstand (det, der vedligeholdes af state maskinen)
-                if (Application.ApplicationState.Object is Level level)
+                if (ApplicationState.Object is Level level)
                 {
-                    if (Application.PreviousState is Level)
+                    if (PreviousState is Level)
                     {
                         // Nu vil vi så gerne "slide" fra, hvor World Window pt er, og hen til det fokus, der gør sig gældende for næste levels scene
                         var previousWorldWindowFocus = GeometryEditorViewModel.WorldWindowFocus;
@@ -302,18 +299,18 @@ namespace Game.Zelda.ViewModel
                 }
                 else
                 {
-                    if (Application.ApplicationState.Object == welcomeScreen)
+                    if (ApplicationState.Object == welcomeScreen)
                     {
                         _sceneViewManager.ActiveScene = null;
                     }
                 }
             };
 
-            Application.AnimationCompleted += (s, e) =>
+            Bonnet.AnimationCompleted += (s, e) =>
             {
-                Application.SwitchState(Application.Engine.Outcome);
+                SwitchState(Bonnet.Engine, Bonnet.Engine.Outcome);
 
-                UnlockLevels(Application.ApplicationState.Object);
+                UnlockLevels(ApplicationState.Object);
             };
 
             // Aktiver nogle, så du ikke hele tiden skal gennemføre level 1
@@ -326,7 +323,7 @@ namespace Game.Zelda.ViewModel
             };
 
             _sceneViewManager = new SceneViewManager(
-                Application,
+                Bonnet,
                 GeometryEditorViewModel,
                 (bs) =>
                 {
@@ -350,9 +347,9 @@ namespace Game.Zelda.ViewModel
 
         private void UpdateModel()
         {
-            if (Application.AnimationRunning)
+            if (Bonnet.AnimationRunning)
             {
-                Application.UpdateModel();
+                Bonnet.UpdateModel();
             }
             else
             {
@@ -387,12 +384,12 @@ namespace Game.Zelda.ViewModel
 
         private void StartOrResumeAnimation()
         {
-            Application.StartOrResumeAnimation();
+            Bonnet.StartOrResumeAnimation();
         }
 
         private bool CanStartOrResumeAnimation()
         {
-            return Application.CanStartOrResumeAnimation;
+            return Bonnet.CanStartOrResumeAnimation;
         }
 
         private static Scene GenerateScene1a(
@@ -699,7 +696,7 @@ namespace Game.Zelda.ViewModel
         }
 
         private void UnlockLevels(
-            ApplicationState applicationState)
+            Craft.DataStructures.Graph.State applicationState)
         {
             if (!_transitionActivationMap.ContainsKey(applicationState)) return;
 
@@ -710,7 +707,7 @@ namespace Game.Zelda.ViewModel
                     UnlockedLevelsViewModel.AddLevel(_.Item2 as Level);
                 }
 
-                Application.AddApplicationStateTransition(_.Item1, _.Item2);
+                AddApplicationStateTransition(_.Item1, _.Item2);
             });
 
             _transitionActivationMap.Remove(applicationState);
