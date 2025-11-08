@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Craft.Logging" Version="1.0.7" />
     <PackageReference Include="Craft.Math" Version="1.0.7" />
   </ItemGroup>
 

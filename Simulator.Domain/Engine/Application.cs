@@ -1,30 +1,15 @@
-﻿using System.Diagnostics;
-using Craft.Logging;
+﻿using Craft.Logging;
 using Craft.Math;
 using Craft.Utils;
-using Simulator.Domain;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Simulator.Application
+namespace Simulator.Domain.Engine
 {
-    // Todo:
-    // * Gør så meget som muligt private
-    // * Lav så mange properties som muligt om til member variable
-
-    public enum KeyboardKey
-    {
-        LeftArrow,
-        RightArrow,
-        UpArrow,
-        DownArrow,
-        Space
-    }
-
-    public enum KeyEventType
-    {
-        KeyPressed,
-        KeyReleased
-    }
-
     public delegate void CurrentStateChangedCallback(
         Domain.State currentState);
 
