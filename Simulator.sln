@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulator.Domain.UnitTest", "Simulator.Domain.UnitTest\Simulator.Domain.UnitTest.csproj", "{A5DC6E77-1F4F-A9A0-1652-39E45CF69381}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulator.Application", "Simulator.Application\Simulator.Application.csproj", "{C6827D34-D0AC-872D-2934-019A95E31F02}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulator.ViewModel", "Simulator.ViewModel\Simulator.ViewModel.csproj", "{F34F2B9B-9C7C-4827-1A29-5746EDD495E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulator.UIElements", "Simulator.UIElements\Simulator.UIElements.csproj", "{55388BC4-0A7F-F131-E3EA-68C6C0910699}"
@@ -57,10 +55,6 @@ Global
 		{A5DC6E77-1F4F-A9A0-1652-39E45CF69381}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5DC6E77-1F4F-A9A0-1652-39E45CF69381}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5DC6E77-1F4F-A9A0-1652-39E45CF69381}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6827D34-D0AC-872D-2934-019A95E31F02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6827D34-D0AC-872D-2934-019A95E31F02}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6827D34-D0AC-872D-2934-019A95E31F02}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6827D34-D0AC-872D-2934-019A95E31F02}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F34F2B9B-9C7C-4827-1A29-5746EDD495E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F34F2B9B-9C7C-4827-1A29-5746EDD495E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F34F2B9B-9C7C-4827-1A29-5746EDD495E9}.Release|Any CPU.ActiveCfg = Release|Any CPU

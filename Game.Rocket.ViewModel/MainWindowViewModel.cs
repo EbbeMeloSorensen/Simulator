@@ -9,10 +9,10 @@ using Simulator.Domain;
 using Simulator.Domain.BodyStates;
 using Simulator.Domain.Boundaries;
 using Simulator.Domain.Props;
-using Simulator.Application;
 using Simulator.ViewModel;
 using Game.Rocket.ViewModel.Bodies;
 using Game.Rocket.ViewModel.ShapeViewModels;
+using Simulator.Domain.Engine;
 
 namespace Game.Rocket.ViewModel
 {
@@ -29,7 +29,7 @@ namespace Game.Rocket.ViewModel
 
         private Dictionary<Craft.DataStructures.Graph.State, List<Tuple<Craft.DataStructures.Graph.State, Craft.DataStructures.Graph.State>>> _transitionActivationMap;
 
-        public Simulator.Application.Application Bonnet { get; }
+        public Simulator.Domain.Engine.Application Bonnet { get; }
 
         public UnlockedLevelsViewModel UnlockedLevelsViewModel { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
@@ -433,7 +433,7 @@ namespace Game.Rocket.ViewModel
             var gameOver = new Craft.DataStructures.Graph.State("Game Over");
             var youWin = new Craft.DataStructures.Graph.State("You Win");
 
-            Bonnet = new Simulator.Application.Application(_logger);
+            Bonnet = new Simulator.Domain.Engine.Application(_logger);
 
             AddApplicationState(welcomeScreen);
             AddApplicationState(unlockedLevelsScreen);

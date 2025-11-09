@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using Simulator.Application;
 using Game.FlappyBird.ViewModel;
+using Simulator.Domain.Engine;
 
 namespace Game.FlappyBird.UI.WPF
 {

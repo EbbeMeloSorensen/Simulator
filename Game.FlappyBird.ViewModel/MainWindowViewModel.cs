@@ -7,8 +7,8 @@ using Craft.ViewModels.Geometry2D.ScrollFree;
 using Simulator.Domain;
 using Simulator.Domain.Boundaries;
 using Simulator.Domain.BodyStates;
-using Simulator.Application;
 using Simulator.Domain.Bodies;
+using Simulator.Domain.Engine;
 using Simulator.ViewModel;
 
 namespace Game.FlappyBird.ViewModel

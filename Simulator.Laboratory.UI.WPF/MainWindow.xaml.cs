@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using Simulator.Application;
+using Simulator.Domain.Engine;
 using Simulator.Laboratory.ViewModel;
 
 namespace Simulator.Laboratory.UI.WPF

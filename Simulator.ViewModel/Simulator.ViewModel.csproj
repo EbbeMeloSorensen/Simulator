@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Simulator.Application\Simulator.Application.csproj" />
+    <ProjectReference Include="..\Simulator.Domain\Simulator.Domain.csproj" />
   </ItemGroup>
 
 </Project>

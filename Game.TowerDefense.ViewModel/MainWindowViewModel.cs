@@ -6,7 +6,6 @@ using Craft.Utils;
 using Craft.Logging;
 using Craft.Math;
 using Craft.ViewModels.Geometry2D.ScrollFree;
-using Simulator.Application;
 using Simulator.Domain;
 using Simulator.Domain.Bodies;
 using Simulator.Domain.Boundaries;
@@ -15,6 +14,7 @@ using Simulator.ViewModel.ShapeViewModels;
 using Game.TowerDefense.ViewModel.Bodies;
 using Game.TowerDefense.ViewModel.Bodies.Enemies;
 using Game.TowerDefense.ViewModel.ShapeViewModels;
+using Simulator.Domain.Engine;
 using BodyStateCannon = Game.TowerDefense.ViewModel.BodyStates.BodyStateCannon;
 using BodyStateEnemy = Game.TowerDefense.ViewModel.BodyStates.BodyStateEnemy;
 using BodyStateProjectile = Game.TowerDefense.ViewModel.BodyStates.BodyStateProjectile;
@@ -73,7 +73,7 @@ namespace Game.TowerDefense.ViewModel
             }
         }
 
-        public Simulator.Application.Application Bonnet { get; }
+        public Simulator.Domain.Engine.Application Bonnet { get; }
 
         public UnlockedLevelsViewModel UnlockedLevelsViewModel { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
@@ -231,7 +231,7 @@ namespace Game.TowerDefense.ViewModel
             var gameOver = new Craft.DataStructures.Graph.State("Game Over");
             var youWin = new Craft.DataStructures.Graph.State("You Win");
 
-            Bonnet = new Simulator.Application.Application(_logger);
+            Bonnet = new Simulator.Domain.Engine.Application(_logger);
 
             AddApplicationState(welcomeScreen);
             AddApplicationState(unlockedLevelsScreen);

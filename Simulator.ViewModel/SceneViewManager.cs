@@ -23,7 +23,7 @@ namespace Simulator.ViewModel
     // Denne klasse observerer current scene udstillet af application laget og vedligeholder GeometryEditorViewModel
     public class SceneViewManager
     {
-        private Application.Application _application;
+        private Domain.Engine.Application _application;
         private Scene _activeScene;
         private GeometryEditorViewModel _geometryEditorViewModel;
         private int[] _propIds;
@@ -67,7 +67,7 @@ namespace Simulator.ViewModel
         public ShapeUpdateCallback ShapeUpdateCallback { get; set; }
 
         public SceneViewManager(
-            Application.Application application,
+            Domain.Engine.Application application,
             GeometryEditorViewModel geometryEditorViewModel,
             ShapeSelectorCallback shapeSelectorCallback = null,
             ShapeUpdateCallback shapeUpdateCallback = null)

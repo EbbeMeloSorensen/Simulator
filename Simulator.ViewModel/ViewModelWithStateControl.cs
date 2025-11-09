@@ -1,7 +1,7 @@
 ﻿using Craft.DataStructures.Graph;
 using Craft.Utils;
 using GalaSoft.MvvmLight;
-using Simulator.Application;
+using Simulator.Domain.Engine;
 
 namespace Simulator.ViewModel
 {

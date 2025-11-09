@@ -41,7 +41,7 @@ namespace Simulator.Laboratory.ViewModel
         private string _aux1;
         private string _aux2;
 
-        public Application.Application Application { get; }
+        public Domain.Engine.Application Application { get; }
         public SceneListViewModel SceneListViewModel { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
 
@@ -103,7 +103,7 @@ namespace Simulator.Laboratory.ViewModel
 
             Outcome = null;
 
-            Application = new Application.Application(_logger);
+            Application = new Domain.Engine.Application(_logger);
             Application.AnimationCompleted += (s, e) =>
             {
                 // If the outcome is the name of another scene then switch to that scene
