@@ -2,7 +2,7 @@
 
 namespace Simulator.Domain.Engine
 {
-    public class Engine
+    public class EngineCore
     {
         private abstract class PotentialEvent
         {
@@ -71,7 +71,7 @@ namespace Simulator.Domain.Engine
         public string Outcome { get; set; }
         public string PreviousScene { get; set; }
 
-        public Engine(
+        public EngineCore(
             ILogger logger)
         {
             _logger = logger;

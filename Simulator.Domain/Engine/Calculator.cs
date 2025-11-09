@@ -8,7 +8,7 @@ using Simulator.Domain.Boundaries.Interfaces;
 namespace Simulator.Domain.Engine
 {
     // Denne klasse er stateless. Den indeholder den matematik, der bruges til at fremskrive tilstanden for et fysisk system og
-    // bruges af Engine-klassen, som i øvrigt er den, der holder staten
+    // bruges af EngineCore-klassen, som i øvrigt er den, der holder staten
     public static class Calculator
     {
         private enum StateEvent
@@ -33,7 +33,7 @@ namespace Simulator.Domain.Engine
 
             if (scene == null)
             {
-                throw new InvalidOperationException("Please set a scene before calling Engine.PropagateState");
+                throw new InvalidOperationException("Please set a scene before calling EngineCore.PropagateState");
             }
 
             boundaryCollisionReports = new List<BoundaryCollisionReport>();

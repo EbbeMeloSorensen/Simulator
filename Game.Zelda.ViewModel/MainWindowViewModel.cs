@@ -65,7 +65,7 @@ namespace Game.Zelda.ViewModel
 
             UnlockedLevelsViewModel.LevelSelected += (s, e) =>
             {
-                SwitchState(Bonnet.Engine, e.Level.Name);
+                SwitchState(Bonnet.EngineCore, e.Level.Name);
             };
 
             CollisionBetweenBodyAndBoundaryOccuredCallBack collisionBetweenBodyAndBoundaryOccuredCallBack = body =>
@@ -258,11 +258,11 @@ namespace Game.Zelda.ViewModel
                 if (ApplicationState.Object == welcomeScreen &&
                     ExitsFromCurrentApplicationState().Contains("Unlocked Levels Screen"))
                 {
-                    SwitchState(Bonnet.Engine, "Unlocked Levels Screen");
+                    SwitchState(Bonnet.EngineCore, "Unlocked Levels Screen");
                 }
                 else
                 {
-                    SwitchState(Bonnet.Engine);
+                    SwitchState(Bonnet.EngineCore);
                 }
             };
 
@@ -308,7 +308,7 @@ namespace Game.Zelda.ViewModel
 
             Bonnet.AnimationCompleted += (s, e) =>
             {
-                SwitchState(Bonnet.Engine, Bonnet.Engine.Outcome);
+                SwitchState(Bonnet.EngineCore, Bonnet.EngineCore.Outcome);
 
                 UnlockLevels(ApplicationState.Object);
             };

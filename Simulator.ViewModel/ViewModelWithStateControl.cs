@@ -44,12 +44,12 @@ namespace Simulator.ViewModel
         }
 
         public void SwitchState(
-            Engine engine,
+            EngineCore engineCore,
             string name = null)
         {
-            if (engine.Scene != null)
+            if (engineCore.Scene != null)
             {
-                engine.PreviousScene = engine.Scene.Name;
+                engineCore.PreviousScene = engineCore.Scene.Name;
             }
 
             PreviousState = _stateMachine.CurrentState;

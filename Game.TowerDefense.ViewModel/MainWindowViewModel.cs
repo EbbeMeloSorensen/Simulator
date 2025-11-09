@@ -105,7 +105,7 @@ namespace Game.TowerDefense.ViewModel
 
             UnlockedLevelsViewModel.LevelSelected += (s, e) =>
             {
-                SwitchState(Bonnet.Engine, e.Level.Name);
+                SwitchState(Bonnet.EngineCore, e.Level.Name);
             };
 
             CollisionBetweenBodyAndBoundaryOccuredCallBack collisionBetweenBodyAndBoundaryOccuredCallBack = body =>
@@ -274,11 +274,11 @@ namespace Game.TowerDefense.ViewModel
                 if (ApplicationState.Object == welcomeScreen &&
                     ExitsFromCurrentApplicationState().Contains("Unlocked Levels Screen"))
                 {
-                    SwitchState(Bonnet.Engine, "Unlocked Levels Screen");
+                    SwitchState(Bonnet.EngineCore, "Unlocked Levels Screen");
                 }
                 else
                 {
-                    SwitchState(Bonnet.Engine);
+                    SwitchState(Bonnet.EngineCore);
                 }
             };
 
@@ -324,7 +324,7 @@ namespace Game.TowerDefense.ViewModel
 
             Bonnet.AnimationCompleted += (s, e) =>
             {
-                SwitchState(Bonnet.Engine, Bonnet.Engine.Outcome);
+                SwitchState(Bonnet.EngineCore, Bonnet.EngineCore.Outcome);
 
                 UnlockLevels(ApplicationState.Object);
             };

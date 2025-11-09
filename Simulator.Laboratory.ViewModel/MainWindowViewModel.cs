@@ -107,15 +107,15 @@ namespace Simulator.Laboratory.ViewModel
             Application.AnimationCompleted += (s, e) =>
             {
                 // If the outcome is the name of another scene then switch to that scene
-                if (SceneListViewModel.ContainsScene(Application.Engine.Outcome))
+                if (SceneListViewModel.ContainsScene(Application.EngineCore.Outcome))
                 {
-                    Application.Engine.PreviousScene = Application.Engine.Scene.Name;
-                    SceneListViewModel.ActiveScene = SceneListViewModel.GetScene(Application.Engine.Outcome);
+                    Application.EngineCore.PreviousScene = Application.EngineCore.Scene.Name;
+                    SceneListViewModel.ActiveScene = SceneListViewModel.GetScene(Application.EngineCore.Outcome);
                     StartOrResumeAnimationCommand.Execute(null);
                 }
                 else
                 {
-                    Outcome = Application.Engine.Outcome;
+                    Outcome = Application.EngineCore.Outcome;
                 }
 
                 RefreshButtons();

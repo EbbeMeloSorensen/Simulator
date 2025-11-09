@@ -35,7 +35,7 @@ namespace Simulator.ViewModel
             set
             {
                 _activeScene = value;
-                _application.Engine.Scene = value;
+                _application.EngineCore.Scene = value;
 
                 Reset(); // Dette gør, at:
                          // - Enginen resettes
@@ -134,7 +134,7 @@ namespace Simulator.ViewModel
             Reset();
             PrepareAnimation();
 
-            var scene = _application.Engine.Scene;
+            var scene = _application.EngineCore.Scene;
 
             _geometryEditorViewModel.InitializeWorldWindow(
                 scene.InitialWorldWindowFocus(),
@@ -144,7 +144,7 @@ namespace Simulator.ViewModel
 
         private void PrepareAnimation()
         {
-            var scene = _application.Engine.Scene;
+            var scene = _application.EngineCore.Scene;
 
             _geometryEditorViewModel.WorldWindowUpperLeftLimit = new Point(
                 scene.WorldWindowUpperLeftLimit.X,
@@ -162,7 +162,7 @@ namespace Simulator.ViewModel
 
             var lineThickness = 1;
 
-            _application.Engine.Scene.Boundaries.ForEach(b =>
+            _application.EngineCore.Scene.Boundaries.ForEach(b =>
             {
                 if (!b.Visible) return;
 
@@ -234,7 +234,7 @@ namespace Simulator.ViewModel
                 }
             });
 
-            _application.Engine.Scene.Props.ForEach(p =>
+            _application.EngineCore.Scene.Props.ForEach(p =>
             {
                 switch (p)
                 {
@@ -279,9 +279,9 @@ namespace Simulator.ViewModel
                 }
             });
 
-            _propIds = _application.Engine.Scene.Props.Select(p => p.Id).ToArray();
+            _propIds = _application.EngineCore.Scene.Props.Select(p => p.Id).ToArray();
 
-            var initialState = _application.Engine.SpawnNewThread();
+            var initialState = _application.EngineCore.SpawnNewThread();
             //RepositionWorldWindowIfRequired(initialState); // Vær opmærksom på den her i arbejdet med at slide World Window
             UpdateCurrentState(initialState);
         }
@@ -309,7 +309,7 @@ namespace Simulator.ViewModel
         private void RepositionWorldWindowIfRequired(
             State state)
         {
-            switch (_application.Engine.Scene.ViewMode)
+            switch (_application.EngineCore.Scene.ViewMode)
             {
                 case SceneViewMode.FocusOnCenterOfMass:
                     var centerOfMass = state.CenterOfMass();
@@ -331,10 +331,10 @@ namespace Simulator.ViewModel
                     {
                         _geometryEditorViewModel.AdjustWorldWindowSoPointLiesInCentralSquare(
                             centerOfInitialBody2.AsPointD(),
-                            _application.Engine.Scene.MaxOffsetXFraction,
-                            _application.Engine.Scene.MaxOffsetYFraction,
-                            _application.Engine.Scene.CorrectionXFraction,
-                            _application.Engine.Scene.CorrectionYFraction);
+                            _application.EngineCore.Scene.MaxOffsetXFraction,
+                            _application.EngineCore.Scene.MaxOffsetYFraction,
+                            _application.EngineCore.Scene.CorrectionXFraction,
+                            _application.EngineCore.Scene.CorrectionYFraction);
                     }
                     break;
                 case SceneViewMode.Stationary:

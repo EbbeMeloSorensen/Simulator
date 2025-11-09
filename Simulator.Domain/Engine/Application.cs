@@ -21,7 +21,7 @@ namespace Simulator.Domain.Engine
 
         private ILogger _logger;
 
-        public Engine Engine { get; }
+        public EngineCore EngineCore { get; }
         public Stopwatch Stopwatch { get; }
         public KeyboardState KeyboardState { get; }
         public KeyboardState KeyboardEvents { get; }
@@ -37,9 +37,9 @@ namespace Simulator.Domain.Engine
 
         public CurrentStateChangedCallback CurrentStateChangedCallback { get; set; }
 
-        public bool CanStartOrResumeAnimation => Engine.Scene != null && !AnimationRunning && !AnimationComplete;
+        public bool CanStartOrResumeAnimation => EngineCore.Scene != null && !AnimationRunning && !AnimationComplete;
 
-        public bool CanPauseAnimation => Engine.Scene != null && AnimationRunning;
+        public bool CanPauseAnimation => EngineCore.Scene != null && AnimationRunning;
 
         public bool CanResetAnimation => AnimationLaunched;
 
@@ -54,7 +54,7 @@ namespace Simulator.Domain.Engine
             KeyboardState = new KeyboardState();
             KeyboardEvents = new KeyboardState();
 
-            Engine = new Engine(logger);
+            EngineCore = new EngineCore(logger);
             Stopwatch = new Stopwatch();
         }
 
@@ -111,7 +111,7 @@ namespace Simulator.Domain.Engine
 
         public void HandleClosing()
         {
-            Engine.Reset();
+            EngineCore.Reset();
         }
 
         private void StopAnimation()
@@ -135,7 +135,7 @@ namespace Simulator.Domain.Engine
                 return;
             }
 
-            if (Engine.Scene == null)
+            if (EngineCore.Scene == null)
             {
                 // Dette er en påmindelse om at man skal huske at give enginen en scene før man starter enginen
                 throw new InvalidOperationException("Scene Required when refreshing view for a running animation");
@@ -143,7 +143,7 @@ namespace Simulator.Domain.Engine
 
             if (Stopwatch.IsRunning)
             {
-                // Try consuming a state from the queue of the engine
+                // Try consuming a state from the queue of the engineCore
 
                 LastIndexRequested = DetermineCurrentIndex(out var secondsElapsed);
                 IndexDifference = LastIndexRequested - LastIndexConsumed;
@@ -160,7 +160,7 @@ namespace Simulator.Domain.Engine
                     return;
                 }
 
-                var currentState = Engine.TryGetState(
+                var currentState = EngineCore.TryGetState(
                     LastIndexRequested,
                     KeyboardState,
                     KeyboardEvents,
@@ -184,7 +184,7 @@ namespace Simulator.Domain.Engine
                     if (LastIndexConsumed < LastIndexRequested)
                     {
                         message += " (final state)";
-                        Engine.Reset();
+                        EngineCore.Reset();
                         StopAnimation();
                     }
 
@@ -205,7 +205,7 @@ namespace Simulator.Domain.Engine
             {
                 FrameSkipCount++;
 
-                if (!Engine.IsLeadSufficientlyLargeForResumingAnimation(LastIndexRequested)) return;
+                if (!EngineCore.IsLeadSufficientlyLargeForResumingAnimation(LastIndexRequested)) return;
 
                 _logger?.WriteLine(LogMessageCategory.Debug, "  Main thread: Resuming state consumption", "state_sequence");
                 Stopwatch.Start();
@@ -214,7 +214,7 @@ namespace Simulator.Domain.Engine
 
         public void ResetEngine()
         {
-            Engine.Reset();
+            EngineCore.Reset();
             Stopwatch.Reset();
             TimeElapsedAtLastRefresh = 0.0;
             AnimationLaunched = false;
@@ -233,10 +233,10 @@ namespace Simulator.Domain.Engine
             secondsElapsed = 0.001 * Stopwatch.Elapsed.TotalMilliseconds;
 
             // Hvor lang tid svarer det til i den verden, der gælder for animationen?
-            var secondsElapsedInScene = secondsElapsed * Engine.Scene.TimeFactor;
+            var secondsElapsedInScene = secondsElapsed * EngineCore.Scene.TimeFactor;
 
             // Det skal vi så omregne til et index, og det skal vi bruge deltaT for scenen til
-            return (int)Math.Round(secondsElapsedInScene / Engine.Scene.DeltaT);
+            return (int)Math.Round(secondsElapsedInScene / EngineCore.Scene.DeltaT);
         }
 
         private void OnKeyEventOccured(

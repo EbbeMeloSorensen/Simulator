@@ -52,7 +52,7 @@ namespace Game.FlappyBird.ViewModel
             Application = new Application(_logger);
             Application.AnimationCompleted += (s, e) =>
             {
-                Outcome = Application.Engine.Outcome;
+                Outcome = Application.EngineCore.Outcome;
                 RefreshButtons();
             };
 
