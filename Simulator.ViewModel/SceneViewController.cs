@@ -21,7 +21,7 @@ namespace Simulator.ViewModel
         BodyState bodyState);
 
     // Denne klasse observerer current scene udstillet af application laget og vedligeholder GeometryEditorViewModel
-    public class SceneViewManager
+    public class SceneViewController
     {
         private Domain.Engine.Engine _engine;
         private Scene _activeScene;
@@ -52,7 +52,7 @@ namespace Simulator.ViewModel
                 // Du kunne også bare sige, at det at flytte WorldWindow så at sige er en del af animationen - den må bare ikke begynde
                 // at consume states før vinduet er placeret. Faktisk så må den ikke begynde StopWatch, før vinduet er placeret
 
-                // Man kunne også lade SceneViewManager publicere et event om at animationen er klargjort, hvilket så også gerne skunne indebære,
+                // Man kunne også lade SceneViewController publicere et event om at animationen er klargjort, hvilket så også gerne skunne indebære,
                 // at World Window er placeret..
 
                 // Den skal fortælle GeometryEditoren, at den skal slide hen til en given placering, og når den så er der, skal den rejse et event over for
@@ -66,7 +66,7 @@ namespace Simulator.ViewModel
 
         public ShapeUpdateCallback ShapeUpdateCallback { get; set; }
 
-        public SceneViewManager(
+        public SceneViewController(
             Domain.Engine.Engine engine,
             GeometryEditorViewModel geometryEditorViewModel,
             ShapeSelectorCallback shapeSelectorCallback = null,

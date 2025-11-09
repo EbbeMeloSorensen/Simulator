@@ -36,7 +36,7 @@ namespace Simulator.Laboratory.ViewModel
         private Dictionary<Scene, ShapeUpdateCallback> _shapeUpdateCallbacks;
 
         private ILogger _logger;
-        private SceneViewManager _sceneViewManager;
+        private SceneViewController _sceneViewController;
         private string _outcome;
         private string _aux1;
         private string _aux2;
@@ -135,7 +135,7 @@ namespace Simulator.Laboratory.ViewModel
                     e.CursorWorldPosition.Y));
             };
 
-            _sceneViewManager = new SceneViewManager(Engine, GeometryEditorViewModel);
+            _sceneViewController = new SceneViewController(Engine, GeometryEditorViewModel);
 
             SceneListViewModel = new SceneListViewModel();
             SceneListViewModel.SelectedScene.PropertyChanged += SelectedScene_PropertyChanged;
@@ -456,24 +456,24 @@ namespace Simulator.Laboratory.ViewModel
             {
                 if (_shapeSelectorCallbacks.TryGetValue(scene, out ShapeSelectorCallback shapeSelectorCallback))
                 {
-                    _sceneViewManager.ShapeSelectorCallback = shapeSelectorCallback;
+                    _sceneViewController.ShapeSelectorCallback = shapeSelectorCallback;
                 }
                 else
                 {
-                    _sceneViewManager.SetShapeSelectorCallbackToDefault();
+                    _sceneViewController.SetShapeSelectorCallbackToDefault();
                 }
 
                 if (_shapeUpdateCallbacks.TryGetValue(scene, out ShapeUpdateCallback shapeUpdateCallback))
                 {
-                    _sceneViewManager.ShapeUpdateCallback = shapeUpdateCallback;
+                    _sceneViewController.ShapeUpdateCallback = shapeUpdateCallback;
                 }
                 else
                 {
-                    _sceneViewManager.SetShapeUpdateCallbackToDefault();
+                    _sceneViewController.SetShapeUpdateCallbackToDefault();
                 }
             }
 
-            _sceneViewManager.ActiveScene = scene;
+            _sceneViewController.ActiveScene = scene;
 
             GeometryEditorViewModel.InitializeWorldWindow(
                 scene.InitialWorldWindowFocus(),
@@ -498,7 +498,7 @@ namespace Simulator.Laboratory.ViewModel
 
         private void ResetAnimation()
         {
-            _sceneViewManager.ResetScene();
+            _sceneViewController.ResetScene();
             RefreshButtons();
             Outcome = null;
         }

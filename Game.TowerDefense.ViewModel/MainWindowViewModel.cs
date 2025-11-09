@@ -44,7 +44,7 @@ namespace Game.TowerDefense.ViewModel
         const double _enemySpeed = 0.5;
 
         private ILogger _logger;
-        private SceneViewManager _sceneViewManager;
+        private SceneViewController _sceneViewController;
         private bool _geometryEditorVisible = true;
         private Vector2D _worldWindowTranslation;
         private Stopwatch _stopwatch;
@@ -311,13 +311,13 @@ namespace Game.TowerDefense.ViewModel
                     }
 
                     // Dette kald udvirker, at WorldWindow bliver sat
-                    _sceneViewManager.ActiveScene = level.Scene;
+                    _sceneViewController.ActiveScene = level.Scene;
                 }
                 else
                 {
                     if (ApplicationState.Object == welcomeScreen)
                     {
-                        _sceneViewManager.ActiveScene = null;
+                        _sceneViewController.ActiveScene = null;
                     }
                 }
             };
@@ -348,7 +348,7 @@ namespace Game.TowerDefense.ViewModel
                     e.CursorWorldPosition.Y));
             };
 
-            _sceneViewManager = new SceneViewManager(
+            _sceneViewController = new SceneViewController(
                 Bonnet,
                 GeometryEditorViewModel,
                 shapeSelectorCallback,  
@@ -363,7 +363,7 @@ namespace Game.TowerDefense.ViewModel
             }
             else
             {
-                if (_sceneViewManager.ActiveScene != null)
+                if (_sceneViewController.ActiveScene != null)
                 {
                     if (_stopwatch.IsRunning)
                     {
@@ -371,12 +371,12 @@ namespace Game.TowerDefense.ViewModel
                         var fraction = Math.Max(0.0, 1.0 - _stopwatch.Elapsed.TotalSeconds / slideDuration);
 
                         var wwFocus = new Point(
-                            _sceneViewManager.ActiveScene.InitialWorldWindowFocus().X - _worldWindowTranslation.X * fraction,
-                            _sceneViewManager.ActiveScene.InitialWorldWindowFocus().Y - _worldWindowTranslation.Y * fraction);
+                            _sceneViewController.ActiveScene.InitialWorldWindowFocus().X - _worldWindowTranslation.X * fraction,
+                            _sceneViewController.ActiveScene.InitialWorldWindowFocus().Y - _worldWindowTranslation.Y * fraction);
 
                         GeometryEditorViewModel.InitializeWorldWindow(
                             wwFocus,
-                            _sceneViewManager.ActiveScene.InitialWorldWindowSize(),
+                            _sceneViewController.ActiveScene.InitialWorldWindowSize(),
                             false);
 
                         if (fraction > 0.0) return;

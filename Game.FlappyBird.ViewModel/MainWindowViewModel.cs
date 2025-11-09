@@ -16,7 +16,7 @@ namespace Game.FlappyBird.ViewModel
     public class MainWindowViewModel : ViewModelBase
     {
         private ILogger _logger;
-        private SceneViewManager _sceneViewManager;
+        private SceneViewController _sceneViewController;
         private string _outcome;
 
         public Engine Engine { get; }
@@ -62,7 +62,7 @@ namespace Game.FlappyBird.ViewModel
                 UpdateModelCallBack = Engine.UpdateModel
             };
 
-            _sceneViewManager = new SceneViewManager(Engine, GeometryEditorViewModel);
+            _sceneViewController = new SceneViewController(Engine, GeometryEditorViewModel);
 
             var scene = GenerateScene();
 
@@ -71,12 +71,12 @@ namespace Game.FlappyBird.ViewModel
                 scene.InitialWorldWindowSize(),
                 false);
 
-            _sceneViewManager.ActiveScene = scene;
+            _sceneViewController.ActiveScene = scene;
         }
 
         public void HandleLoaded()
         {
-            _sceneViewManager.ResetScene();
+            _sceneViewController.ResetScene();
         }
 
         private void StartOrResumeAnimation()
@@ -87,7 +87,7 @@ namespace Game.FlappyBird.ViewModel
 
         private void ResetAnimation()
         {
-            _sceneViewManager.ResetScene();
+            _sceneViewController.ResetScene();
             RefreshButtons();
             Outcome = null;
         }

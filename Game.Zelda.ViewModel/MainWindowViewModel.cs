@@ -26,7 +26,7 @@ namespace Game.Zelda.ViewModel
         private static bool _boundariesVisible = false; // Set to true to inspect boundaries
 
         private ILogger _logger;
-        private SceneViewManager _sceneViewManager;
+        private SceneViewController _sceneViewController;
         private bool _geometryEditorVisible = true;
         private Vector2D _worldWindowTranslation;
         private Stopwatch _stopwatch;
@@ -295,13 +295,13 @@ namespace Game.Zelda.ViewModel
                     }
 
                     // Dette kald udvirker, at WorldWindow bliver sat
-                    _sceneViewManager.ActiveScene = level.Scene;
+                    _sceneViewController.ActiveScene = level.Scene;
                 }
                 else
                 {
                     if (ApplicationState.Object == welcomeScreen)
                     {
-                        _sceneViewManager.ActiveScene = null;
+                        _sceneViewController.ActiveScene = null;
                     }
                 }
             };
@@ -322,7 +322,7 @@ namespace Game.Zelda.ViewModel
                 UpdateModelCallBack = UpdateModel
             };
 
-            _sceneViewManager = new SceneViewManager(
+            _sceneViewController = new SceneViewController(
                 Bonnet,
                 GeometryEditorViewModel,
                 (bs) =>
@@ -353,7 +353,7 @@ namespace Game.Zelda.ViewModel
             }
             else
             {
-                if (_sceneViewManager.ActiveScene != null)
+                if (_sceneViewController.ActiveScene != null)
                 {
                     if (_stopwatch.IsRunning)
                     {
@@ -361,12 +361,12 @@ namespace Game.Zelda.ViewModel
                         var fraction = Math.Max(0.0, 1.0 - _stopwatch.Elapsed.TotalSeconds / slideDuration);
 
                         var wwFocus = new Point(
-                            _sceneViewManager.ActiveScene.InitialWorldWindowFocus().X - _worldWindowTranslation.X * fraction,
-                            _sceneViewManager.ActiveScene.InitialWorldWindowFocus().Y - _worldWindowTranslation.Y * fraction);
+                            _sceneViewController.ActiveScene.InitialWorldWindowFocus().X - _worldWindowTranslation.X * fraction,
+                            _sceneViewController.ActiveScene.InitialWorldWindowFocus().Y - _worldWindowTranslation.Y * fraction);
 
                         GeometryEditorViewModel.InitializeWorldWindow(
                             wwFocus,
-                            _sceneViewManager.ActiveScene.InitialWorldWindowSize(),
+                            _sceneViewController.ActiveScene.InitialWorldWindowSize(),
                             false);
 
                         if (fraction > 0.0) return;

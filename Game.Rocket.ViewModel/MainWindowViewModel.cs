@@ -23,7 +23,7 @@ namespace Game.Rocket.ViewModel
         private const int _initialMagnification = 240;
 
         private ILogger _logger;   
-        private SceneViewManager _sceneViewManager;
+        private SceneViewController _sceneViewController;
         private bool _rocketIgnited;
         private bool _geometryEditorVisible = true;
 
@@ -501,7 +501,7 @@ namespace Game.Rocket.ViewModel
                 if (ApplicationState.Object is Level level)
                 {
                     // Dette kald udvirker, at WorldWindow bliver sat
-                    _sceneViewManager.ActiveScene = level.Scene;
+                    _sceneViewController.ActiveScene = level.Scene;
 
                     // Prøv lige at override her
                     var x0 = -1.9 - 0.3;
@@ -525,7 +525,7 @@ namespace Game.Rocket.ViewModel
                 {
                     if (ApplicationState.Object == welcomeScreen)
                     {
-                        _sceneViewManager.ActiveScene = null;
+                        _sceneViewController.ActiveScene = null;
                     }
                 }
             };
@@ -546,7 +546,7 @@ namespace Game.Rocket.ViewModel
                 UpdateModelCallBack = Bonnet.UpdateModel
             };
 
-            _sceneViewManager = new SceneViewManager(
+            _sceneViewController = new SceneViewController(
                 Bonnet, 
                 GeometryEditorViewModel, 
                 (bs) =>
