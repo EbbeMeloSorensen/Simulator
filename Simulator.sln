@@ -41,6 +41,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.DarkAlliance.ViewModel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.DarkAlliance.UI.WPF", "Game.DarkAlliance.UI.WPF\Game.DarkAlliance.UI.WPF.csproj", "{A3660A6D-47B4-405D-ACF0-D339604B49D0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Simple.ViewModel", "Game.Simple.ViewModel\Game.Simple.ViewModel.csproj", "{7F0B0BDD-1417-4155-B91A-4373AAF7E3B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Simple.UI.WPF", "Game.Simple.UI.WPF\Game.Simple.UI.WPF.csproj", "{D938B260-7270-4CB2-B6EE-4F586A7F9F2F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +115,14 @@ Global
 		{A3660A6D-47B4-405D-ACF0-D339604B49D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3660A6D-47B4-405D-ACF0-D339604B49D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3660A6D-47B4-405D-ACF0-D339604B49D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F0B0BDD-1417-4155-B91A-4373AAF7E3B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F0B0BDD-1417-4155-B91A-4373AAF7E3B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F0B0BDD-1417-4155-B91A-4373AAF7E3B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F0B0BDD-1417-4155-B91A-4373AAF7E3B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D938B260-7270-4CB2-B6EE-4F586A7F9F2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D938B260-7270-4CB2-B6EE-4F586A7F9F2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D938B260-7270-4CB2-B6EE-4F586A7F9F2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D938B260-7270-4CB2-B6EE-4F586A7F9F2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
