@@ -19,7 +19,7 @@ namespace Game.FlappyBird.ViewModel
         private SceneViewManager _sceneViewManager;
         private string _outcome;
 
-        public Application Application { get; }
+        public Engine Engine { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
 
         private RelayCommand _startOrResumeAnimationCommand;
@@ -49,20 +49,20 @@ namespace Game.FlappyBird.ViewModel
             _logger = logger;
             _logger = null; // Disable logging (it should only be used for debugging purposes)
 
-            Application = new Application(_logger);
-            Application.AnimationCompleted += (s, e) =>
+            Engine = new Engine(_logger);
+            Engine.AnimationCompleted += (s, e) =>
             {
-                Outcome = Application.EngineCore.Outcome;
+                Outcome = Engine.EngineCore.Outcome;
                 RefreshButtons();
             };
 
             // Bemærk: Det er et ALMINDELIGT view og altså ikke et "matematisk"
             GeometryEditorViewModel = new GeometryEditorViewModel(1)
             {
-                UpdateModelCallBack = Application.UpdateModel
+                UpdateModelCallBack = Engine.UpdateModel
             };
 
-            _sceneViewManager = new SceneViewManager(Application, GeometryEditorViewModel);
+            _sceneViewManager = new SceneViewManager(Engine, GeometryEditorViewModel);
 
             var scene = GenerateScene();
 
@@ -81,7 +81,7 @@ namespace Game.FlappyBird.ViewModel
 
         private void StartOrResumeAnimation()
         {
-            Application.StartOrResumeAnimation();
+            Engine.StartOrResumeAnimation();
             RefreshButtons();
         }
 
@@ -94,12 +94,12 @@ namespace Game.FlappyBird.ViewModel
 
         private bool CanStartOrResumeAnimation()
         {
-            return Application.CanStartOrResumeAnimation;
+            return Engine.CanStartOrResumeAnimation;
         }
 
         private bool CanResetAnimation()
         {
-            return Application.CanResetAnimation;
+            return Engine.CanResetAnimation;
         }
 
         private void RefreshButtons()

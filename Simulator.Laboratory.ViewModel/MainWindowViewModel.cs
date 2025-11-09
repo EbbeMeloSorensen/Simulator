@@ -41,7 +41,7 @@ namespace Simulator.Laboratory.ViewModel
         private string _aux1;
         private string _aux2;
 
-        public Domain.Engine.Application Application { get; }
+        public Domain.Engine.Engine Engine { get; }
         public SceneListViewModel SceneListViewModel { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
 
@@ -103,19 +103,19 @@ namespace Simulator.Laboratory.ViewModel
 
             Outcome = null;
 
-            Application = new Domain.Engine.Application(_logger);
-            Application.AnimationCompleted += (s, e) =>
+            Engine = new Domain.Engine.Engine(_logger);
+            Engine.AnimationCompleted += (s, e) =>
             {
                 // If the outcome is the name of another scene then switch to that scene
-                if (SceneListViewModel.ContainsScene(Application.EngineCore.Outcome))
+                if (SceneListViewModel.ContainsScene(Engine.EngineCore.Outcome))
                 {
-                    Application.EngineCore.PreviousScene = Application.EngineCore.Scene.Name;
-                    SceneListViewModel.ActiveScene = SceneListViewModel.GetScene(Application.EngineCore.Outcome);
+                    Engine.EngineCore.PreviousScene = Engine.EngineCore.Scene.Name;
+                    SceneListViewModel.ActiveScene = SceneListViewModel.GetScene(Engine.EngineCore.Outcome);
                     StartOrResumeAnimationCommand.Execute(null);
                 }
                 else
                 {
-                    Outcome = Application.EngineCore.Outcome;
+                    Outcome = Engine.EngineCore.Outcome;
                 }
 
                 RefreshButtons();
@@ -125,17 +125,17 @@ namespace Simulator.Laboratory.ViewModel
             GeometryEditorViewModel = new GeometryEditorViewModel(1)
             {
                 AspectRatioLocked = true,
-                UpdateModelCallBack = Application.UpdateModel
+                UpdateModelCallBack = Engine.UpdateModel
             };
 
             GeometryEditorViewModel.MouseClickOccured += (s, e) =>
             {
-                Application.HandleMouseClickEvent(new Point2D(
+                Engine.HandleMouseClickEvent(new Point2D(
                     e.CursorWorldPosition.X,
                     e.CursorWorldPosition.Y));
             };
 
-            _sceneViewManager = new SceneViewManager(Application, GeometryEditorViewModel);
+            _sceneViewManager = new SceneViewManager(Engine, GeometryEditorViewModel);
 
             SceneListViewModel = new SceneListViewModel();
             SceneListViewModel.SelectedScene.PropertyChanged += SelectedScene_PropertyChanged;
@@ -486,13 +486,13 @@ namespace Simulator.Laboratory.ViewModel
 
         private void StartOrResumeAnimation()
         {
-            Application.StartOrResumeAnimation();
+            Engine.StartOrResumeAnimation();
             RefreshButtons();
         }
 
         private void PauseAnimation()
         {
-            Application.PauseAnimation();
+            Engine.PauseAnimation();
             RefreshButtons();
         }
 
@@ -505,17 +505,17 @@ namespace Simulator.Laboratory.ViewModel
 
         private bool CanStartOrResumeAnimation()
         {
-            return Application.CanStartOrResumeAnimation;
+            return Engine.CanStartOrResumeAnimation;
         }
 
         private bool CanPauseAnimation()
         {
-            return Application.CanPauseAnimation;
+            return Engine.CanPauseAnimation;
         }
 
         private bool CanResetAnimation()
         {
-            return Application.CanResetAnimation;
+            return Engine.CanResetAnimation;
         }
 
         private void RefreshButtons()

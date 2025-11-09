@@ -23,7 +23,7 @@ namespace Simulator.ViewModel
     // Denne klasse observerer current scene udstillet af application laget og vedligeholder GeometryEditorViewModel
     public class SceneViewManager
     {
-        private Domain.Engine.Application _application;
+        private Domain.Engine.Engine _engine;
         private Scene _activeScene;
         private GeometryEditorViewModel _geometryEditorViewModel;
         private int[] _propIds;
@@ -35,7 +35,7 @@ namespace Simulator.ViewModel
             set
             {
                 _activeScene = value;
-                _application.EngineCore.Scene = value;
+                _engine.EngineCore.Scene = value;
 
                 Reset(); // Dette gør, at:
                          // - Enginen resettes
@@ -67,15 +67,15 @@ namespace Simulator.ViewModel
         public ShapeUpdateCallback ShapeUpdateCallback { get; set; }
 
         public SceneViewManager(
-            Domain.Engine.Application application,
+            Domain.Engine.Engine engine,
             GeometryEditorViewModel geometryEditorViewModel,
             ShapeSelectorCallback shapeSelectorCallback = null,
             ShapeUpdateCallback shapeUpdateCallback = null)
         {
-            _application = application;
+            _engine = engine;
             _geometryEditorViewModel = geometryEditorViewModel;
 
-            _application.CurrentStateChangedCallback = UpdateScene;
+            _engine.CurrentStateChangedCallback = UpdateScene;
 
             ShapeSelectorCallback = shapeSelectorCallback;
             ShapeUpdateCallback = shapeUpdateCallback;
@@ -134,7 +134,7 @@ namespace Simulator.ViewModel
             Reset();
             PrepareAnimation();
 
-            var scene = _application.EngineCore.Scene;
+            var scene = _engine.EngineCore.Scene;
 
             _geometryEditorViewModel.InitializeWorldWindow(
                 scene.InitialWorldWindowFocus(),
@@ -144,7 +144,7 @@ namespace Simulator.ViewModel
 
         private void PrepareAnimation()
         {
-            var scene = _application.EngineCore.Scene;
+            var scene = _engine.EngineCore.Scene;
 
             _geometryEditorViewModel.WorldWindowUpperLeftLimit = new Point(
                 scene.WorldWindowUpperLeftLimit.X,
@@ -162,7 +162,7 @@ namespace Simulator.ViewModel
 
             var lineThickness = 1;
 
-            _application.EngineCore.Scene.Boundaries.ForEach(b =>
+            _engine.EngineCore.Scene.Boundaries.ForEach(b =>
             {
                 if (!b.Visible) return;
 
@@ -234,7 +234,7 @@ namespace Simulator.ViewModel
                 }
             });
 
-            _application.EngineCore.Scene.Props.ForEach(p =>
+            _engine.EngineCore.Scene.Props.ForEach(p =>
             {
                 switch (p)
                 {
@@ -279,16 +279,16 @@ namespace Simulator.ViewModel
                 }
             });
 
-            _propIds = _application.EngineCore.Scene.Props.Select(p => p.Id).ToArray();
+            _propIds = _engine.EngineCore.Scene.Props.Select(p => p.Id).ToArray();
 
-            var initialState = _application.EngineCore.SpawnNewThread();
+            var initialState = _engine.EngineCore.SpawnNewThread();
             //RepositionWorldWindowIfRequired(initialState); // Vær opmærksom på den her i arbejdet med at slide World Window
             UpdateCurrentState(initialState);
         }
 
         private void Reset()
         {
-            _application.ResetEngine();
+            _engine.ResetEngine();
             ClearCurrentScene();
         }
 
@@ -309,7 +309,7 @@ namespace Simulator.ViewModel
         private void RepositionWorldWindowIfRequired(
             State state)
         {
-            switch (_application.EngineCore.Scene.ViewMode)
+            switch (_engine.EngineCore.Scene.ViewMode)
             {
                 case SceneViewMode.FocusOnCenterOfMass:
                     var centerOfMass = state.CenterOfMass();
@@ -331,10 +331,10 @@ namespace Simulator.ViewModel
                     {
                         _geometryEditorViewModel.AdjustWorldWindowSoPointLiesInCentralSquare(
                             centerOfInitialBody2.AsPointD(),
-                            _application.EngineCore.Scene.MaxOffsetXFraction,
-                            _application.EngineCore.Scene.MaxOffsetYFraction,
-                            _application.EngineCore.Scene.CorrectionXFraction,
-                            _application.EngineCore.Scene.CorrectionYFraction);
+                            _engine.EngineCore.Scene.MaxOffsetXFraction,
+                            _engine.EngineCore.Scene.MaxOffsetYFraction,
+                            _engine.EngineCore.Scene.CorrectionXFraction,
+                            _engine.EngineCore.Scene.CorrectionYFraction);
                     }
                     break;
                 case SceneViewMode.Stationary:

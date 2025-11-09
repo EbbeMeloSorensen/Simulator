@@ -7,15 +7,15 @@ namespace Simulator.Domain.Engine
     public delegate void CurrentStateChangedCallback(
         Domain.State currentState);
 
-    // En Application HAR en StateMachine, som egentlig bare ER en graf
-    // En Application HAR desuden en observable ApplicationState
-    // Application objektets host kan spørge om, hvilke udveje der er fra den aktuelle state
+    // En Engine HAR en StateMachine, som egentlig bare ER en graf
+    // En Engine HAR desuden en observable ApplicationState
+    // Engine objektets host kan spørge om, hvilke udveje der er fra den aktuelle state
     // .. det bruges til at checke, om der er mulighed for at gå direkte til en unlocked level (der opereres med en dynamisk state model)
-    // Application objektets host kan bede om at skifte state til en navngiven applicationstate
-    // Application objektets host kan abonnere på applikationens state. Når den ændrer sig, udvirker det sædvanligvis, at scenen skifter eller skjules
+    // Engine objektets host kan bede om at skifte state til en navngiven applicationstate
+    // Engine objektets host kan abonnere på applikationens state. Når den ændrer sig, udvirker det sædvanligvis, at scenen skifter eller skjules
     // (Hvordan kan den ellers skfte?)
 
-    public class Application
+    public class Engine
     {
         public const double MinTimeBetweenRefresh = 0.005; // 5 milliseconds
 
@@ -46,7 +46,7 @@ namespace Simulator.Domain.Engine
         public event EventHandler<KeyEventArgs> KeyEventOccured;
         public event EventHandler AnimationCompleted;
 
-        public Application(
+        public Engine(
             ILogger logger)
         {
             _logger = logger;
@@ -172,7 +172,7 @@ namespace Simulator.Domain.Engine
                     // Her skal vi gerne kunne modtage en eller anden besked fra den høstede tilstand,
                     // såsom at spillet er tabt eller vundet, at der skal skiftes til en anden scene,
                     // eller at der skal ske et eller andet specielt.
-                    // Husk også på, at det skal være GENERELT, da Application jo deles mellem forskellige spil
+                    // Husk også på, at det skal være GENERELT, da Engine jo deles mellem forskellige spil
 
                     CurrentStateChangedCallback?.Invoke(currentState);
 

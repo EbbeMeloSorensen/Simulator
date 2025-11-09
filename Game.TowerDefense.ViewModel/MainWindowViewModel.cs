@@ -73,7 +73,7 @@ namespace Game.TowerDefense.ViewModel
             }
         }
 
-        public Simulator.Domain.Engine.Application Bonnet { get; }
+        public Simulator.Domain.Engine.Engine Bonnet { get; }
 
         public UnlockedLevelsViewModel UnlockedLevelsViewModel { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
@@ -231,7 +231,7 @@ namespace Game.TowerDefense.ViewModel
             var gameOver = new Craft.DataStructures.Graph.State("Game Over");
             var youWin = new Craft.DataStructures.Graph.State("You Win");
 
-            Bonnet = new Simulator.Domain.Engine.Application(_logger);
+            Bonnet = new Simulator.Domain.Engine.Engine(_logger);
 
             AddApplicationState(welcomeScreen);
             AddApplicationState(unlockedLevelsScreen);
