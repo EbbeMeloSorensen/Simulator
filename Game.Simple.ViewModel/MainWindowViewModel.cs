@@ -15,23 +15,10 @@ namespace Game.Simple.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private string _greeting;
         private ILogger _logger;
         private SceneViewController _sceneViewController;
 
         private RelayCommand _startOrResumeAnimationCommand;
-
-        public string Greeting
-        {
-            get => _greeting;
-            set
-            {
-                if (value == _greeting) return;
-
-                _greeting = value;
-                RaisePropertyChanged();
-            }
-        }
 
         public Engine Engine { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
@@ -42,8 +29,6 @@ namespace Game.Simple.ViewModel
         public MainWindowViewModel(
             ILogger logger)
         {
-            _greeting = "Hej fra Simple Game MainWindowViewModel";
-
             _logger = logger;
             _logger = null; // Disable logging (it should only be used for debugging purposes)
 
