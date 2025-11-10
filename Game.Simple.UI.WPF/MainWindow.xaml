@@ -13,7 +13,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Height="20" Content="{Binding Greeting}"/>
-        <scrollFree:GeometryEditorView Grid.Row="1"/>
+        <Button Grid.Row="0" Height="20"
+                Content="{Binding Greeting}"
+                Command="{Binding StartOrResumeAnimationCommand}"/>
+        <scrollFree:GeometryEditorView Grid.Row="1" DataContext="{Binding GeometryEditorViewModel}"/>
     </Grid>
 </Window>
