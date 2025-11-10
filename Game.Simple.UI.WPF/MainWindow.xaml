@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
         <Button Grid.Row="0" Height="20"
                 Content="Start animation"
-                Command="{Binding StartOrResumeAnimationCommand}"/>
+                Command="{Binding StartAnimationCommand}"/>
         <scrollFree:GeometryEditorView Grid.Row="1" DataContext="{Binding GeometryEditorViewModel}"/>
     </Grid>
 </Window>

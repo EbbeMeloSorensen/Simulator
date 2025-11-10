@@ -18,13 +18,13 @@ namespace Game.Simple.ViewModel
         private ILogger _logger;
         private SceneViewController _sceneViewController;
 
-        private RelayCommand _startOrResumeAnimationCommand;
+        private RelayCommand _startAnimationCommand;
 
         public Engine Engine { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
 
-        public RelayCommand StartOrResumeAnimationCommand =>
-            _startOrResumeAnimationCommand ??= new RelayCommand(StartOrResumeAnimation);
+        public RelayCommand StartAnimationCommand =>
+            _startAnimationCommand ??= new RelayCommand(StartAnimation);
 
         public MainWindowViewModel(
             ILogger logger)
@@ -54,9 +54,10 @@ namespace Game.Simple.ViewModel
         public void HandleLoaded()
         {
             _sceneViewController.ResetScene();
+            StartAnimation();
         }
 
-        private void StartOrResumeAnimation()
+        private void StartAnimation()
         {
             Engine.StartOrResumeAnimation();
         }
