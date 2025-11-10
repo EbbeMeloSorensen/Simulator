@@ -1,5 +1,6 @@
-﻿using System.Windows;
-using Game.Simple.ViewModel;
+﻿using Game.Simple.ViewModel;
+using System.ComponentModel;
+using System.Windows;
 
 namespace Game.Simple.UI.WPF
 {
@@ -20,6 +21,13 @@ namespace Game.Simple.UI.WPF
             RoutedEventArgs e)
         {
             ViewModel.HandleLoaded();
+        }
+
+        private void MainWindow_OnClosing(
+            object sender,
+            CancelEventArgs e)
+        {
+            ViewModel.Engine.HandleClosing();
         }
     }
 }

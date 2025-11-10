@@ -7,7 +7,9 @@
         xmlns:scrollFree="clr-namespace:Craft.UIElements.Geometry2D.ScrollFree;assembly=Craft.UIElements"
         mc:Ignorable="d"
         Title="Simple Game" Height="450" Width="800"
-        DataContext="{Binding Path=MainWindowViewModel, Source={StaticResource BootStrapper}}">
+        DataContext="{Binding Path=MainWindowViewModel, Source={StaticResource BootStrapper}}"
+        Loaded="MainWindow_OnLoaded"
+        Closing="MainWindow_OnClosing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
