@@ -1,13 +1,6 @@
-﻿using System.Text;
+﻿using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Game.DarkAlliance.ViewModel;
 
 namespace Game.DarkAlliance.UI.WPF
 {
@@ -16,9 +9,25 @@ namespace Game.DarkAlliance.UI.WPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainWindowViewModel ViewModel { get { return DataContext as MainWindowViewModel; } }
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void MainWindow_OnLoaded(
+            object sender,
+            RoutedEventArgs e)
+        {
+            ViewModel.HandleLoaded();
+        }
+
+        private void MainWindow_OnClosing(
+            object sender,
+            CancelEventArgs e)
+        {
+            ViewModel.Engine.HandleClosing();
         }
     }
 }

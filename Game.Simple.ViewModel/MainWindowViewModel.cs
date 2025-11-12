@@ -2,14 +2,12 @@ using Craft.Logging;
 using Craft.Math;
 using Craft.ViewModels.Geometry2D.ScrollFree;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using Simulator.Domain;
 using Simulator.Domain.Bodies;
 using Simulator.Domain.BodyStates;
 using Simulator.Domain.Boundaries;
 using Simulator.Domain.Engine;
 using Simulator.ViewModel;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace Game.Simple.ViewModel
 {
@@ -18,13 +16,8 @@ namespace Game.Simple.ViewModel
         private ILogger _logger;
         private SceneViewController _sceneViewController;
 
-        private RelayCommand _startAnimationCommand;
-
         public Engine Engine { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
-
-        public RelayCommand StartAnimationCommand =>
-            _startAnimationCommand ??= new RelayCommand(StartAnimation);
 
         public MainWindowViewModel(
             ILogger logger)
@@ -54,11 +47,6 @@ namespace Game.Simple.ViewModel
         public void HandleLoaded()
         {
             _sceneViewController.ResetScene();
-            StartAnimation();
-        }
-
-        private void StartAnimation()
-        {
             Engine.StartOrResumeAnimation();
         }
 

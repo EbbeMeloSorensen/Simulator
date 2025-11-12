@@ -10,7 +10,6 @@ namespace Game.DarkAlliance.UI.WPF
             {
                 _.WithDefaultConventions();
                 _.AssembliesFromApplicationBaseDirectory(d => d.FullName.StartsWith("Craft"));
-                _.AssembliesFromApplicationBaseDirectory(d => d.FullName.StartsWith("Game.DarkAlliance"));
                 _.LookForRegistries();
             });
         }

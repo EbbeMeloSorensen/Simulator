@@ -6,18 +6,9 @@
         xmlns:local="clr-namespace:Game.Simple.UI.WPF"
         xmlns:scrollFree="clr-namespace:Craft.UIElements.Geometry2D.ScrollFree;assembly=Craft.UIElements"
         mc:Ignorable="d"
-        Title="Simple Game" Height="450" Width="800"
+        Title="Simple Animation" Height="450" Width="800"
         DataContext="{Binding Path=MainWindowViewModel, Source={StaticResource BootStrapper}}"
         Loaded="MainWindow_OnLoaded"
         Closing="MainWindow_OnClosing">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Button Grid.Row="0" Height="20"
-                Content="Start animation"
-                Command="{Binding StartAnimationCommand}"/>
-        <scrollFree:GeometryEditorView Grid.Row="1" DataContext="{Binding GeometryEditorViewModel}"/>
-    </Grid>
+    <scrollFree:GeometryEditorView DataContext="{Binding GeometryEditorViewModel}"/>
 </Window>

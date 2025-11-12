@@ -6,14 +6,9 @@
         xmlns:local="clr-namespace:Game.DarkAlliance.UI.WPF"
         xmlns:scrollFree="clr-namespace:Craft.UIElements.Geometry2D.ScrollFree;assembly=Craft.UIElements"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
-        DataContext="{Binding Path=MainWindowViewModel, Source={StaticResource BootStrapper}}">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Button Grid.Row="0" Height="20" Content="{Binding Greeting}"/>
-        <scrollFree:GeometryEditorView Grid.Row="1"/>
-    </Grid>
+        Title="Dark Alliance" Height="450" Width="800"
+        DataContext="{Binding Path=MainWindowViewModel, Source={StaticResource BootStrapper}}"
+        Loaded="MainWindow_OnLoaded"
+        Closing="MainWindow_OnClosing">
+    <scrollFree:GeometryEditorView DataContext="{Binding GeometryEditorViewModel}"/>
 </Window>

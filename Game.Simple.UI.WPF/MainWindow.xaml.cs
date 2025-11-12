@@ -1,6 +1,6 @@
-﻿using Game.Simple.ViewModel;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
+using Game.Simple.ViewModel;
 
 namespace Game.Simple.UI.WPF
 {
