@@ -1,6 +1,7 @@
-﻿using System.ComponentModel;
+﻿using Game.DarkAlliance.ViewModel;
+using Simulator.Domain.Engine;
+using System.ComponentModel;
 using System.Windows;
-using Game.DarkAlliance.ViewModel;
 
 namespace Game.DarkAlliance.UI.WPF
 {
@@ -14,6 +15,59 @@ namespace Game.DarkAlliance.UI.WPF
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void MainWindow_OnKeyDown(
+            object sender,
+            System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.IsRepeat)
+            {
+                return;
+            }
+
+            switch (e.Key)
+            {
+                case System.Windows.Input.Key.Up:
+                    ViewModel.Engine.HandleKeyEvent(KeyboardKey.UpArrow, KeyEventType.KeyPressed);
+                    break;
+                case System.Windows.Input.Key.Down:
+                    ViewModel.Engine.HandleKeyEvent(KeyboardKey.DownArrow, KeyEventType.KeyPressed);
+                    break;
+                case System.Windows.Input.Key.Left:
+                    ViewModel.Engine.HandleKeyEvent(KeyboardKey.LeftArrow, KeyEventType.KeyPressed);
+                    break;
+                case System.Windows.Input.Key.Right:
+                    ViewModel.Engine.HandleKeyEvent(KeyboardKey.RightArrow, KeyEventType.KeyPressed);
+                    break;
+                case System.Windows.Input.Key.Space:
+                    ViewModel.Engine.HandleKeyEvent(KeyboardKey.Space, KeyEventType.KeyPressed);
+                    break;
+            }
+        }
+
+        private void MainWindow_OnKeyUp(
+            object sender,
+            System.Windows.Input.KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case System.Windows.Input.Key.Up:
+                    ViewModel.Engine.HandleKeyEvent(KeyboardKey.UpArrow, KeyEventType.KeyReleased);
+                    break;
+                case System.Windows.Input.Key.Down:
+                    ViewModel.Engine.HandleKeyEvent(KeyboardKey.DownArrow, KeyEventType.KeyReleased);
+                    break;
+                case System.Windows.Input.Key.Left:
+                    ViewModel.Engine.HandleKeyEvent(KeyboardKey.LeftArrow, KeyEventType.KeyReleased);
+                    break;
+                case System.Windows.Input.Key.Right:
+                    ViewModel.Engine.HandleKeyEvent(KeyboardKey.RightArrow, KeyEventType.KeyReleased);
+                    break;
+                case System.Windows.Input.Key.Space:
+                    ViewModel.Engine.HandleKeyEvent(KeyboardKey.Space, KeyEventType.KeyReleased);
+                    break;
+            }
         }
 
         private void MainWindow_OnLoaded(

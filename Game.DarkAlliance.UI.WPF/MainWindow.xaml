@@ -9,6 +9,8 @@
         Title="Dark Alliance" Height="450" Width="800"
         DataContext="{Binding Path=MainWindowViewModel, Source={StaticResource BootStrapper}}"
         Loaded="MainWindow_OnLoaded"
-        Closing="MainWindow_OnClosing">
+        Closing="MainWindow_OnClosing"
+        KeyDown="MainWindow_OnKeyDown"
+        KeyUp="MainWindow_OnKeyUp">
     <scrollFree:GeometryEditorView DataContext="{Binding GeometryEditorViewModel}"/>
 </Window>
