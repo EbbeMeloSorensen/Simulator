@@ -77,7 +77,7 @@ namespace Game.DarkAlliance.ViewModel
                 shapeSelectorCallback,
                 shapeUpdateCallback);
 
-            var scene = GenerateScene_Exploration();
+            var scene = GenerateScene();
 
             GeometryEditorViewModel.InitializeWorldWindow(
                 scene.InitialWorldWindowFocus(),
@@ -93,50 +93,10 @@ namespace Game.DarkAlliance.ViewModel
             Engine.StartOrResumeAnimation();
         }
 
-        private Scene GenerateScene_BouncingBall()
+        private Scene GenerateScene()
         {
-            var ballRadius = 0.125;
-            var initialBallPosition = new Vector2D(1, -0.125);
-            var initialBallVelocity = new Vector2D(2, 0);
-
-            var initialState = new State();
-            initialState.AddBodyState(new BodyState(new CircularBody(1, ballRadius, 1, true), initialBallPosition) { NaturalVelocity = initialBallVelocity });
-
-            var name = "Simple Game";
-            var standardGravity = 9.82;
-            var initialWorldWindowUpperLeft = new Point2D(-1.4, -1.3);
-            var initialWorldWindowLowerRight = new Point2D(5, 3);
-            var gravitationalConstant = 0.0;
-            var coefficientOfFriction = 0.0;
-            var timeFactor = 1.0;
-            var handleBodyCollisions = false;
-            var deltaT = 0.001;
-
-            var scene = new Scene(
-                name,
-                initialWorldWindowUpperLeft,
-                initialWorldWindowLowerRight,
-                initialState,
-                standardGravity,
-                gravitationalConstant,
-                coefficientOfFriction,
-                timeFactor,
-                handleBodyCollisions,
-                deltaT);
-
-            scene.CollisionBetweenBodyAndBoundaryOccuredCallBack = body => OutcomeOfCollisionBetweenBodyAndBoundary.Reflect;
-
-            scene.AddBoundary(new HalfPlane(new Vector2D(3, -0.3), new Vector2D(-1, 0)));
-            scene.AddBoundary(new HalfPlane(new Vector2D(3, 1), new Vector2D(0, -1)));
-            scene.AddBoundary(new HalfPlane(new Vector2D(-1, 1), new Vector2D(1, 0)));
-
-            return scene;
-        }
-
-        private Scene GenerateScene_Exploration()
-        {
-            var ballRadius = 0.125;
-            var initialBallPosition = new Vector2D(1, 1.7);
+            var ballRadius = 0.16;
+            var initialBallPosition = new Vector2D(0, 0);
 
             var initialState = new State();
             initialState.AddBodyState(new BodyStateClassic(new CircularBody(1, ballRadius, 1, false), initialBallPosition)
@@ -153,6 +113,7 @@ namespace Game.DarkAlliance.ViewModel
             var timeFactor = 1.0;
             var handleBodyCollisions = false;
             var deltaT = 0.001;
+            var viewMode = SceneViewMode.FocusOnFirstBody;
 
             var scene = new Scene(
                 name,
@@ -164,7 +125,8 @@ namespace Game.DarkAlliance.ViewModel
                 coefficientOfFriction,
                 timeFactor,
                 handleBodyCollisions,
-                deltaT);
+                deltaT,
+                viewMode);
 
             scene.CollisionBetweenBodyAndBoundaryOccuredCallBack = body => OutcomeOfCollisionBetweenBodyAndBoundary.Block;
 
@@ -210,8 +172,30 @@ namespace Game.DarkAlliance.ViewModel
                 return true;
             };
 
-            scene.AddRectangularBoundary(-1, 3, -0.3, 2);
-            scene.AddRectangularBoundary(0, 2, 0.6, 1.1);
+            scene.AddBoundary(new LineSegment(new Vector2D(-2, 2), new Vector2D(2, 2)));
+            scene.AddBoundary(new LineSegment(new Vector2D(2, 2), new Vector2D(2, -2)));
+            scene.AddBoundary(new LineSegment(new Vector2D(2, -2), new Vector2D(-2, -2)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-2, -2), new Vector2D(-2, 0)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-2, 0), new Vector2D(-3, 0)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-3, 0), new Vector2D(-3, 4)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-3, 4), new Vector2D(-6, 4)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-6, 4), new Vector2D(-6, 2)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-6, 2), new Vector2D(-14, 2)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-14, 2), new Vector2D(-16, 1)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-16, 1), new Vector2D(-16, -1)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-17, -1), new Vector2D(-17, 1)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-17, 1), new Vector2D(-18, 2)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-18, 2), new Vector2D(-18, 3)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-18, 3), new Vector2D(-19, 3)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-19, 4), new Vector2D(-18, 4)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-18, 4), new Vector2D(-17, 5)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-17, 5), new Vector2D(-17, 16)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-16, 18), new Vector2D(-16, 5)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-16, 5), new Vector2D(-14, 4)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-14, 4), new Vector2D(-7, 4)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-7, 4), new Vector2D(-7, 5)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-7, 5), new Vector2D(-2, 5)));
+            scene.AddBoundary(new LineSegment(new Vector2D(-2, 5), new Vector2D(-2, 2)));
 
             return scene;
         }
