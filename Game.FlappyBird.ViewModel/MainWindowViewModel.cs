@@ -2,12 +2,13 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Craft.Logging;
 using Craft.Math;
+using Craft.Simulation;
+using Craft.Simulation.Bodies;
+using Craft.Simulation.BodyStates;
+using Craft.Simulation.Boundaries;
+using Craft.Simulation.Engine;
 using Craft.ViewModels.Geometry2D.ScrollFree;
-using Simulator.Domain;
-using Simulator.Domain.Boundaries;
-using Simulator.Domain.BodyStates;
-using Simulator.Domain.Bodies;
-using Simulator.Domain.Engine;
+using Craft.ViewModels.Simulation;
 using Simulator.ViewModel;
 
 namespace Game.FlappyBird.ViewModel

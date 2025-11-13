@@ -1,20 +1,19 @@
 ﻿using System.Diagnostics;
 using System.Windows;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Craft.Utils;
 using Craft.Logging;
 using Craft.Math;
+using Craft.Simulation;
+using Craft.Simulation.Bodies;
+using Craft.Simulation.Boundaries;
+using Craft.Simulation.Engine;
 using Craft.ViewModels.Geometry2D.ScrollFree;
-using Simulator.Domain;
-using Simulator.Domain.Bodies;
-using Simulator.Domain.Boundaries;
+using Craft.ViewModels.Simulation;
 using Simulator.ViewModel;
-using Simulator.ViewModel.ShapeViewModels;
 using Game.TowerDefense.ViewModel.Bodies;
 using Game.TowerDefense.ViewModel.Bodies.Enemies;
 using Game.TowerDefense.ViewModel.ShapeViewModels;
-using Simulator.Domain.Engine;
 using BodyStateCannon = Game.TowerDefense.ViewModel.BodyStates.BodyStateCannon;
 using BodyStateEnemy = Game.TowerDefense.ViewModel.BodyStates.BodyStateEnemy;
 using BodyStateProjectile = Game.TowerDefense.ViewModel.BodyStates.BodyStateProjectile;
@@ -73,7 +72,7 @@ namespace Game.TowerDefense.ViewModel
             }
         }
 
-        public Simulator.Domain.Engine.Engine Bonnet { get; }
+        public Engine Bonnet { get; }
 
         public UnlockedLevelsViewModel UnlockedLevelsViewModel { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
@@ -231,7 +230,7 @@ namespace Game.TowerDefense.ViewModel
             var gameOver = new Craft.DataStructures.Graph.State("Game Over");
             var youWin = new Craft.DataStructures.Graph.State("You Win");
 
-            Bonnet = new Simulator.Domain.Engine.Engine(_logger);
+            Bonnet = new Engine(_logger);
 
             AddApplicationState(welcomeScreen);
             AddApplicationState(unlockedLevelsScreen);

@@ -1,4 +1,4 @@
-﻿using Simulator.Domain;
+﻿using Craft.Simulation;
 
 namespace Game.Zelda.ViewModel
 {

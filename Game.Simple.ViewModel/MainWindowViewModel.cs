@@ -1,12 +1,13 @@
+using GalaSoft.MvvmLight;
 using Craft.Logging;
 using Craft.Math;
+using Craft.Simulation;
+using Craft.Simulation.Bodies;
+using Craft.Simulation.BodyStates;
+using Craft.Simulation.Boundaries;
+using Craft.Simulation.Engine;
 using Craft.ViewModels.Geometry2D.ScrollFree;
-using GalaSoft.MvvmLight;
-using Simulator.Domain;
-using Simulator.Domain.Bodies;
-using Simulator.Domain.BodyStates;
-using Simulator.Domain.Boundaries;
-using Simulator.Domain.Engine;
+using Craft.ViewModels.Simulation;
 using Simulator.ViewModel;
 
 namespace Game.Simple.ViewModel

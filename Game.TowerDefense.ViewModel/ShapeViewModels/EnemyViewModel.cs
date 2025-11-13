@@ -1,5 +1,5 @@
 ﻿using System.Windows.Media;
-using Simulator.ViewModel.ShapeViewModels;
+using Craft.ViewModels.Simulation;
 
 namespace Game.TowerDefense.ViewModel.ShapeViewModels;
 

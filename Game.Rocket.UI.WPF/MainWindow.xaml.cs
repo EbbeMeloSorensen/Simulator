@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using Craft.Simulation.Engine;
 using Game.Rocket.ViewModel;
-using Simulator.Domain.Engine;
 
 namespace Game.Rocket.UI.WPF
 {

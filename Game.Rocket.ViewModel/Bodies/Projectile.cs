@@ -1,5 +1,4 @@
-﻿using Simulator.Domain;
-using Simulator.Domain.Bodies;
+﻿using Craft.Simulation.Bodies;
 
 namespace Game.Rocket.ViewModel.Bodies
 {

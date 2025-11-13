@@ -1,7 +1,7 @@
 ﻿using Game.TowerDefense.ViewModel;
 using System.ComponentModel;
 using System.Windows;
-using Simulator.Domain.Engine;
+using Craft.Simulation.Engine;
 
 namespace Game.TowerDefense.UI.WPF
 {

@@ -1,9 +1,8 @@
-﻿using Craft.ViewModels.Geometry2D.ScrollFree;
-using Game.TowerDefense.ViewModel.ShapeViewModels;
-using Simulator.ViewModel.ShapeViewModels;
-using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using Craft.ViewModels.Geometry2D.ScrollFree;
+using Craft.ViewModels.Simulation;
+using Game.TowerDefense.ViewModel.ShapeViewModels;
 
 namespace Game.TowerDefense.UI.WPF
 {

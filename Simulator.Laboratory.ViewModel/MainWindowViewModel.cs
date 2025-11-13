@@ -1,24 +1,21 @@
-﻿using Craft.Logging;
-using Craft.Math;
-using Craft.Utils;
-using Craft.Utils.Linq;
-using Craft.ViewModels.Geometry2D.ScrollFree;
+﻿using System.ComponentModel;
+using System.DirectoryServices.ActiveDirectory;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Simulator.Domain;
-using Simulator.Domain.BodyStates;
-using Simulator.Domain.Boundaries;
-using Simulator.Domain.Props;
+using Craft.Logging;
+using Craft.Math;
+using Craft.Utils;
+using Craft.ViewModels.Geometry2D.ScrollFree;
+using Craft.Simulation;
+using Craft.Simulation.Bodies;
+using Craft.Simulation.BodyStates;
+using Craft.Simulation.Boundaries;
+using Craft.Simulation.Props;
+using Craft.Utils.Linq;
+using Craft.ViewModels.Simulation;
+using Simulator.ViewModel;
 using Simulator.Laboratory.ViewModel.Bodies;
 using Simulator.Laboratory.ViewModel.ShapeViewModels;
-using Simulator.ViewModel;
-using Simulator.ViewModel.ShapeViewModels;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Media.Animation;
-using Simulator.Domain.Bodies;
 
 namespace Simulator.Laboratory.ViewModel
 {
@@ -41,7 +38,7 @@ namespace Simulator.Laboratory.ViewModel
         private string _aux1;
         private string _aux2;
 
-        public Domain.Engine.Engine Engine { get; }
+        public Craft.Simulation.Engine.Engine Engine { get; }
         public SceneListViewModel SceneListViewModel { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
 
@@ -103,7 +100,7 @@ namespace Simulator.Laboratory.ViewModel
 
             Outcome = null;
 
-            Engine = new Domain.Engine.Engine(_logger);
+            Engine = new Craft.Simulation.Engine.Engine(_logger);
             Engine.AnimationCompleted += (s, e) =>
             {
                 // If the outcome is the name of another scene then switch to that scene

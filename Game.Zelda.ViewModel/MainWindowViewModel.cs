@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Linq;
+using GalaSoft.MvvmLight.Command;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using Craft.Logging;
 using Craft.Math;
+using Craft.Simulation;
+using Craft.Simulation.Boundaries;
+using Craft.Simulation.Engine;
+using Craft.Simulation.Props;
 using Craft.Utils;
 using Craft.ViewModels.Geometry2D.ScrollFree;
-using GalaSoft.MvvmLight.Command;
-using Game.Zelda.ViewModel.BodyStates;
-using Simulator.Domain;
-using Simulator.Domain.Boundaries;
-using Simulator.Domain.Props;
+using Craft.ViewModels.Simulation;
 using Simulator.ViewModel;
+using Game.Zelda.ViewModel.BodyStates;
 using Game.Zelda.ViewModel.ShapeViewModels;
-using Simulator.Domain.Engine;
 
 namespace Game.Zelda.ViewModel
 {
@@ -33,7 +34,7 @@ namespace Game.Zelda.ViewModel
 
         private Dictionary<Craft.DataStructures.Graph.State, List<Tuple<Craft.DataStructures.Graph.State, Craft.DataStructures.Graph.State>>> _transitionActivationMap;
 
-        public Simulator.Domain.Engine.Engine Bonnet { get; }
+        public Engine Bonnet { get; }
 
         public UnlockedLevelsViewModel UnlockedLevelsViewModel { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
@@ -198,7 +199,7 @@ namespace Game.Zelda.ViewModel
             var gameOver = new Craft.DataStructures.Graph.State("Game Over");
             var youWin = new Craft.DataStructures.Graph.State("You Win");
 
-            Bonnet = new Simulator.Domain.Engine.Engine(_logger);
+            Bonnet = new Engine(_logger);
 
             AddApplicationState(welcomeScreen);
             AddApplicationState(unlockedLevelsScreen);

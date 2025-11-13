@@ -1,8 +1,7 @@
 ﻿using Craft.Math;
-using Simulator.Domain;
-using Simulator.Domain.Bodies;
-using Simulator.Domain.BodyStates.Interfaces;
-using Simulator.Domain.BodyStates;
+using Craft.Simulation.Bodies;
+using Craft.Simulation.BodyStates;
+using Craft.Simulation.BodyStates.Interfaces;
 
 namespace Game.Zelda.ViewModel.BodyStates
 {

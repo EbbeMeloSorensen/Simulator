@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using Craft.Simulation.Engine;
 using Game.Zelda.ViewModel;
-using Simulator.Domain.Engine;
 
 namespace Game.Zelda.UI.WPF
 {

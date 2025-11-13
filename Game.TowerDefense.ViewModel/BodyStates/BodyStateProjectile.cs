@@ -1,9 +1,7 @@
-﻿using System;
-using Craft.Math;
-using Simulator.Domain;
-using Simulator.Domain.Bodies;
-using Simulator.Domain.BodyStates;
-using Simulator.Domain.BodyStates.Interfaces;
+﻿using Craft.Math;
+using Craft.Simulation.Bodies;
+using Craft.Simulation.BodyStates;
+using Craft.Simulation.BodyStates.Interfaces;
 
 namespace Game.TowerDefense.ViewModel.BodyStates;
 

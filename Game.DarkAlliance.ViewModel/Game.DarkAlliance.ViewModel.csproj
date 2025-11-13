@@ -8,13 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Craft.ViewModels" Version="1.0.7" />
+    <PackageReference Include="Craft.ViewModels" Version="1.0.9" />
     <PackageReference Include="MvvmLightLibsStd10" Version="5.4.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Simulator.Domain\Simulator.Domain.csproj" />
-    <ProjectReference Include="..\Simulator.ViewModel\Simulator.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>

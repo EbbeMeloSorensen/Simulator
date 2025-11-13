@@ -3,16 +3,17 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Craft.Logging;
 using Craft.Math;
+using Craft.Simulation;
+using Craft.Simulation.BodyStates;
+using Craft.Simulation.Boundaries;
+using Craft.Simulation.Engine;
+using Craft.Simulation.Props;
 using Craft.Utils;
 using Craft.ViewModels.Geometry2D.ScrollFree;
-using Simulator.Domain;
-using Simulator.Domain.BodyStates;
-using Simulator.Domain.Boundaries;
-using Simulator.Domain.Props;
+using Craft.ViewModels.Simulation;
 using Simulator.ViewModel;
 using Game.Rocket.ViewModel.Bodies;
 using Game.Rocket.ViewModel.ShapeViewModels;
-using Simulator.Domain.Engine;
 
 namespace Game.Rocket.ViewModel
 {
@@ -29,7 +30,7 @@ namespace Game.Rocket.ViewModel
 
         private Dictionary<Craft.DataStructures.Graph.State, List<Tuple<Craft.DataStructures.Graph.State, Craft.DataStructures.Graph.State>>> _transitionActivationMap;
 
-        public Simulator.Domain.Engine.Engine Bonnet { get; }
+        public Engine Bonnet { get; }
 
         public UnlockedLevelsViewModel UnlockedLevelsViewModel { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
@@ -433,7 +434,7 @@ namespace Game.Rocket.ViewModel
             var gameOver = new Craft.DataStructures.Graph.State("Game Over");
             var youWin = new Craft.DataStructures.Graph.State("You Win");
 
-            Bonnet = new Simulator.Domain.Engine.Engine(_logger);
+            Bonnet = new Engine(_logger);
 
             AddApplicationState(welcomeScreen);
             AddApplicationState(unlockedLevelsScreen);

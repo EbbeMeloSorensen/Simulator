@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Craft.Math;
+﻿using Craft.Math;
+using Craft.Simulation;
+using Craft.Simulation.Props;
 using Craft.Utils.Linq;
-using Simulator.Domain;
-using Simulator.Domain.Props;
 using Game.TowerDefense.ViewModel.Bodies.Enemies;
 using Game.TowerDefense.ViewModel.BodyStates;
 

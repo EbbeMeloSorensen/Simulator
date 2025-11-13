@@ -1,7 +1,7 @@
 ﻿using Craft.Utils;
 using GalaSoft.MvvmLight;
-using Simulator.Domain;
 using System.Collections.ObjectModel;
+using Craft.Simulation;
 
 namespace Simulator.Laboratory.ViewModel
 {

@@ -1,7 +1,7 @@
 ﻿using Game.DarkAlliance.ViewModel;
-using Simulator.Domain.Engine;
 using System.ComponentModel;
 using System.Windows;
+using Craft.Simulation.Engine;
 
 namespace Game.DarkAlliance.UI.WPF
 {
