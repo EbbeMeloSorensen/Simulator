@@ -1,5 +1,6 @@
 using Craft.Logging;
 using Craft.Math;
+using Craft.Utils;
 using Craft.ViewModels.Geometry2D.ScrollFree;
 using GalaSoft.MvvmLight;
 using Simulator.Domain;
@@ -32,7 +33,49 @@ namespace Game.DarkAlliance.ViewModel
                 UpdateModelCallBack = Engine.UpdateModel
             };
 
-            _sceneViewController = new SceneViewController(Engine, GeometryEditorViewModel);
+            // Bemærk de følgende 2 callbacks, som bruges til at give kuglen et andet skin end det, som er default.
+            // Pågældende skin er taget fra Craft, men man kan også override, ligesom det er gjort for Flappybird, Rocket og Zelda
+            ShapeSelectorCallback shapeSelectorCallback = (bs) =>
+            {
+                if (!(bs.Body is CircularBody))
+                {
+                    throw new InvalidOperationException();
+                }
+
+                var circularBody = bs.Body as CircularBody;
+
+                var bsc = bs as BodyStateClassic;
+                var orientation = bsc == null ? 0 : bsc.Orientation;
+
+                return new RotatableEllipseViewModel
+                {
+                    Width = 2 * circularBody.Radius,
+                    Height = 2 * circularBody.Radius,
+                    Orientation = orientation
+                };
+            };
+
+            ShapeUpdateCallback shapeUpdateCallback = (shapeViewModel, bs) =>
+            {
+                // Her opdaterer vi POSITIONEN af shapeviewmodellen
+                shapeViewModel.Point = new PointD(bs.Position.X, bs.Position.Y);
+
+                // Her opdaterer vi ORIENTERINGEN af shapeviewmodellen
+                if (shapeViewModel is RotatableEllipseViewModel)
+                {
+                    var bsc = bs as BodyStateClassic;
+                    var orientation = bsc == null ? 0 : bsc.Orientation;
+
+                    var rotatableEllipseViewModel = shapeViewModel as RotatableEllipseViewModel;
+                    rotatableEllipseViewModel.Orientation = orientation;
+                }
+            };
+
+            _sceneViewController = new SceneViewController(
+                Engine,
+                GeometryEditorViewModel,
+                shapeSelectorCallback,
+                shapeUpdateCallback);
 
             var scene = GenerateScene_Exploration();
 
@@ -42,27 +85,6 @@ namespace Game.DarkAlliance.ViewModel
                 false);
 
             _sceneViewController.ActiveScene = scene;
-
-            // Denne bruges til at erstatte default ellipsen, som er dark slate gray, med en, der er orange og med en rød stribe
-            //ShapeSelectorCallback shapeSelectorCallback2 = (bs) =>
-            //{
-            //    if (!(bs.Body is CircularBody))
-            //    {
-            //        throw new InvalidOperationException();
-            //    }
-
-            //    var circularBody = bs.Body as CircularBody;
-
-            //    var bsc = bs as BodyStateClassic;
-            //    var orientation = bsc == null ? 0 : bsc.Orientation;
-
-            //    return new RotatableEllipseViewModel
-            //    {
-            //        Width = 2 * circularBody.Radius,
-            //        Height = 2 * circularBody.Radius,
-            //        Orientation = orientation
-            //    };
-            //};
         }
 
         public void HandleLoaded()
