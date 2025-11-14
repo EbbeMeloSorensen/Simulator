@@ -111,8 +111,8 @@ namespace Game.DarkAlliance.ViewModel
 
             _sceneViewController.ActiveScene = scene;
 
-            CameraPosition = new Point3D(3.3, 1.7, 3.3);
-            LookDirection = new Vector3D(-3.3, -1.7, -3.3);
+            CameraPosition = new Point3D(0, 1, 4);
+            LookDirection = new Vector3D(0, -0.2, -1);
         }
 
         public void HandleLoaded()

@@ -20,6 +20,16 @@
 
         <scrollFree:GeometryEditorView Grid.Column="0" DataContext="{Binding GeometryEditorViewModel}"/>
 
-        <Viewport3D Grid.Column="1" Name="viewport"/>
+        <Viewport3D Grid.Column="1" Name="viewport">
+
+            <Viewport3D.Camera>
+                <PerspectiveCamera
+                    Position="{Binding CameraPosition}"
+                    LookDirection="{Binding LookDirection}"
+                    UpDirection="0,1,0"
+                    FieldOfView="45"/>
+            </Viewport3D.Camera>
+
+        </Viewport3D>
     </Grid>
 </Window>
