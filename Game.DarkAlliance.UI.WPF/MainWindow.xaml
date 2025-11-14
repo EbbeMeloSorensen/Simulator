@@ -12,5 +12,14 @@
         Closing="MainWindow_OnClosing"
         KeyDown="MainWindow_OnKeyDown"
         KeyUp="MainWindow_OnKeyUp">
-    <scrollFree:GeometryEditorView DataContext="{Binding GeometryEditorViewModel}"/>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <scrollFree:GeometryEditorView Grid.Column="0" DataContext="{Binding GeometryEditorViewModel}"/>
+
+        <Viewport3D Grid.Column="1" Name="viewport"/>
+    </Grid>
 </Window>

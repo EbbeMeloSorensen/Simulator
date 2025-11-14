@@ -17,9 +17,33 @@ namespace Game.DarkAlliance.ViewModel
     {
         private ILogger _logger;
         private SceneViewController _sceneViewController;
+        private Point3D _cameraPosition;
+        private Vector3D _lookDirection;
+
+        public Point3D CameraPosition
+        {
+            get => _cameraPosition;
+            private set
+            {
+                _cameraPosition = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public Vector3D LookDirection
+        {
+            get => _lookDirection;
+            private set
+            {
+                _lookDirection = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public Engine Engine { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
+
+
 
         public MainWindowViewModel(
             ILogger logger)
@@ -86,6 +110,9 @@ namespace Game.DarkAlliance.ViewModel
                 false);
 
             _sceneViewController.ActiveScene = scene;
+
+            CameraPosition = new Point3D(3.3, 1.7, 3.3);
+            LookDirection = new Vector3D(-3.3, -1.7, -3.3);
         }
 
         public void HandleLoaded()
