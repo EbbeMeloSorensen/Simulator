@@ -23,7 +23,7 @@ namespace Game.DarkAlliance.ViewModel
         public Point3D CameraPosition
         {
             get => _cameraPosition;
-            private set
+            set
             {
                 _cameraPosition = value;
                 RaisePropertyChanged();
@@ -33,7 +33,7 @@ namespace Game.DarkAlliance.ViewModel
         public Vector3D LookDirection
         {
             get => _lookDirection;
-            private set
+            set
             {
                 _lookDirection = value;
                 RaisePropertyChanged();
@@ -111,8 +111,8 @@ namespace Game.DarkAlliance.ViewModel
 
             _sceneViewController.ActiveScene = scene;
 
-            CameraPosition = new Point3D(0, 1, 4);
-            LookDirection = new Vector3D(0, -0.2, -1);
+            CameraPosition = new Point3D(0, 2, 6.4);
+            LookDirection = new Vector3D(0, -0.3, -1);
         }
 
         public void HandleLoaded()
@@ -129,7 +129,7 @@ namespace Game.DarkAlliance.ViewModel
             var initialState = new State();
             initialState.AddBodyState(new BodyStateClassic(new CircularBody(1, ballRadius, 1, false), initialBallPosition)
             {
-                Orientation = 0.5 * Math.PI
+                Orientation = Math.PI
             });
 
             var name = "Exploration";

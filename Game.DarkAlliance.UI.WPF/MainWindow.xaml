@@ -22,10 +22,11 @@
 
         <Viewport3D Grid.Column="1" Name="viewport">
 
+            <!--Af en eller anden årsag virker det ikke, når jeg binder til CameraPosition og LookDirection her.....--> 
             <Viewport3D.Camera>
                 <PerspectiveCamera
-                    Position="{Binding CameraPosition}"
-                    LookDirection="{Binding LookDirection}"
+                    Position="0,2,6.4"
+                    LookDirection="0,-0.3,-1"
                     UpDirection="0,1,0"
                     FieldOfView="45"/>
             </Viewport3D.Camera>

@@ -89,33 +89,28 @@ namespace Game.DarkAlliance.UI.WPF
 
         private void SetupScene()
         {
-            // --- Camera ---
-            var camera = new PerspectiveCamera(
-                new Point3D(0, 1, 4),    // Position
-                new Vector3D(0, -0.2, -1),  // Look direction
-                new Vector3D(0, 1, 0),      // Up direction
-                45                           // Field of view
-            );
-
-            viewport.Camera = camera;
-
             // --- Lighting ---
             var light = new DirectionalLight(Colors.White, new Vector3D(-0.5, -1, -0.5));
             var lightModel = new ModelVisual3D { Content = light };
             viewport.Children.Add(lightModel);
 
-            // --- Rectangle (a simple quad) ---
-            var rectangle = CreateRectangle(
-                new Point3D(-1, 0, 0),
-                new Point3D(1, 0, 0),
-                new Point3D(1, -1, 0),
-                new Point3D(-1, -1, 0),
-                Colors.SkyBlue
-            );
-            viewport.Children.Add(rectangle);
+            viewport.Children.Add(CreateRectangle(
+                new Point3D(-2, 0, -2),
+                new Point3D(2, 0, -2),
+                new Point3D(2, 0, 2),
+                new Point3D(-2, 0, 2),
+                Colors.DarkSlateGray
+            ));
 
-            // --- Sphere ---
-            var sphere = CreateSphere(center: new Point3D(0, 0.5, 1), radius: 0.5, slices: 20, stacks: 20, color: Colors.Orange);
+            viewport.Children.Add(CreateRectangle(
+                new Point3D(-4, 0, -3),
+                new Point3D(0, 0, -3),
+                new Point3D(0, 0, -2),
+                new Point3D(-4, 0, -2),
+                Colors.DarkSlateGray
+            ));
+
+            var sphere = CreateSphere(center: new Point3D(0, 0.3, 0), radius: 0.3, slices: 20, stacks: 20, color: Colors.Orange);
             viewport.Children.Add(sphere);
         }
 
