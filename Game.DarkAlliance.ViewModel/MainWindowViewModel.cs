@@ -9,7 +9,6 @@ using Craft.Utils;
 using Craft.ViewModels.Geometry2D.ScrollFree;
 using Craft.ViewModels.Simulation;
 using GalaSoft.MvvmLight;
-using Simulator.ViewModel;
 
 namespace Game.DarkAlliance.ViewModel
 {

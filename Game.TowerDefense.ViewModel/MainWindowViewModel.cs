@@ -10,7 +10,6 @@ using Craft.Simulation.Boundaries;
 using Craft.Simulation.Engine;
 using Craft.ViewModels.Geometry2D.ScrollFree;
 using Craft.ViewModels.Simulation;
-using Simulator.ViewModel;
 using Game.TowerDefense.ViewModel.Bodies;
 using Game.TowerDefense.ViewModel.Bodies.Enemies;
 using Game.TowerDefense.ViewModel.ShapeViewModels;

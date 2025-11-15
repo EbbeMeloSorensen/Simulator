@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Craft.Logging;
 using Craft.Math;
@@ -11,7 +10,6 @@ using Craft.Simulation.Props;
 using Craft.Utils;
 using Craft.ViewModels.Geometry2D.ScrollFree;
 using Craft.ViewModels.Simulation;
-using Simulator.ViewModel;
 using Game.Rocket.ViewModel.Bodies;
 using Game.Rocket.ViewModel.ShapeViewModels;
 

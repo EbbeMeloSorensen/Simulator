@@ -13,7 +13,6 @@ using Craft.Simulation.Props;
 using Craft.Utils;
 using Craft.ViewModels.Geometry2D.ScrollFree;
 using Craft.ViewModels.Simulation;
-using Simulator.ViewModel;
 using Game.Zelda.ViewModel.BodyStates;
 using Game.Zelda.ViewModel.ShapeViewModels;
 

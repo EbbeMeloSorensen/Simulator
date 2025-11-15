@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.DirectoryServices.ActiveDirectory;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Craft.Logging;
@@ -13,7 +12,6 @@ using Craft.Simulation.Boundaries;
 using Craft.Simulation.Props;
 using Craft.Utils.Linq;
 using Craft.ViewModels.Simulation;
-using Simulator.ViewModel;
 using Simulator.Laboratory.ViewModel.Bodies;
 using Simulator.Laboratory.ViewModel.ShapeViewModels;
 
