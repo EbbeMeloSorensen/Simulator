@@ -43,11 +43,7 @@ namespace Game.Simple.ViewModel
                 false);
 
             _sceneViewController.ActiveScene = scene;
-        }
 
-        public void HandleLoaded()
-        {
-            _sceneViewController.ResetScene();
             Engine.StartOrResumeAnimation();
         }
 

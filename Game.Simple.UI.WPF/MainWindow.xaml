@@ -8,7 +8,6 @@
         mc:Ignorable="d"
         Title="Simple Animation" Height="450" Width="800"
         DataContext="{Binding Path=MainWindowViewModel, Source={StaticResource BootStrapper}}"
-        Loaded="MainWindow_OnLoaded"
         Closing="MainWindow_OnClosing">
     <scrollFree:GeometryEditorView DataContext="{Binding GeometryEditorViewModel}"/>
 </Window>
