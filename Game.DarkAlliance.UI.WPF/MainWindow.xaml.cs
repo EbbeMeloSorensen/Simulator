@@ -110,8 +110,8 @@ namespace Game.DarkAlliance.UI.WPF
                 Colors.DarkSlateGray
             ));
 
-            var sphere = CreateSphere(center: new Point3D(0, 0.3, 0), radius: 0.3, slices: 20, stacks: 20, color: Colors.Orange);
-            viewport.Children.Add(sphere);
+            //var sphere = CreateSphere(center: new Point3D(0, 0.3, 0), radius: 0.3, slices: 20, stacks: 20, color: Colors.Orange);
+            //viewport.Children.Add(sphere);
         }
 
         private ModelVisual3D CreateRectangle(Point3D p1, Point3D p2, Point3D p3, Point3D p4, Color color)

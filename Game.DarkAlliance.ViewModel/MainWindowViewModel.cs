@@ -9,6 +9,8 @@ using Craft.Utils;
 using Craft.ViewModels.Geometry2D.ScrollFree;
 using Craft.ViewModels.Simulation;
 using GalaSoft.MvvmLight;
+using Point3D = System.Windows.Media.Media3D.Point3D;
+using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace Game.DarkAlliance.ViewModel
 {
@@ -16,10 +18,10 @@ namespace Game.DarkAlliance.ViewModel
     {
         private ILogger _logger;
         private SceneViewController _sceneViewController;
-        private Point3D _cameraPosition;
-        private Vector3D _lookDirection;
+        private System.Windows.Media.Media3D.Point3D _cameraPosition;
+        private System.Windows.Media.Media3D.Vector3D _lookDirection;
 
-        public Point3D CameraPosition
+        public System.Windows.Media.Media3D.Point3D CameraPosition
         {
             get => _cameraPosition;
             set
@@ -29,7 +31,7 @@ namespace Game.DarkAlliance.ViewModel
             }
         }
 
-        public Vector3D LookDirection
+        public System.Windows.Media.Media3D.Vector3D LookDirection
         {
             get => _lookDirection;
             set
@@ -41,8 +43,6 @@ namespace Game.DarkAlliance.ViewModel
 
         public Engine Engine { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
-
-
 
         public MainWindowViewModel(
             ILogger logger)
@@ -110,8 +110,22 @@ namespace Game.DarkAlliance.ViewModel
 
             _sceneViewController.ActiveScene = scene;
 
-            CameraPosition = new Point3D(0, 2, 6.4);
-            LookDirection = new Vector3D(0, -0.3, -1);
+            //CameraPosition = new Point3D(0, 1, 2);
+            //LookDirection = new Vector3D(0, 0, -1);
+
+            Engine.CurrentStateChanged += (s, e) =>
+            {
+                var bodyStateOfProtagonist = e.State.BodyStates.First() as BodyStateClassic;
+                var position = bodyStateOfProtagonist.Position;
+                var orientation = bodyStateOfProtagonist.Orientation;
+
+                CameraPosition = new Point3D(
+                    -position.Y,
+                    0.5,
+                    position.X);
+
+                LookDirection = new Vector3D(Math.Sin(orientation), 0, Math.Cos(orientation));
+            };
         }
 
         public void HandleLoaded()

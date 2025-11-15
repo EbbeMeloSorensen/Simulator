@@ -25,8 +25,8 @@
             <!--Af en eller anden årsag virker det ikke, når jeg binder til CameraPosition og LookDirection her.....--> 
             <Viewport3D.Camera>
                 <PerspectiveCamera
-                    Position="0,2,6.4"
-                    LookDirection="0,-0.3,-1"
+                    Position="{Binding CameraPosition}"
+                    LookDirection="{Binding LookDirection}"
                     UpDirection="0,1,0"
                     FieldOfView="45"/>
             </Viewport3D.Camera>
