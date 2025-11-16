@@ -141,9 +141,6 @@ namespace Game.DarkAlliance.ViewModel
 
                 LookDirection = new Vector3D(Math.Sin(orientation), 0, Math.Cos(orientation));
             };
-
-            // Her bygger vi 3D scenen
-            BuildScene();
         }
 
         public void HandleLoaded()
@@ -236,15 +233,33 @@ namespace Game.DarkAlliance.ViewModel
             // Liniestykker defineres i et normalt xy koordinatsystem
             var lineSegments = new List<LineSegment2D>
             {
-                new(new Point2D(-2, 2), new Point2D(-2, 0))
+                new(new Point2D(-2, 2), new Point2D(-2, 0)),
+                new(new Point2D(-3, 0), new Point2D(-3, -4)),
+                new(new Point2D(-2, 0), new Point2D(-3, 0)),
+                new(new Point2D(2, 2), new Point2D(-2, 2)),
+                new(new Point2D(2, -2), new Point2D(2, 2)),
+                new(new Point2D(-2, -2), new Point2D(2, -2)),
             };
+
+            var group = new Model3DGroup();
+            var material = new DiffuseMaterial(new SolidColorBrush(Colors.Orange));
 
             foreach (var lineSegment in lineSegments)
             {
                 scene.AddBoundary(new LineSegment(
                     new Vector2D(lineSegment.Point1.X, -lineSegment.Point1.Y),
                     new Vector2D(lineSegment.Point2.X, -lineSegment.Point2.Y)));
+
+                var rectangleMesh = CreateWall(
+                    new Point2D(lineSegment.Point1.Y, lineSegment.Point1.X),
+                    new Point2D(lineSegment.Point2.Y, lineSegment.Point2.X));
+
+                var rectangleModel = new GeometryModel3D(rectangleMesh, material);
+                group.Children.Add(rectangleModel);
             }
+
+            Scene3D = group;
+
 
 
             // Old
@@ -281,31 +296,14 @@ namespace Game.DarkAlliance.ViewModel
         {
             var mb = new MeshBuilder();
 
-            // Bemærk: Punkterne går MOD uret, så normalen peger i retning af beskueren
-            // Punkterne her er: (x, z) = (2, -2) -> (0, -2), hvilket svarer til de 2 øverste 3d punkter
             mb.AddQuad(
-                new Point3D(2, 1, -2),
-                new Point3D(0, 1, -2),
-                new Point3D(0, 0, -2),
-                new Point3D(2, 0, -2)
+                new Point3D(p1.X, 1, p1.Y),
+                new Point3D(p2.X, 1, p2.Y),
+                new Point3D(p2.X, 0, p2.Y),
+                new Point3D(p1.X, 0, p1.Y)
             );
 
             return mb.ToMesh();
-        }
-
-        private void BuildScene()
-        {
-            var group = new Model3DGroup();
-
-            var rectangleMesh = CreateWall(
-                new Point2D(2, -2),
-                new Point2D(0, -2));
-
-            var material = new DiffuseMaterial(new SolidColorBrush(Colors.Orange));
-            var rectangleModel = new GeometryModel3D(rectangleMesh, material);
-            group.Children.Add(rectangleModel);
-
-            Scene3D = group;
         }
     }
 }
