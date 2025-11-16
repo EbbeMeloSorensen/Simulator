@@ -110,8 +110,21 @@ namespace Game.DarkAlliance.UI.WPF
                 Colors.DarkSlateGray
             ));
 
-            //var sphere = CreateSphere(center: new Point3D(0, 0.3, 0), radius: 0.3, slices: 20, stacks: 20, color: Colors.Orange);
-            //viewport.Children.Add(sphere);
+            viewport.Children.Add(CreateRectangle(
+                new Point3D(-4, 0, -7),
+                new Point3D(-4, 0, -2),
+                new Point3D(-5, 0, -2),
+                new Point3D(-5, 0, -7),
+                Colors.DarkSlateGray
+            ));
+
+            viewport.Children.Add(CreateRectangle(
+                new Point3D(-2, 0, -14),
+                new Point3D(-2, 0, -6),
+                new Point3D(-4, 0, -6),
+                new Point3D(-4, 0, -14),
+                Colors.DarkSlateGray
+            ));
         }
 
         private ModelVisual3D CreateRectangle(Point3D p1, Point3D p2, Point3D p3, Point3D p4, Color color)
@@ -121,56 +134,6 @@ namespace Game.DarkAlliance.UI.WPF
                 Positions = new Point3DCollection { p1, p2, p3, p4 },
                 TriangleIndices = new Int32Collection { 0, 2, 1, 0, 3, 2 },
             };
-
-            var material = new DiffuseMaterial(new SolidColorBrush(color));
-
-            return new ModelVisual3D
-            {
-                Content = new GeometryModel3D(mesh, material)
-            };
-        }
-
-        private ModelVisual3D CreateSphere(Point3D center, double radius, int slices, int stacks, Color color)
-        {
-            var mesh = new MeshGeometry3D();
-
-            for (int stack = 0; stack <= stacks; stack++)
-            {
-                double phi = Math.PI * stack / stacks;
-                double y = Math.Cos(phi);
-                double r = Math.Sin(phi);
-
-                for (int slice = 0; slice <= slices; slice++)
-                {
-                    double theta = 2 * Math.PI * slice / slices;
-                    double x = r * Math.Cos(theta);
-                    double z = r * Math.Sin(theta);
-
-                    mesh.Positions.Add(new Point3D(
-                        center.X + radius * x,
-                        center.Y + radius * y,
-                        center.Z + radius * z));
-
-                    mesh.Normals.Add(new Vector3D(x, y, z));
-                }
-            }
-
-            for (int stack = 0; stack < stacks; stack++)
-            {
-                for (int slice = 0; slice < slices; slice++)
-                {
-                    int first = (stack * (slices + 1)) + slice;
-                    int second = first + slices + 1;
-
-                    mesh.TriangleIndices.Add(first);
-                    mesh.TriangleIndices.Add(second);
-                    mesh.TriangleIndices.Add(first + 1);
-
-                    mesh.TriangleIndices.Add(first + 1);
-                    mesh.TriangleIndices.Add(second);
-                    mesh.TriangleIndices.Add(second + 1);
-                }
-            }
 
             var material = new DiffuseMaterial(new SolidColorBrush(color));
 

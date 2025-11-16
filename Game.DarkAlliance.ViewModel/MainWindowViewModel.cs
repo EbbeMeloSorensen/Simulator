@@ -9,6 +9,9 @@ using Craft.Utils;
 using Craft.ViewModels.Geometry2D.ScrollFree;
 using Craft.ViewModels.Simulation;
 using GalaSoft.MvvmLight;
+using System.Windows.Media;
+using System.Windows.Media.Media3D;
+using LineSegment = Craft.Simulation.Boundaries.LineSegment;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
@@ -18,10 +21,10 @@ namespace Game.DarkAlliance.ViewModel
     {
         private ILogger _logger;
         private SceneViewController _sceneViewController;
-        private System.Windows.Media.Media3D.Point3D _cameraPosition;
-        private System.Windows.Media.Media3D.Vector3D _lookDirection;
+        private Point3D _cameraPosition;
+        private Vector3D _lookDirection;
 
-        public System.Windows.Media.Media3D.Point3D CameraPosition
+        public Point3D CameraPosition
         {
             get => _cameraPosition;
             set
@@ -31,7 +34,7 @@ namespace Game.DarkAlliance.ViewModel
             }
         }
 
-        public System.Windows.Media.Media3D.Vector3D LookDirection
+        public Vector3D LookDirection
         {
             get => _lookDirection;
             set
@@ -40,6 +43,21 @@ namespace Game.DarkAlliance.ViewModel
                 RaisePropertyChanged();
             }
         }
+
+        //public MeshGeometry3D RectangleMesh { get; }
+
+        private Model3DGroup _scene3D;
+
+        public Model3DGroup Scene3D
+        {
+            get => _scene3D;
+            private set
+            {
+                _scene3D = value;
+                RaisePropertyChanged();
+            }
+        }
+
 
         public Engine Engine { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
@@ -110,9 +128,6 @@ namespace Game.DarkAlliance.ViewModel
 
             _sceneViewController.ActiveScene = scene;
 
-            //CameraPosition = new Point3D(0, 1, 2);
-            //LookDirection = new Vector3D(0, 0, -1);
-
             Engine.CurrentStateChanged += (s, e) =>
             {
                 var bodyStateOfProtagonist = e.State.BodyStates.First() as BodyStateClassic;
@@ -126,6 +141,9 @@ namespace Game.DarkAlliance.ViewModel
 
                 LookDirection = new Vector3D(Math.Sin(orientation), 0, Math.Cos(orientation));
             };
+
+            // Her bygger vi 3D scenen
+            BuildScene();
         }
 
         public void HandleLoaded()
@@ -140,10 +158,11 @@ namespace Game.DarkAlliance.ViewModel
             var initialBallPosition = new Vector2D(0, 0);
 
             var initialState = new State();
-            initialState.AddBodyState(new BodyStateClassic(new CircularBody(1, ballRadius, 1, false), initialBallPosition)
-            {
-                Orientation = Math.PI
-            });
+            initialState.AddBodyState(
+                new BodyStateClassic(new CircularBody(1, ballRadius, 1, false), initialBallPosition)
+                {
+                    Orientation = Math.PI
+                });
 
             var name = "Exploration";
             var standardGravity = 0.0;
@@ -169,7 +188,8 @@ namespace Game.DarkAlliance.ViewModel
                 deltaT,
                 viewMode);
 
-            scene.CollisionBetweenBodyAndBoundaryOccuredCallBack = body => OutcomeOfCollisionBetweenBodyAndBoundary.Block;
+            scene.CollisionBetweenBodyAndBoundaryOccuredCallBack =
+                body => OutcomeOfCollisionBetweenBodyAndBoundary.Block;
 
             scene.InteractionCallBack = (keyboardState, keyboardEvents, mouseClickPosition, collisions, currentState) =>
             {
@@ -213,32 +233,79 @@ namespace Game.DarkAlliance.ViewModel
                 return true;
             };
 
-            scene.AddBoundary(new LineSegment(new Vector2D(-2, 2), new Vector2D(2, 2)));
-            scene.AddBoundary(new LineSegment(new Vector2D(2, 2), new Vector2D(2, -2)));
-            scene.AddBoundary(new LineSegment(new Vector2D(2, -2), new Vector2D(-2, -2)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-2, -2), new Vector2D(-2, 0)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-2, 0), new Vector2D(-3, 0)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-3, 0), new Vector2D(-3, 4)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-3, 4), new Vector2D(-6, 4)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-6, 4), new Vector2D(-6, 2)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-6, 2), new Vector2D(-14, 2)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-14, 2), new Vector2D(-16, 1)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-16, 1), new Vector2D(-16, -1)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-17, -1), new Vector2D(-17, 1)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-17, 1), new Vector2D(-18, 2)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-18, 2), new Vector2D(-18, 3)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-18, 3), new Vector2D(-19, 3)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-19, 4), new Vector2D(-18, 4)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-18, 4), new Vector2D(-17, 5)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-17, 5), new Vector2D(-17, 16)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-16, 18), new Vector2D(-16, 5)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-16, 5), new Vector2D(-14, 4)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-14, 4), new Vector2D(-7, 4)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-7, 4), new Vector2D(-7, 5)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-7, 5), new Vector2D(-2, 5)));
-            scene.AddBoundary(new LineSegment(new Vector2D(-2, 5), new Vector2D(-2, 2)));
+            // Liniestykker defineres i et normalt xy koordinatsystem
+            var lineSegments = new List<LineSegment2D>
+            {
+                new(new Point2D(-2, 2), new Point2D(-2, 0))
+            };
+
+            foreach (var lineSegment in lineSegments)
+            {
+                scene.AddBoundary(new LineSegment(
+                    new Vector2D(lineSegment.Point1.X, -lineSegment.Point1.Y),
+                    new Vector2D(lineSegment.Point2.X, -lineSegment.Point2.Y)));
+            }
+
+
+            // Old
+            //scene.AddBoundary(new LineSegment(new Vector2D(-2, 2), new Vector2D(2, 2)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(2, 2), new Vector2D(2, -2)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(2, -2), new Vector2D(-2, -2)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-2, 0), new Vector2D(-3, 0)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-3, 0), new Vector2D(-3, 4)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-3, 4), new Vector2D(-6, 4)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-6, 4), new Vector2D(-6, 2)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-6, 2), new Vector2D(-14, 2)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-14, 2), new Vector2D(-16, 1)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-16, 1), new Vector2D(-16, -1)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-17, -1), new Vector2D(-17, 1)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-17, 1), new Vector2D(-18, 2)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-18, 2), new Vector2D(-18, 3)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-18, 3), new Vector2D(-19, 3)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-19, 4), new Vector2D(-18, 4)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-18, 4), new Vector2D(-17, 5)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-17, 5), new Vector2D(-17, 16)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-16, 18), new Vector2D(-16, 5)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-16, 5), new Vector2D(-14, 4)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-14, 4), new Vector2D(-7, 4)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-7, 4), new Vector2D(-7, 5)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-7, 5), new Vector2D(-2, 5)));
+            //scene.AddBoundary(new LineSegment(new Vector2D(-2, 5), new Vector2D(-2, 2)));
 
             return scene;
+        }
+
+        private MeshGeometry3D CreateWall(
+            Point2D p1,
+            Point2D p2)
+        {
+            var mb = new MeshBuilder();
+
+            // Bemærk: Punkterne går MOD uret, så normalen peger i retning af beskueren
+            // Punkterne her er: (x, z) = (2, -2) -> (0, -2), hvilket svarer til de 2 øverste 3d punkter
+            mb.AddQuad(
+                new Point3D(2, 1, -2),
+                new Point3D(0, 1, -2),
+                new Point3D(0, 0, -2),
+                new Point3D(2, 0, -2)
+            );
+
+            return mb.ToMesh();
+        }
+
+        private void BuildScene()
+        {
+            var group = new Model3DGroup();
+
+            var rectangleMesh = CreateWall(
+                new Point2D(2, -2),
+                new Point2D(0, -2));
+
+            var material = new DiffuseMaterial(new SolidColorBrush(Colors.Orange));
+            var rectangleModel = new GeometryModel3D(rectangleMesh, material);
+            group.Children.Add(rectangleModel);
+
+            Scene3D = group;
         }
     }
 }

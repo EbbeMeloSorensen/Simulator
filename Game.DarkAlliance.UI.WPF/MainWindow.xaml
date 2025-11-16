@@ -22,7 +22,6 @@
 
         <Viewport3D Grid.Column="1" Name="viewport">
 
-            <!--Af en eller anden årsag virker det ikke, når jeg binder til CameraPosition og LookDirection her.....--> 
             <Viewport3D.Camera>
                 <PerspectiveCamera
                     Position="{Binding CameraPosition}"
@@ -30,6 +29,21 @@
                     UpDirection="0,1,0"
                     FieldOfView="45"/>
             </Viewport3D.Camera>
+
+            <ModelVisual3D Content="{Binding Scene3D}"/>
+
+
+            <!--<ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <GeometryModel3D Geometry="{Binding RectangleMesh}">
+                        <GeometryModel3D.Material>
+                            <DiffuseMaterial Brush="CornflowerBlue"/>
+                        </GeometryModel3D.Material>
+                    </GeometryModel3D>
+                </ModelVisual3D.Content>
+            </ModelVisual3D>-->
+
+
 
         </Viewport3D>
     </Grid>
