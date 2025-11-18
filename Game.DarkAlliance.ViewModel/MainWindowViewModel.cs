@@ -3,7 +3,6 @@ using Craft.Math;
 using Craft.Simulation;
 using Craft.Simulation.Bodies;
 using Craft.Simulation.BodyStates;
-using Craft.Simulation.Boundaries;
 using Craft.Simulation.Engine;
 using Craft.Utils;
 using Craft.ViewModels.Geometry2D.ScrollFree;
@@ -22,6 +21,7 @@ namespace Game.DarkAlliance.ViewModel
         private ILogger _logger;
         private SceneViewController _sceneViewController;
         private Point3D _cameraPosition;
+        private Point3D _lightPosition;
         private Vector3D _lookDirection;
 
         public Point3D CameraPosition
@@ -30,6 +30,16 @@ namespace Game.DarkAlliance.ViewModel
             set
             {
                 _cameraPosition = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public Point3D LightPosition
+        {
+            get => _lightPosition;
+            set
+            {
+                _lightPosition = value;
                 RaisePropertyChanged();
             }
         }
@@ -44,8 +54,6 @@ namespace Game.DarkAlliance.ViewModel
             }
         }
 
-        //public MeshGeometry3D RectangleMesh { get; }
-
         private Model3DGroup _scene3D;
 
         public Model3DGroup Scene3D
@@ -57,7 +65,6 @@ namespace Game.DarkAlliance.ViewModel
                 RaisePropertyChanged();
             }
         }
-
 
         public Engine Engine { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
@@ -137,6 +144,11 @@ namespace Game.DarkAlliance.ViewModel
                 CameraPosition = new Point3D(
                     -position.Y,
                     0.5,
+                    position.X);
+
+                LightPosition = new Point3D(
+                    -position.Y,
+                    1,
                     position.X);
 
                 LookDirection = new Vector3D(Math.Sin(orientation), 0, Math.Cos(orientation));
@@ -242,7 +254,7 @@ namespace Game.DarkAlliance.ViewModel
             };
 
             var group = new Model3DGroup();
-            var material = new DiffuseMaterial(new SolidColorBrush(Colors.Orange));
+            var material = new DiffuseMaterial(new SolidColorBrush(Colors.Red){ Opacity = 0.99});
 
             foreach (var lineSegment in lineSegments)
             {

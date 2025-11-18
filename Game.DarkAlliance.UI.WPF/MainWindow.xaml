@@ -30,20 +30,15 @@
                     FieldOfView="45"/>
             </Viewport3D.Camera>
 
-            <ModelVisual3D Content="{Binding Scene3D}"/>
-
-
-            <!--<ModelVisual3D>
+            <!-- Player light -->
+            <ModelVisual3D>
                 <ModelVisual3D.Content>
-                    <GeometryModel3D Geometry="{Binding RectangleMesh}">
-                        <GeometryModel3D.Material>
-                            <DiffuseMaterial Brush="CornflowerBlue"/>
-                        </GeometryModel3D.Material>
-                    </GeometryModel3D>
+                    <PointLight Color="Yellow"
+                                Position="{Binding LightPosition}" />
                 </ModelVisual3D.Content>
-            </ModelVisual3D>-->
+            </ModelVisual3D>
 
-
+            <ModelVisual3D Content="{Binding Scene3D}"/>
 
         </Viewport3D>
     </Grid>
