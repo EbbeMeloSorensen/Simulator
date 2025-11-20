@@ -148,7 +148,7 @@ namespace Game.DarkAlliance.ViewModel
 
                 LightPosition = new Point3D(
                     -position.Y,
-                    1,
+                    0.5,
                     position.X);
 
                 LookDirection = new Vector3D(Math.Sin(orientation), 0, Math.Cos(orientation));
