@@ -33,7 +33,11 @@
             <!-- Player light -->
             <ModelVisual3D>
                 <ModelVisual3D.Content>
-                    <PointLight Color="Yellow"
+                    <PointLight Color="white"
+                                Range="10"
+                                ConstantAttenuation="1"
+                                LinearAttenuation="0.05"
+                                QuadraticAttenuation="0.05"
                                 Position="{Binding LightPosition}" />
                 </ModelVisual3D.Content>
             </ModelVisual3D>

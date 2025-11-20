@@ -254,7 +254,10 @@ namespace Game.DarkAlliance.ViewModel
             };
 
             var group = new Model3DGroup();
-            var material = new DiffuseMaterial(new SolidColorBrush(Colors.Red){ Opacity = 0.99});
+
+            var materialGroup = new MaterialGroup();
+            materialGroup.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.DarkSlateGray) { Opacity = 0.99 }));
+            materialGroup.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.White), 100));
 
             foreach (var lineSegment in lineSegments)
             {
@@ -266,7 +269,7 @@ namespace Game.DarkAlliance.ViewModel
                     new Point2D(lineSegment.Point1.Y, lineSegment.Point1.X),
                     new Point2D(lineSegment.Point2.Y, lineSegment.Point2.X));
 
-                var rectangleModel = new GeometryModel3D(rectangleMesh, material);
+                var rectangleModel = new GeometryModel3D(rectangleMesh, materialGroup);
                 group.Children.Add(rectangleModel);
             }
 
@@ -306,16 +309,11 @@ namespace Game.DarkAlliance.ViewModel
             Point2D p1,
             Point2D p2)
         {
-            var mb = new MeshBuilder();
-
-            mb.AddQuad(
+            return MeshBuilder.CreateQuad(
                 new Point3D(p1.X, 1, p1.Y),
                 new Point3D(p2.X, 1, p2.Y),
                 new Point3D(p2.X, 0, p2.Y),
-                new Point3D(p1.X, 0, p1.Y)
-            );
-
-            return mb.ToMesh();
+                new Point3D(p1.X, 0, p1.Y));
         }
     }
 }
