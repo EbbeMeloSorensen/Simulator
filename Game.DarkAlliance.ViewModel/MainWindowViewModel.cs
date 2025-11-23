@@ -1,4 +1,3 @@
-using Craft.Logging;
 using Craft.Math;
 using Craft.Simulation;
 using Craft.Simulation.Bodies;
@@ -18,7 +17,6 @@ namespace Game.DarkAlliance.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private ILogger _logger;
         private SceneViewController _sceneViewController;
         private Point3D _cameraPosition;
         private Point3D _lightPosition;
@@ -69,15 +67,11 @@ namespace Game.DarkAlliance.ViewModel
         public Engine Engine { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
 
-        public MainWindowViewModel(
-            ILogger logger)
+        public MainWindowViewModel()
         {
-            _logger = logger;
-            _logger = null; // Disable logging (it should only be used for debugging purposes)
+            Engine = new Engine(null);
 
-            Engine = new Engine(_logger);
-
-            GeometryEditorViewModel = new GeometryEditorViewModel(1)
+            GeometryEditorViewModel = new GeometryEditorViewModel()
             {
                 UpdateModelCallBack = Engine.UpdateModel
             };
