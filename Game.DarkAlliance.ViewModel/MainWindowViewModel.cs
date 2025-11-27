@@ -151,7 +151,7 @@ namespace Game.DarkAlliance.ViewModel
 
         public void HandleLoaded()
         {
-            _sceneViewController.ResetScene();
+            //_sceneViewController.ResetScene();
             Engine.StartOrResumeAnimation();
         }
 
