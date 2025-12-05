@@ -51,7 +51,7 @@ namespace Game.FlappyBird.ViewModel
             Engine = new Engine(_logger);
             Engine.AnimationCompleted += (s, e) =>
             {
-                Outcome = Engine.EngineCore.Outcome;
+                Outcome = Engine.EngineCore.Outcome as string;
                 RefreshButtons();
             };
 

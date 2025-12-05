@@ -101,16 +101,18 @@ namespace Simulator.Laboratory.ViewModel
             Engine = new Craft.Simulation.Engine.Engine(_logger);
             Engine.AnimationCompleted += (s, e) =>
             {
+                var outComeAsString = Engine.EngineCore.Outcome as string;
+
                 // If the outcome is the name of another scene then switch to that scene
-                if (SceneListViewModel.ContainsScene(Engine.EngineCore.Outcome))
+                if (SceneListViewModel.ContainsScene(outComeAsString))
                 {
                     Engine.EngineCore.PreviousScene = Engine.EngineCore.Scene.Name;
-                    SceneListViewModel.ActiveScene = SceneListViewModel.GetScene(Engine.EngineCore.Outcome);
+                    SceneListViewModel.ActiveScene = SceneListViewModel.GetScene(outComeAsString);
                     StartOrResumeAnimationCommand.Execute(null);
                 }
                 else
                 {
-                    Outcome = Engine.EngineCore.Outcome;
+                    Outcome = outComeAsString;
                 }
 
                 RefreshButtons();

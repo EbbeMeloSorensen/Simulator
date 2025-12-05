@@ -531,7 +531,7 @@ namespace Game.Rocket.ViewModel
 
             Bonnet.AnimationCompleted += (s, e) =>
             {
-                SwitchState(Bonnet.EngineCore, Bonnet.EngineCore.Outcome);
+                SwitchState(Bonnet.EngineCore, Bonnet.EngineCore.Outcome as string);
 
                 UnlockLevels(ApplicationState.Object);
             };
