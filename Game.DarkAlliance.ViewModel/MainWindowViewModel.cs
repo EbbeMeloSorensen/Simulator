@@ -267,34 +267,18 @@ namespace Game.DarkAlliance.ViewModel
                 group.Children.Add(rectangleModel);
             }
 
+            var sphereRadius = 0.5;
+
+            var sphereMesh = MeshBuilder.CreateSphere(
+                new Point3D(0, 0, 0),
+                sphereRadius,
+                20,
+                20);
+
+            var sphereModel = new GeometryModel3D(sphereMesh, materialGroup);
+            group.Children.Add(sphereModel);
+
             Scene3D = group;
-
-
-
-            // Old
-            //scene.AddBoundary(new LineSegment(new Vector2D(-2, 2), new Vector2D(2, 2)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(2, 2), new Vector2D(2, -2)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(2, -2), new Vector2D(-2, -2)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-2, 0), new Vector2D(-3, 0)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-3, 0), new Vector2D(-3, 4)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-3, 4), new Vector2D(-6, 4)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-6, 4), new Vector2D(-6, 2)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-6, 2), new Vector2D(-14, 2)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-14, 2), new Vector2D(-16, 1)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-16, 1), new Vector2D(-16, -1)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-17, -1), new Vector2D(-17, 1)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-17, 1), new Vector2D(-18, 2)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-18, 2), new Vector2D(-18, 3)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-18, 3), new Vector2D(-19, 3)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-19, 4), new Vector2D(-18, 4)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-18, 4), new Vector2D(-17, 5)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-17, 5), new Vector2D(-17, 16)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-16, 18), new Vector2D(-16, 5)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-16, 5), new Vector2D(-14, 4)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-14, 4), new Vector2D(-7, 4)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-7, 4), new Vector2D(-7, 5)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-7, 5), new Vector2D(-2, 5)));
-            //scene.AddBoundary(new LineSegment(new Vector2D(-2, 5), new Vector2D(-2, 2)));
 
             return scene;
         }
