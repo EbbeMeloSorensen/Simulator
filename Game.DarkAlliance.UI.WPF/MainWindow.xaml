@@ -36,7 +36,7 @@
                     <PointLight Color="white"
                                 Range="10"
                                 ConstantAttenuation="1"
-                                LinearAttenuation="0.05"
+                                LinearAttenuation="0.0"
                                 QuadraticAttenuation="0.05"
                                 Position="{Binding LightPosition}" />
                 </ModelVisual3D.Content>

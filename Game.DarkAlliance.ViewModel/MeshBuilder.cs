@@ -39,51 +39,69 @@ namespace Game.DarkAlliance.ViewModel
             return mesh;
         }
 
+        /// <summary>
+        /// Creates a UV sphere with correct outward-facing normals.
+        /// </summary>
         public static MeshGeometry3D CreateSphere(
             Point3D center,
             double radius,
-            int thetaDiv,
-            int phiDiv)
+            int longitudeDivisions,
+            int latitudeDivisions)
         {
             var mesh = new MeshGeometry3D();
 
-            for (var pi = 0; pi <= phiDiv; pi++)
+            // Vertices + normals
+            for (var lat = 0; lat <= latitudeDivisions; lat++)
             {
-                var phi = Math.PI * pi / phiDiv;
+                var v = (double)lat / latitudeDivisions;
+                var phi = Math.PI * v;
+
                 var y = Math.Cos(phi);
                 var r = Math.Sin(phi);
 
-                for (var ti = 0; ti <= thetaDiv; ti++)
+                for (var lon = 0; lon <= longitudeDivisions; lon++)
                 {
-                    var theta = 2.0 * Math.PI * ti / thetaDiv;
+                    var u = (double)lon / longitudeDivisions;
+                    var theta = 2.0 * Math.PI * u;
 
                     var x = r * Math.Cos(theta);
                     var z = r * Math.Sin(theta);
 
-                    mesh.Positions.Add(new Point3D(
-                        center.X + radius * x,
-                        center.Y + radius * y,
-                        center.Z + radius * z));
+                    // Normal is unit vector from center
+                    var normal = new Vector3D(x, y, z);
+                    normal.Normalize();
 
-                    mesh.Normals.Add(new Vector3D(x, y, z));
+                    // Position is normal * radius + center
+                    mesh.Positions.Add(new Point3D(
+                        center.X + radius * normal.X,
+                        center.Y + radius * normal.Y,
+                        center.Z + radius * normal.Z));
+
+                    mesh.Normals.Add(normal);
                 }
             }
 
-            // Build triangles
-            for (var pi = 0; pi < phiDiv; pi++)
+            var stride = longitudeDivisions + 1;
+
+            // Indices (counter-clockwise winding, outward-facing)
+            for (var lat = 0; lat < latitudeDivisions; lat++)
             {
-                for (var ti = 0; ti < thetaDiv; ti++)
+                for (var lon = 0; lon < longitudeDivisions; lon++)
                 {
-                    var a = (thetaDiv + 1) * pi + ti;
-                    var b = a + thetaDiv + 1;
+                    var p0 = lat * stride + lon;
+                    var p1 = p0 + 1;
+                    var p2 = p0 + stride;
+                    var p3 = p2 + 1;
 
-                    mesh.TriangleIndices.Add(a);
-                    mesh.TriangleIndices.Add(b);
-                    mesh.TriangleIndices.Add(a + 1);
+                    // Triangle 1
+                    mesh.TriangleIndices.Add(p0);
+                    mesh.TriangleIndices.Add(p2);
+                    mesh.TriangleIndices.Add(p1);
 
-                    mesh.TriangleIndices.Add(a + 1);
-                    mesh.TriangleIndices.Add(b);
-                    mesh.TriangleIndices.Add(b + 1);
+                    // Triangle 2
+                    mesh.TriangleIndices.Add(p1);
+                    mesh.TriangleIndices.Add(p2);
+                    mesh.TriangleIndices.Add(p3);
                 }
             }
 

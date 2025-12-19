@@ -267,16 +267,32 @@ namespace Game.DarkAlliance.ViewModel
                 group.Children.Add(rectangleModel);
             }
 
-            var sphereRadius = 0.5;
+            var sphereRadius = 0.25;
 
             var sphereMesh = MeshBuilder.CreateSphere(
-                new Point3D(0, 0, 0),
+                new Point3D(0, 0.5, -2),
                 sphereRadius,
-                20,
-                20);
+                10,
+                10);
 
-            var sphereModel = new GeometryModel3D(sphereMesh, materialGroup);
+            //var sphereMaterial = new DiffuseMaterial(new SolidColorBrush(Colors.Orange));
+
+            var sphereMaterial = new MaterialGroup();
+            sphereMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.Orange)));
+            sphereMaterial.Children.Add(new SpecularMaterial(Brushes.White, 32));
+
+            var sphereModel = new GeometryModel3D
+            {
+                Geometry = sphereMesh,
+                Material = sphereMaterial,
+                BackMaterial = sphereMaterial
+            };
+
             group.Children.Add(sphereModel);
+            group.Children.Add(new AmbientLight
+            {
+                Color = Color.FromRgb(120, 120, 120)
+            });
 
             Scene3D = group;
 
