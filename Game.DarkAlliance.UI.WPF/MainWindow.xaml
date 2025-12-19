@@ -30,13 +30,20 @@
                     FieldOfView="45"/>
             </Viewport3D.Camera>
 
+            <!-- Dim ambient so the point light matters -->
+            <ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <AmbientLight Color="#202020"/>
+                </ModelVisual3D.Content>
+            </ModelVisual3D>
+
             <!-- Player light -->
             <ModelVisual3D>
                 <ModelVisual3D.Content>
                     <PointLight Color="white"
                                 Range="10"
                                 ConstantAttenuation="1"
-                                LinearAttenuation="0.0"
+                                LinearAttenuation="0.2"
                                 QuadraticAttenuation="0.05"
                                 Position="{Binding LightPosition}" />
                 </ModelVisual3D.Content>

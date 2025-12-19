@@ -272,14 +272,17 @@ namespace Game.DarkAlliance.ViewModel
             var sphereMesh = MeshBuilder.CreateSphere(
                 new Point3D(0, 0.5, -2),
                 sphereRadius,
-                10,
-                10);
+                8,
+                8);
 
-            //var sphereMaterial = new DiffuseMaterial(new SolidColorBrush(Colors.Orange));
+            var cylinderMesh = MeshBuilder.CreateCylinder(
+                new Point3D(0, 0, 0),
+                0.3,
+                0.3,
+                6);
 
-            var sphereMaterial = new MaterialGroup();
-            sphereMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.Orange)));
-            sphereMaterial.Children.Add(new SpecularMaterial(Brushes.White, 32));
+            var sphereMaterial = new DiffuseMaterial(new SolidColorBrush(Colors.DarkSlateGray));
+            var cylinderMaterial = sphereMaterial;
 
             var sphereModel = new GeometryModel3D
             {
@@ -288,11 +291,18 @@ namespace Game.DarkAlliance.ViewModel
                 BackMaterial = sphereMaterial
             };
 
-            group.Children.Add(sphereModel);
-            group.Children.Add(new AmbientLight
+            var cylinderModel = new GeometryModel3D
             {
-                Color = Color.FromRgb(120, 120, 120)
-            });
+                Geometry = cylinderMesh,
+                Material = sphereMaterial,
+                BackMaterial = sphereMaterial
+            };
+
+            group.Children.Add(sphereModel);
+            group.Children.Add(cylinderModel);
+
+            group.Children.Add(new DirectionalLight(Colors.White,
+                new Vector3D(0, 1, 0)));
 
             Scene3D = group;
 
