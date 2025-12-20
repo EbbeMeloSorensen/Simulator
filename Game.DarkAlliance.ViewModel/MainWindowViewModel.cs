@@ -145,8 +145,7 @@ namespace Game.DarkAlliance.ViewModel
                     position.X);
 
                 LookDirection = new Vector3D(Math.Sin(orientation), 0, Math.Cos(orientation));
-                //LightPosition = CameraPosition + LookDirection * 3 + new Vector3D(0, -2, 0);
-                LightPosition = CameraPosition - LookDirection * 3 - new Vector3D(0, -2, 0);
+                LightPosition = CameraPosition + LookDirection * 3 + new Vector3D(0, -2, 0);
             };
         }
 
@@ -249,11 +248,11 @@ namespace Game.DarkAlliance.ViewModel
 
             var group = new Model3DGroup();
 
-            var baseColor = Colors.Orange;
+            var baseColor = Colors.DarkSlateGray;
 
             var wallMaterial = new MaterialGroup();
             wallMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(baseColor)));
-            wallMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.Red), 32));
+            //wallMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.White), 32));
 
             var propMaterial = new MaterialGroup();
             propMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(baseColor)));
