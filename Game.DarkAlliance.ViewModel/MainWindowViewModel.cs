@@ -144,27 +144,10 @@ namespace Game.DarkAlliance.ViewModel
                     0.5,
                     position.X);
 
-                LightPosition = CameraPosition + LookDirection * 0.5;
-
-                //LightPosition = new Point3D(
-                //    -position.Y,
-                //    0.5,
-                //    position.X);
-
                 LookDirection = new Vector3D(Math.Sin(orientation), 0, Math.Cos(orientation));
+                //LightPosition = CameraPosition + LookDirection * 3 + new Vector3D(0, -2, 0);
+                LightPosition = CameraPosition - LookDirection * 3 - new Vector3D(0, -2, 0);
             };
-
-            //var radius = 1.0;
-
-            //_angle = 2 * Math.PI;
-            //var x = radius * Math.Cos(_angle);
-            //var z = radius * Math.Sin(_angle);
-
-            //LightPosition = new Point3D(0, 1, -2);
-
-            //LightPosition = CameraPosition + LookDirection * 0.5;
-
-            //StartLightAnimation();
         }
 
         public void HandleLoaded()
@@ -266,10 +249,15 @@ namespace Game.DarkAlliance.ViewModel
 
             var group = new Model3DGroup();
 
+            var baseColor = Colors.Orange;
+
             var wallMaterial = new MaterialGroup();
-            //wallMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.Orange) { Opacity = 0.99 }));
-            wallMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.Orange)));
-            wallMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.White), 100));
+            wallMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(baseColor)));
+            wallMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.Red), 32));
+
+            var propMaterial = new MaterialGroup();
+            propMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(baseColor)));
+            propMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.White), 32));
 
             foreach (var lineSegment in lineSegments)
             {
@@ -285,23 +273,22 @@ namespace Game.DarkAlliance.ViewModel
                 group.Children.Add(rectangleModel);
             }
 
-            var sphereRadius = 0.25;
+            var sphereRadius = 0.3;
 
             var sphereMesh = MeshBuilder.CreateSphere(
-                new Point3D(0, 0.5, -2),
+                new Point3D(0, 0.7, 0),
                 sphereRadius,
-                8,
-                8);
+                20,
+                20);
 
             var cylinderMesh = MeshBuilder.CreateCylinder(
-                new Point3D(0, 0, 0),
-                0.2,
-                0.9,
-                3);
+                new Point3D(0, 0.2, 0),
+                0.3,
+                0.4,
+                20);
 
-            //var sphereMaterial = new DiffuseMaterial(new SolidColorBrush(Colors.DarkSlateGray));
-            var sphereMaterial = wallMaterial;
-            var cylinderMaterial = sphereMaterial;
+            var sphereMaterial = propMaterial;
+            var cylinderMaterial = propMaterial;
 
             var sphereModel = new GeometryModel3D
             {
@@ -320,17 +307,17 @@ namespace Game.DarkAlliance.ViewModel
             group.Children.Add(sphereModel);
             group.Children.Add(cylinderModel);
 
-            var meshFromFile = StlMeshLoader.Load(@"C:\Temp\box.stl");
+            //var meshFromFile = StlMeshLoader.Load(@"C:\Temp\box.stl");
             //var meshFromFile = StlMeshLoader.Load(@"C:\Temp\low poly guy.stl");
 
-            var fileModel = new GeometryModel3D
-            {
-                Geometry = meshFromFile,
-                Material = cylinderMaterial,
-                BackMaterial = cylinderMaterial
-            };
+            //var fileModel = new GeometryModel3D
+            //{
+            //    Geometry = meshFromFile,
+            //    Material = cylinderMaterial,
+            //    BackMaterial = cylinderMaterial
+            //};
 
-            group.Children.Add(fileModel);
+            //group.Children.Add(fileModel);
 
             Scene3D = group;
 

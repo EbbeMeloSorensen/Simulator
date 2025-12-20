@@ -35,18 +35,19 @@
             </Viewport3D.Camera>
 
             <!-- Dim ambient so the point light matters -->
-            <!--<ModelVisual3D>
+            <ModelVisual3D>
                 <ModelVisual3D.Content>
                     <AmbientLight Color="#202020"/>
                 </ModelVisual3D.Content>
-            </ModelVisual3D>-->
-
-            <!--Directional light to simulate sunlight-->
-            <ModelVisual3D>
-                <ModelVisual3D.Content>
-                    <DirectionalLight Color="white" Direction="0,1,0"/>
-                </ModelVisual3D.Content>
             </ModelVisual3D>
+
+            <!--Directional light, e.g to simulate sunlight-->
+            <!--<ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <DirectionalLight Color="Red"
+                                      Direction="0,1,0"/>
+                </ModelVisual3D.Content>
+            </ModelVisual3D>-->
 
             <!-- Player light (Point light) -->
             <ModelVisual3D>
@@ -59,6 +60,18 @@
                                 Position="{Binding LightPosition}"/>
                 </ModelVisual3D.Content>
             </ModelVisual3D>
+
+            <!-- Stationary light (Point light) -->
+            <!--<ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <PointLight Color="white"
+                                Range="10"
+                                ConstantAttenuation="1"
+                                LinearAttenuation="0.2"
+                                QuadraticAttenuation="0.05"
+                                Position="0,0,-2"/>
+                </ModelVisual3D.Content>
+            </ModelVisual3D>-->
 
             <ModelVisual3D Content="{Binding Scene3D}"/>
 
