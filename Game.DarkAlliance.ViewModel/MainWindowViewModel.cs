@@ -320,7 +320,7 @@ namespace Game.DarkAlliance.ViewModel
             group.Children.Add(sphereModel);
             group.Children.Add(cylinderModel);
 
-            var meshFromFile = StlMeshLoader.Load(@"C:\Temp\untitled.stl");
+            var meshFromFile = StlMeshLoader.Load(@"C:\Temp\box.stl");
             //var meshFromFile = StlMeshLoader.Load(@"C:\Temp\low poly guy.stl");
 
             var fileModel = new GeometryModel3D
