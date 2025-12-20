@@ -13,14 +13,18 @@
         KeyDown="MainWindow_OnKeyDown"
         KeyUp="MainWindow_OnKeyUp">
     <Grid>
-        <Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <scrollFree:GeometryEditorView Grid.Column="0" DataContext="{Binding GeometryEditorViewModel}"/>
+        <scrollFree:GeometryEditorView Grid.Row="0" Grid.Column="0" DataContext="{Binding GeometryEditorViewModel}"/>
 
-        <Viewport3D Grid.Column="1" Name="viewport">
+        <Viewport3D Grid.Row="0" Grid.Column="1" Name="viewport">
 
             <Viewport3D.Camera>
                 <PerspectiveCamera
@@ -31,13 +35,20 @@
             </Viewport3D.Camera>
 
             <!-- Dim ambient so the point light matters -->
-            <ModelVisual3D>
+            <!--<ModelVisual3D>
                 <ModelVisual3D.Content>
                     <AmbientLight Color="#202020"/>
                 </ModelVisual3D.Content>
+            </ModelVisual3D>-->
+
+            <!--Directional light to simulate sunlight-->
+            <ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <DirectionalLight Color="white" Direction="0,1,0"/>
+                </ModelVisual3D.Content>
             </ModelVisual3D>
 
-            <!-- Player light -->
+            <!-- Player light (Point light) -->
             <ModelVisual3D>
                 <ModelVisual3D.Content>
                     <PointLight Color="white"
@@ -45,12 +56,18 @@
                                 ConstantAttenuation="1"
                                 LinearAttenuation="0.2"
                                 QuadraticAttenuation="0.05"
-                                Position="{Binding LightPosition}" />
+                                Position="{Binding LightPosition}"/>
                 </ModelVisual3D.Content>
             </ModelVisual3D>
 
             <ModelVisual3D Content="{Binding Scene3D}"/>
 
         </Viewport3D>
+
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <TextBlock Text="{Binding LightPosition.X}"/>
+            <TextBlock Text="{Binding LightPosition.Y}"/>
+            <TextBlock Text="{Binding LightPosition.Z}"/>
+        </StackPanel>
     </Grid>
 </Window>

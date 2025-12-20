@@ -9,6 +9,7 @@ using Craft.ViewModels.Simulation;
 using GalaSoft.MvvmLight;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Windows.Threading;
 using LineSegment = Craft.Simulation.Boundaries.LineSegment;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
@@ -17,6 +18,9 @@ namespace Game.DarkAlliance.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        private DispatcherTimer _timer;
+        private double _angle = 0;
+
         private SceneViewController _sceneViewController;
         private Point3D _cameraPosition;
         private Point3D _lightPosition;
@@ -140,25 +144,38 @@ namespace Game.DarkAlliance.ViewModel
                     0.5,
                     position.X);
 
-                LightPosition = new Point3D(
-                    -position.Y,
-                    0.5,
-                    position.X);
+                LightPosition = CameraPosition + LookDirection * 0.5;
+
+                //LightPosition = new Point3D(
+                //    -position.Y,
+                //    0.5,
+                //    position.X);
 
                 LookDirection = new Vector3D(Math.Sin(orientation), 0, Math.Cos(orientation));
             };
+
+            //var radius = 1.0;
+
+            //_angle = 2 * Math.PI;
+            //var x = radius * Math.Cos(_angle);
+            //var z = radius * Math.Sin(_angle);
+
+            //LightPosition = new Point3D(0, 1, -2);
+
+            //LightPosition = CameraPosition + LookDirection * 0.5;
+
+            //StartLightAnimation();
         }
 
         public void HandleLoaded()
         {
-            //_sceneViewController.ResetScene();
             Engine.StartOrResumeAnimation();
         }
 
         private Scene GenerateScene()
         {
             var ballRadius = 0.16;
-            var initialBallPosition = new Vector2D(0, 0);
+            var initialBallPosition = new Vector2D(1.5, 0);
 
             var initialState = new State();
             initialState.AddBodyState(
@@ -249,9 +266,10 @@ namespace Game.DarkAlliance.ViewModel
 
             var group = new Model3DGroup();
 
-            var materialGroup = new MaterialGroup();
-            materialGroup.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.DarkSlateGray) { Opacity = 0.99 }));
-            materialGroup.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.White), 100));
+            var wallMaterial = new MaterialGroup();
+            //wallMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.Orange) { Opacity = 0.99 }));
+            wallMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.Orange)));
+            wallMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.White), 100));
 
             foreach (var lineSegment in lineSegments)
             {
@@ -263,7 +281,7 @@ namespace Game.DarkAlliance.ViewModel
                     new Point2D(lineSegment.Point1.Y, lineSegment.Point1.X),
                     new Point2D(lineSegment.Point2.Y, lineSegment.Point2.X));
 
-                var rectangleModel = new GeometryModel3D(rectangleMesh, materialGroup);
+                var rectangleModel = new GeometryModel3D(rectangleMesh, wallMaterial);
                 group.Children.Add(rectangleModel);
             }
 
@@ -277,11 +295,12 @@ namespace Game.DarkAlliance.ViewModel
 
             var cylinderMesh = MeshBuilder.CreateCylinder(
                 new Point3D(0, 0, 0),
-                0.3,
-                0.3,
-                6);
+                0.2,
+                0.9,
+                3);
 
-            var sphereMaterial = new DiffuseMaterial(new SolidColorBrush(Colors.DarkSlateGray));
+            //var sphereMaterial = new DiffuseMaterial(new SolidColorBrush(Colors.DarkSlateGray));
+            var sphereMaterial = wallMaterial;
             var cylinderMaterial = sphereMaterial;
 
             var sphereModel = new GeometryModel3D
@@ -294,15 +313,24 @@ namespace Game.DarkAlliance.ViewModel
             var cylinderModel = new GeometryModel3D
             {
                 Geometry = cylinderMesh,
-                Material = sphereMaterial,
-                BackMaterial = sphereMaterial
+                Material = cylinderMaterial,
+                BackMaterial = cylinderMaterial
             };
 
             group.Children.Add(sphereModel);
             group.Children.Add(cylinderModel);
 
-            group.Children.Add(new DirectionalLight(Colors.White,
-                new Vector3D(0, 1, 0)));
+            var meshFromFile = StlMeshLoader.Load(@"C:\Temp\untitled.stl");
+            //var meshFromFile = StlMeshLoader.Load(@"C:\Temp\low poly guy.stl");
+
+            var fileModel = new GeometryModel3D
+            {
+                Geometry = meshFromFile,
+                Material = cylinderMaterial,
+                BackMaterial = cylinderMaterial
+            };
+
+            group.Children.Add(fileModel);
 
             Scene3D = group;
 
@@ -318,6 +346,25 @@ namespace Game.DarkAlliance.ViewModel
                 new Point3D(p2.X, 1, p2.Y),
                 new Point3D(p2.X, 0, p2.Y),
                 new Point3D(p1.X, 0, p1.Y));
+        }
+
+        private void StartLightAnimation()
+        {
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromMilliseconds(30);
+
+            var radius = 2;
+            
+            _timer.Tick += (s, e) =>
+            {
+                _angle += 0.01;
+                var x = radius * Math.Cos(_angle);
+                var z = radius * Math.Sin(_angle);
+
+                LightPosition = new Point3D(x, 1, z);
+            };
+
+            _timer.Start();
         }
     }
 }
