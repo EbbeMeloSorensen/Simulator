@@ -23,8 +23,10 @@ namespace Game.DarkAlliance.ViewModel
 
         private SceneViewController _sceneViewController;
         private Point3D _cameraPosition;
-        private Point3D _lightPosition;
+        private Point3D _playerLightPosition;
         private Vector3D _lookDirection;
+        private Vector3D _directionalLight1;
+        private Vector3D _directionalLight2;
 
         public Point3D CameraPosition
         {
@@ -36,12 +38,12 @@ namespace Game.DarkAlliance.ViewModel
             }
         }
 
-        public Point3D LightPosition
+        public Point3D PlayerLightPosition
         {
-            get => _lightPosition;
+            get => _playerLightPosition;
             set
             {
-                _lightPosition = value;
+                _playerLightPosition = value;
                 RaisePropertyChanged();
             }
         }
@@ -52,6 +54,26 @@ namespace Game.DarkAlliance.ViewModel
             set
             {
                 _lookDirection = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public Vector3D DirectionalLight1
+        {
+            get => _directionalLight1;
+            set
+            {
+                _directionalLight1 = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public Vector3D DirectionalLight2
+        {
+            get => _directionalLight2;
+            set
+            {
+                _directionalLight2 = value;
                 RaisePropertyChanged();
             }
         }
@@ -145,7 +167,8 @@ namespace Game.DarkAlliance.ViewModel
                     position.X);
 
                 LookDirection = new Vector3D(Math.Sin(orientation), 0, Math.Cos(orientation));
-                LightPosition = CameraPosition + LookDirection * 3 + new Vector3D(0, -2, 0);
+                DirectionalLight1 = LookDirection + new Vector3D(0, -0.5, 0);
+                PlayerLightPosition = CameraPosition + LookDirection * 3 + new Vector3D(0, -1, 0);
             };
         }
 
@@ -248,15 +271,12 @@ namespace Game.DarkAlliance.ViewModel
 
             var group = new Model3DGroup();
 
-            var baseColor = Colors.DarkSlateGray;
-
             var wallMaterial = new MaterialGroup();
-            wallMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(baseColor)));
-            //wallMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.White), 32));
+            wallMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.DarkSlateGray)));
 
             var propMaterial = new MaterialGroup();
-            propMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(baseColor)));
-            propMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.White), 32));
+            propMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.SaddleBrown)));
+            propMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.White), 100));
 
             foreach (var lineSegment in lineSegments)
             {
@@ -306,6 +326,26 @@ namespace Game.DarkAlliance.ViewModel
             group.Children.Add(sphereModel);
             group.Children.Add(cylinderModel);
 
+            var floorExtent = 20.0;
+
+            var floorMesh = MeshBuilder.CreateQuad(
+                new Point3D(floorExtent, 0, floorExtent),
+                new Point3D(floorExtent, 0, -floorExtent),
+                new Point3D(-floorExtent, 0, -floorExtent),
+                new Point3D(-floorExtent, 0, floorExtent));
+
+            var floorMaterial = new MaterialGroup();
+            floorMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.LightSalmon)));
+            //floorMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.White), 64));
+
+            var floorModel = new GeometryModel3D
+            {
+                Geometry = floorMesh,
+                Material = floorMaterial,
+            };
+
+            group.Children.Add(floorModel);
+
             //var meshFromFile = StlMeshLoader.Load(@"C:\Temp\box.stl");
             //var meshFromFile = StlMeshLoader.Load(@"C:\Temp\low poly guy.stl");
 
@@ -347,7 +387,7 @@ namespace Game.DarkAlliance.ViewModel
                 var x = radius * Math.Cos(_angle);
                 var z = radius * Math.Sin(_angle);
 
-                LightPosition = new Point3D(x, 1, z);
+                PlayerLightPosition = new Point3D(x, 1, z);
             };
 
             _timer.Start();

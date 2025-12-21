@@ -41,23 +41,13 @@
                 </ModelVisual3D.Content>
             </ModelVisual3D>
 
-            <!--Directional light, e.g to simulate sunlight-->
+            <!--Directional light, to show floor-->
             <ModelVisual3D>
                 <ModelVisual3D.Content>
-                    <DirectionalLight Color="#555555"
-                                      Direction="{Binding LookDirection}"/>
+                    <DirectionalLight Color="#666666"
+                                      Direction="{Binding DirectionalLight1}"/>
                 </ModelVisual3D.Content>
             </ModelVisual3D>
-
-            <!--<ModelVisual3D>
-                <ModelVisual3D.Content>
-                    <SpotLight Color="#FFFFFF"
-                               InnerConeAngle="20"
-                               OuterConeAngle="40"
-                               Position="{Binding CameraPosition}"
-                               Direction="{Binding LookDirection}"/>
-                </ModelVisual3D.Content>
-            </ModelVisual3D>-->
 
             <!-- Player light (Point light) -->
             <ModelVisual3D>
@@ -67,7 +57,7 @@
                                 ConstantAttenuation="1"
                                 LinearAttenuation="0.2"
                                 QuadraticAttenuation="0.05"
-                                Position="{Binding LightPosition}"/>
+                                Position="{Binding PlayerLightPosition}"/>
                 </ModelVisual3D.Content>
             </ModelVisual3D>
 
