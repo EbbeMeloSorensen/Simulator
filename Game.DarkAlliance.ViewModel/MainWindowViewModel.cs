@@ -272,11 +272,11 @@ namespace Game.DarkAlliance.ViewModel
             var group = new Model3DGroup();
 
             var wallMaterial = new MaterialGroup();
-            wallMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.DarkSlateGray)));
+            wallMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Color.FromRgb(80, 70, 60))));
 
             var propMaterial = new MaterialGroup();
             propMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.SaddleBrown)));
-            propMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.White), 100));
+            propMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.Yellow), 100));
 
             foreach (var lineSegment in lineSegments)
             {
