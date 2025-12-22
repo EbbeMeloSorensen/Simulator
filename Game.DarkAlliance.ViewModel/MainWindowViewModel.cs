@@ -7,7 +7,6 @@ using Craft.Utils;
 using Craft.ViewModels.Geometry2D.ScrollFree;
 using Craft.ViewModels.Simulation;
 using GalaSoft.MvvmLight;
-using System.Transactions;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
@@ -351,7 +350,7 @@ namespace Game.DarkAlliance.ViewModel
 
             group.Children.Add(floorModel);
 
-            var humanMesh = StlMeshLoader.Load(@"C:\Temp\low poly guy.stl");
+            var humanMesh = StlMeshLoader.Load(@"Assets\low poly guy.stl");
 
             var humanMaterial = new MaterialGroup();
             humanMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.LightPink)));
