@@ -7,6 +7,7 @@ using Craft.Utils;
 using Craft.ViewModels.Geometry2D.ScrollFree;
 using Craft.ViewModels.Simulation;
 using GalaSoft.MvvmLight;
+using System.Transactions;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
@@ -276,7 +277,7 @@ namespace Game.DarkAlliance.ViewModel
 
             var propMaterial = new MaterialGroup();
             propMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.SaddleBrown)));
-            propMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.Yellow), 100));
+            propMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.White), 100));
 
             foreach (var lineSegment in lineSegments)
             {
@@ -323,6 +324,11 @@ namespace Game.DarkAlliance.ViewModel
                 BackMaterial = cylinderMaterial
             };
 
+            // Transform the sphere and cylinder a bit
+            sphereModel.Translate(0, -0.1, 0);
+            sphereModel.Translate(0.5, 0, 0);
+            cylinderModel.Translate(0.5, 0, 0);
+
             group.Children.Add(sphereModel);
             group.Children.Add(cylinderModel);
 
@@ -336,7 +342,6 @@ namespace Game.DarkAlliance.ViewModel
 
             var floorMaterial = new MaterialGroup();
             floorMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.LightSalmon)));
-            //floorMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.White), 64));
 
             var floorModel = new GeometryModel3D
             {
@@ -346,17 +351,25 @@ namespace Game.DarkAlliance.ViewModel
 
             group.Children.Add(floorModel);
 
-            //var meshFromFile = StlMeshLoader.Load(@"C:\Temp\box.stl");
-            //var meshFromFile = StlMeshLoader.Load(@"C:\Temp\low poly guy.stl");
+            var humanMesh = StlMeshLoader.Load(@"C:\Temp\low poly guy.stl");
 
-            //var fileModel = new GeometryModel3D
-            //{
-            //    Geometry = meshFromFile,
-            //    Material = cylinderMaterial,
-            //    BackMaterial = cylinderMaterial
-            //};
+            var humanMaterial = new MaterialGroup();
+            humanMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.LightPink)));
 
-            //group.Children.Add(fileModel);
+            var humanModel = new GeometryModel3D
+            {
+                Geometry = humanMesh,
+                Material = humanMaterial
+            };
+
+            humanModel.Rotate(new Vector3D(1, 0, 0), -90);
+
+            var scaleFactor = 0.003;
+            humanModel.Scale(scaleFactor, scaleFactor, scaleFactor);
+
+            // (Now the human stands on the Y plane with his face approximately at height 1 and facing in the direction of the z axis)
+
+            group.Children.Add(humanModel);
 
             Scene3D = group;
 

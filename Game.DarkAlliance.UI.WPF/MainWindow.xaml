@@ -69,7 +69,18 @@
                                 ConstantAttenuation="1"
                                 LinearAttenuation="0.2"
                                 QuadraticAttenuation="0.05"
-                                Position="0,0,-2"/>
+                                Position="1.9,1,0"/>
+                </ModelVisual3D.Content>
+            </ModelVisual3D>-->
+
+            <!-- Spot light (strange or no effect) -->
+            <!--<ModelVisual3D>
+                <ModelVisual3D.Content>
+                    <SpotLight Color="Red"
+                               Position="1.9,1,0"
+                               Direction="0,-1,0"
+                               InnerConeAngle="20"
+                               OuterConeAngle="40"/>
                 </ModelVisual3D.Content>
             </ModelVisual3D>-->
 
