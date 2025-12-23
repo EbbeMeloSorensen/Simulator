@@ -10,7 +10,9 @@
 
   <ItemGroup>
     <None Remove="Assets\box.stl" />
+    <None Remove="Assets\female.stl" />
     <None Remove="Assets\low poly guy.stl" />
+    <None Remove="Assets\male.stl" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,7 +29,10 @@
     <Content Include="Assets\box.stl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\low poly guy.stl">
+    <Content Include="Assets\female.stl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\male.stl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

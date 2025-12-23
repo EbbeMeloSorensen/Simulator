@@ -5,19 +5,13 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure;
 public class ScenePart
 {
     public string ModelId { get; init; }
-    public Transform3D Transform { get; init; }
-    public Material Material { get; init; }
-    public bool IncludeBackMaterial { get; init; }
+    public Vector3D Position { get; init; }
 
     public ScenePart(
         string modelId,
-        Transform3D transform,
-        Material material,
-        bool includeBackMaterial)
+        Vector3D position)
     {
         ModelId = modelId;
-        Transform = transform;
-        Material = material;
-        IncludeBackMaterial = includeBackMaterial;
+        Position = position;
     }
 }

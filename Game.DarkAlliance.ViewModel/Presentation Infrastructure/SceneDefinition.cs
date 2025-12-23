@@ -12,25 +12,9 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
             // For a start, just hardcode a scene. Later, we will read this from some data source.
 
             var parts = new List<ScenePart>();
-
-            var transformGroup = new Transform3DGroup();
-
-            transformGroup.Children.Add(new RotateTransform3D
-            {
-                Rotation = new AxisAngleRotation3D(new Vector3D(1, 0, 0), -90)
-            });
-
-            var scaleFactor = 0.003;
-            transformGroup.Children.Add(new ScaleTransform3D(scaleFactor, scaleFactor, scaleFactor));
-
-            var material = new MaterialGroup();
-            material.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.LightPink)));
-
-            parts.Add(new ScenePart(
-                @"Assets\low poly guy.stl",
-                transformGroup,
-                material,
-                false));
+            
+            parts.Add(new ScenePart("human male", new Vector3D(0.25, 0, 0)));
+            parts.Add(new ScenePart("human female", new Vector3D(0, 0, 0)));
 
             Parts = new List<ScenePart>(parts);
         }
