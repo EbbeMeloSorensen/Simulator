@@ -288,10 +288,12 @@ Done:
 * Lav det sådan at den "slider" fra en scene til en anden. Brug det samme som i time series kontrollen, hvor den fokuserer på et bestemt punkt
 
 Todo:
-* Ændr navnene på ApplicationState og State i Application klassen
-* Introducer en abstrakt ViewModelWithStateControl, som får lov til at overtage de der state ting
-* Skær det der state machine gejl ud af Application-klassen (det bruges jo f.eks. ikke af FlappyBird)
-* Flyt klasserne fra Simulator.Application hen i Simulator.Domain og derfra hen i et nyt Craft projekt ved navn Craft.Simulation
+* Mulighed for at tilføje en kugle til scenen
+* Mulighed for at tilføje et sammensat objekt til scenen
+* Mulighed for at tilføje vægge til scenen
+* Mulighed for at tilføje en body samt en boundary omkring den til scenen
+* Mulighed for at "klikke" på en body
+
 * Der skal ikke bruges BodyStateClassic til Zelda
 * Lav noget general purpose funktionalitet til at checke for om en cirkel intersecter et liniestykke.
   Husk du har en test for, om en circular body intersecter et line Segment
