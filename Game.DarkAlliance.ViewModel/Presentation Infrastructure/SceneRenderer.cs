@@ -14,8 +14,8 @@ public class SceneRenderer : ISceneRenderer
         {
             var model = part.ModelId switch
             {
-                "human male" => GenerateHumanMale(part.Position),
-                "human female" => GenerateHumanFemale(part.Position),
+                "human male" => GenerateHumanMale(part.Position, part.Orientation),
+                "human female" => GenerateHumanFemale(part.Position, part.Orientation),
                 "barrel" => GenerateBarrel(part.Position),
                 _ => throw new NotSupportedException($"Unknown Model ID '{part.ModelId}'.")
             };
@@ -27,8 +27,13 @@ public class SceneRenderer : ISceneRenderer
     }
 
     private GeometryModel3D GenerateHumanMale(
-        Vector3D position)
+        Vector3D position,
+        double orientation = 0)
     {
+        //ImportMeshFromFile(
+        //    @"Assets\male.stl",
+        //    )
+
         var mesh = StlMeshLoader.Load(@"Assets\male.stl");
 
         var material = new DiffuseMaterial(new SolidColorBrush(Colors.LightPink));
@@ -41,16 +46,57 @@ public class SceneRenderer : ISceneRenderer
 
         // Basic transform to normalize the model in this coordinate system
         model.Rotate(new Vector3D(1, 0, 0), -90);
+        model.Translate(0, 0, 0);
         model.Scale(0.003, 0.003, 0.003);
 
         // Position in this scene
+        if (Math.Abs(orientation) > 0.00001)
+        {
+            model.Rotate(new Vector3D(0, 1, 0), orientation);
+        }
+
+        model.Translate(position.X, position.Y, position.Z);
+
+        return model;
+    }
+
+    private GeometryModel3D ImportMeshFromFile(
+        string path,
+        Material material,
+        Vector3D basicRotationAxis,
+        double basicRotationAngle,
+        Vector3D basicTranslation,
+        double basicScaleFactor,
+        Vector3D position,
+        double orientation = 0)
+    {
+        var mesh = StlMeshLoader.Load(path);
+
+        var model = new GeometryModel3D
+        {
+            Geometry = mesh,
+            Material = material
+        };
+
+        // Basic transform to normalize the model in this coordinate system
+        model.Rotate(basicRotationAxis, basicRotationAngle);
+        model.Translate(basicTranslation.X, basicTranslation.Y, basicTranslation.Z);
+        model.Scale(basicScaleFactor, basicScaleFactor, basicScaleFactor);
+
+        // Position in this scene
+        if (Math.Abs(orientation) > 0.00001)
+        {
+            model.Rotate(new Vector3D(0, 1, 0), orientation);
+        }
+
         model.Translate(position.X, position.Y, position.Z);
 
         return model;
     }
 
     private GeometryModel3D GenerateHumanFemale(
-        Vector3D position)
+        Vector3D position,
+        double orientation = 0)
     {
         var mesh = StlMeshLoader.Load(@"Assets\female.stl");
 
@@ -68,6 +114,11 @@ public class SceneRenderer : ISceneRenderer
         model.Scale(0.015, 0.015, 0.015);
 
         // Position in this scene
+        if (Math.Abs(orientation) > 0.00001)
+        {
+            model.Rotate(new Vector3D(0, 1, 0), orientation);
+        }
+
         model.Translate(position.X, position.Y, position.Z);
 
         return model;
