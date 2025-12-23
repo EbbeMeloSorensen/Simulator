@@ -10,6 +10,7 @@ using GalaSoft.MvvmLight;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
+using Game.DarkAlliance.ViewModel.Presentation_Infrastructure;
 using LineSegment = Craft.Simulation.Boundaries.LineSegment;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
@@ -18,6 +19,8 @@ namespace Game.DarkAlliance.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        private ISceneRenderer _sceneRenderer;
+
         private DispatcherTimer _timer;
         private double _angle = 0;
 
@@ -78,9 +81,9 @@ namespace Game.DarkAlliance.ViewModel
             }
         }
 
-        private Model3DGroup _scene3D;
+        private Model3D _scene3D;
 
-        public Model3DGroup Scene3D
+        public Model3D Scene3D
         {
             get => _scene3D;
             private set
@@ -95,6 +98,8 @@ namespace Game.DarkAlliance.ViewModel
 
         public MainWindowViewModel()
         {
+            _sceneRenderer = new StlSceneRenderer();
+
             Engine = new Engine(null);
 
             GeometryEditorViewModel = new GeometryEditorViewModel()
@@ -269,14 +274,14 @@ namespace Game.DarkAlliance.ViewModel
                 new(new Point2D(-2, -2), new Point2D(2, -2)),
             };
 
-            var group = new Model3DGroup();
+            //var group = new Model3DGroup();
 
-            var wallMaterial = new MaterialGroup();
-            wallMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Color.FromRgb(80, 70, 60))));
+            //var wallMaterial = new MaterialGroup();
+            //wallMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Color.FromRgb(80, 70, 60))));
 
-            var propMaterial = new MaterialGroup();
-            propMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.SaddleBrown)));
-            propMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.White), 100));
+            //var propMaterial = new MaterialGroup();
+            //propMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.SaddleBrown)));
+            //propMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.White), 100));
 
             foreach (var lineSegment in lineSegments)
             {
@@ -284,14 +289,15 @@ namespace Game.DarkAlliance.ViewModel
                     new Vector2D(lineSegment.Point1.X, -lineSegment.Point1.Y),
                     new Vector2D(lineSegment.Point2.X, -lineSegment.Point2.Y)));
 
-                var rectangleMesh = CreateWall(
-                    new Point2D(lineSegment.Point1.Y, lineSegment.Point1.X),
-                    new Point2D(lineSegment.Point2.Y, lineSegment.Point2.X));
+                //var rectangleMesh = CreateWall(
+                //    new Point2D(lineSegment.Point1.Y, lineSegment.Point1.X),
+                //    new Point2D(lineSegment.Point2.Y, lineSegment.Point2.X));
 
-                var rectangleModel = new GeometryModel3D(rectangleMesh, wallMaterial);
-                group.Children.Add(rectangleModel);
+                //var rectangleModel = new GeometryModel3D(rectangleMesh, wallMaterial);
+                //group.Children.Add(rectangleModel);
             }
 
+            /*
             var sphereRadius = 0.3;
 
             var sphereMesh = MeshBuilder.CreateSphere(
@@ -371,6 +377,11 @@ namespace Game.DarkAlliance.ViewModel
             group.Children.Add(humanModel);
 
             Scene3D = group;
+            */
+
+            // Work in progress
+            var sceneDefinition = new SceneDefinition();
+            Scene3D = _sceneRenderer.Build(sceneDefinition);
 
             return scene;
         }
