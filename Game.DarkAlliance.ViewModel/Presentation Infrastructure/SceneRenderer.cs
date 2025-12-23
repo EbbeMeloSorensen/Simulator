@@ -3,7 +3,7 @@ using System.Windows.Media.Media3D;
 
 namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure;
 
-public class StlSceneRenderer : ISceneRenderer
+public class SceneRenderer : ISceneRenderer
 {
     public Model3D Build(
         SceneDefinition sceneDefinition)
@@ -54,7 +54,7 @@ public class StlSceneRenderer : ISceneRenderer
     {
         var mesh = StlMeshLoader.Load(@"Assets\female.stl");
 
-        var material = new DiffuseMaterial(new SolidColorBrush(Colors.DarkOrange));
+        var material = new DiffuseMaterial(new SolidColorBrush(Colors.LightPink));
 
         var model = new GeometryModel3D
         {

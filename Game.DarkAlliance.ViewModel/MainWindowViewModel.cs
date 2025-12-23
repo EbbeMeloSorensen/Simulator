@@ -98,7 +98,7 @@ namespace Game.DarkAlliance.ViewModel
 
         public MainWindowViewModel()
         {
-            _sceneRenderer = new StlSceneRenderer();
+            _sceneRenderer = new SceneRenderer();
 
             Engine = new Engine(null);
 
