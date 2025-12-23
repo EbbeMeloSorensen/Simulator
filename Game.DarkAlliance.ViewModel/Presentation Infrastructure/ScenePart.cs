@@ -7,14 +7,17 @@ public class ScenePart
     public string ModelId { get; init; }
     public Transform3D Transform { get; init; }
     public Material Material { get; init; }
+    public bool IncludeBackMaterial { get; init; }
 
     public ScenePart(
         string modelId,
         Transform3D transform,
-        Material material)
+        Material material,
+        bool includeBackMaterial)
     {
         ModelId = modelId;
         Transform = transform;
         Material = material;
+        IncludeBackMaterial = includeBackMaterial;
     }
 }

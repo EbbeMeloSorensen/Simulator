@@ -17,9 +17,13 @@ public class StlSceneRenderer : ISceneRenderer
             {
                 Geometry = mesh,
                 Material = part.Material,
-                BackMaterial = part.Material,
                 Transform = part.Transform
             };
+
+            if (part.IncludeBackMaterial)
+            {
+                model.BackMaterial = part.Material;
+            }
 
             group.Children.Add(model);
         }

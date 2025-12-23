@@ -29,7 +29,8 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
             parts.Add(new ScenePart(
                 @"Assets\low poly guy.stl",
                 transformGroup,
-                material));
+                material,
+                false));
 
             Parts = new List<ScenePart>(parts);
         }
