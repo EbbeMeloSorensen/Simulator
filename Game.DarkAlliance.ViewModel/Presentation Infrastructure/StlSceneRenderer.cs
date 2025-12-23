@@ -11,16 +11,13 @@ public class StlSceneRenderer : ISceneRenderer
 
         foreach (var part in sceneDefinition.Parts)
         {
-            var mesh = StlMeshLoader.Load(@"Assets\low poly guy.stl");
-
-            var humanMaterial = new MaterialGroup();
-            humanMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.LightPink)));
+            var mesh = StlMeshLoader.Load(part.ModelId);
 
             var model = new GeometryModel3D
             {
                 Geometry = mesh,
-                Material = humanMaterial,
-                BackMaterial = humanMaterial,
+                Material = part.Material,
+                BackMaterial = part.Material,
                 Transform = part.Transform
             };
 

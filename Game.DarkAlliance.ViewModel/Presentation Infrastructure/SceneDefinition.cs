@@ -1,4 +1,5 @@
-﻿using System.Windows.Media.Media3D;
+﻿using System.Windows.Media;
+using System.Windows.Media.Media3D;
 
 namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
 {
@@ -8,7 +9,7 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
 
         public SceneDefinition()
         {
-            // For a start, just hardcode a scene
+            // For a start, just hardcode a scene. Later, we will read this from some data source.
 
             var parts = new List<ScenePart>();
 
@@ -22,11 +23,13 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
             var scaleFactor = 0.003;
             transformGroup.Children.Add(new ScaleTransform3D(scaleFactor, scaleFactor, scaleFactor));
 
-            parts.Add(new ScenePart
-            {
-                ModelId = @"Assets\low poly guy.stl",
-                Transform = transformGroup
-            });
+            var material = new MaterialGroup();
+            material.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.LightPink)));
+
+            parts.Add(new ScenePart(
+                @"Assets\low poly guy.stl",
+                transformGroup,
+                material));
 
             Parts = new List<ScenePart>(parts);
         }
