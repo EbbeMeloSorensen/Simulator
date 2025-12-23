@@ -1,5 +1,4 @@
-﻿using System.Windows.Media;
-using System.Windows.Media.Media3D;
+﻿using System.Windows.Media.Media3D;
 
 namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
 {
@@ -13,8 +12,10 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
 
             var parts = new List<ScenePart>();
             
-            parts.Add(new ScenePart("human male", new Vector3D(0.25, 0, 0)));
-            parts.Add(new ScenePart("human female", new Vector3D(0, 0, 0)));
+            parts.Add(new ScenePart("human male", new Vector3D(0.15, 0, 0)));
+            parts.Add(new ScenePart("human female", new Vector3D(-0.15, 0, 0)));
+            parts.Add(new ScenePart("barrel", new Vector3D(0, 0, -0.5)));
+            parts.Add(new ScenePart("barrel", new Vector3D(0.5, 0, -0.5)));
 
             Parts = new List<ScenePart>(parts);
         }
