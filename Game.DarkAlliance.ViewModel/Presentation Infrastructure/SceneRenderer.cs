@@ -1,6 +1,8 @@
 ﻿using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using Craft.Utils.Linq;
 using Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SceneParts;
+using Barrier = Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SceneParts.Barrier;
 
 namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure;
 
@@ -15,7 +17,7 @@ public class SceneRenderer : ISceneRenderer
         {
             var model = scenePart.ModelId switch
             {
-                "wall" => GenerateBall(scenePart),
+                "wall" => GenerateWall(scenePart),
                 "barrel" => GenerateBarrel(scenePart),
                 "ball" => GenerateBall(scenePart),
                 "human male" => GenerateHumanMale(scenePart),
@@ -29,7 +31,7 @@ public class SceneRenderer : ISceneRenderer
         return group;
     }
 
-    private GeometryModel3D GenerateHumanMale(
+    private Model3D GenerateHumanMale(
         ScenePart scenePart)
     {
         if (scenePart is not RotatableScenePart rotatableScenePart)
@@ -48,7 +50,7 @@ public class SceneRenderer : ISceneRenderer
             rotatableScenePart.Orientation);
     }
 
-    private GeometryModel3D GenerateHumanFemale(
+    private Model3D GenerateHumanFemale(
         ScenePart scenePart)
     {
         if (scenePart is not RotatableScenePart rotatableScenePart)
@@ -67,7 +69,7 @@ public class SceneRenderer : ISceneRenderer
             rotatableScenePart.Orientation);
     }
 
-    private GeometryModel3D GenerateBarrel(
+    private Model3D GenerateBarrel(
         ScenePart scenePart)
     {
         if (scenePart is not ScenePartPlaceable scenePartPlaceable)
@@ -95,7 +97,7 @@ public class SceneRenderer : ISceneRenderer
         return model;
     }
 
-    private GeometryModel3D GenerateBall(
+    private Model3D GenerateBall(
         ScenePart scenePart)
     {
         if (scenePart is not ScenePartPlaceable scenePartPlaceable)
@@ -124,10 +126,40 @@ public class SceneRenderer : ISceneRenderer
         return model;
     }
 
-    private GeometryModel3D GenerateWall(
+    private Model3D GenerateWall(
         ScenePart scenePart)
     {
-        throw new NotImplementedException();
+        if (scenePart is not Barrier barrier)
+        {
+            throw new InvalidOperationException("Must be a barrier");
+        }
+
+        var material = new MaterialGroup();
+        material.Children.Add(new DiffuseMaterial(new SolidColorBrush(Color.FromRgb(80, 70, 60))));
+
+        var group = new Model3DGroup();
+
+        barrier.BarrierPoints.AdjacentPairs().ToList().ForEach(_ =>
+        {
+            var p1 = _.Item1;
+            var p2 = _.Item2;
+
+            var mesh = MeshBuilder.CreateQuad(
+                new Point3D(p1.X, 1, p1.Z),
+                new Point3D(p2.X, 1, p2.Z),
+                new Point3D(p2.X, 0, p2.Z),
+                new Point3D(p1.X, 0, p1.Z));
+            
+            var model = new GeometryModel3D
+            {
+                Geometry = mesh,
+                Material = material
+            };
+
+            group.Children.Add(model);
+        });
+
+        return group;
     }
 
     private GeometryModel3D ImportMeshFromFile(

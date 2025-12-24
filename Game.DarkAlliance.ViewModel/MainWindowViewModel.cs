@@ -264,39 +264,8 @@ namespace Game.DarkAlliance.ViewModel
                 return true;
             };
 
-            // Liniestykker defineres i et normalt xy koordinatsystem
-            var lineSegments = new List<LineSegment2D>
-            {
-                new(new Point2D(-2, 2), new Point2D(-2, 0)),
-                new(new Point2D(-3, 0), new Point2D(-3, -4)),
-                new(new Point2D(-2, 0), new Point2D(-3, 0)),
-                new(new Point2D(2, 2), new Point2D(-2, 2)),
-                new(new Point2D(2, -2), new Point2D(2, 2)),
-                new(new Point2D(-2, -2), new Point2D(2, -2)),
-            };
 
             //var group = new Model3DGroup();
-
-            //var wallMaterial = new MaterialGroup();
-            //wallMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Color.FromRgb(80, 70, 60))));
-
-            //var propMaterial = new MaterialGroup();
-            //propMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.SaddleBrown)));
-            //propMaterial.Children.Add(new SpecularMaterial(new SolidColorBrush(Colors.White), 100));
-
-            foreach (var lineSegment in lineSegments)
-            {
-                scene.AddBoundary(new LineSegment(
-                    new Vector2D(lineSegment.Point1.X, -lineSegment.Point1.Y),
-                    new Vector2D(lineSegment.Point2.X, -lineSegment.Point2.Y)));
-
-                //var rectangleMesh = CreateWall(
-                //    new Point2D(lineSegment.Point1.Y, lineSegment.Point1.X),
-                //    new Point2D(lineSegment.Point2.Y, lineSegment.Point2.X));
-
-                //var rectangleModel = new GeometryModel3D(rectangleMesh, wallMaterial);
-                //group.Children.Add(rectangleModel);
-            }
 
             /*
 
@@ -319,7 +288,6 @@ namespace Game.DarkAlliance.ViewModel
 
             group.Children.Add(floorModel);
 
-
             Scene3D = group;
             */
 
@@ -338,26 +306,6 @@ namespace Game.DarkAlliance.ViewModel
                                 _.Item2));
                         });
                     });
-
-
-
-
-            //foreach (var lineSegment in lineSegments)
-            //{
-            //    scene.AddBoundary(new LineSegment(
-            //        new Vector2D(lineSegment.Point1.X, -lineSegment.Point1.Y),
-            //        new Vector2D(lineSegment.Point2.X, -lineSegment.Point2.Y)));
-
-            //    var rectangleMesh = CreateWall(
-            //        new Point2D(lineSegment.Point1.Y, lineSegment.Point1.X),
-            //        new Point2D(lineSegment.Point2.Y, lineSegment.Point2.X));
-
-            //    var rectangleModel = new GeometryModel3D(rectangleMesh, wallMaterial);
-            //    group.Children.Add(rectangleModel);
-            //}
-
-
-
 
             return scene;
         }

@@ -19,13 +19,47 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
         {
             // For a start, just hardcode a scene. Later, we will read this from some data source.
 
-            _sceneParts = [];
-            _boundaries = [];
+            _sceneParts = new List<ScenePart>();
+            _boundaries = new List<List<Vector2D>>();
 
-            //AddWall([
-            //    new Point2D(-1, 1),
-            //    new Point2D(-1, -1)
-            //]);
+            AddWall(new List<Point2D>
+            {
+                new Point2D(-16, -6),
+                new Point2D(-16, -5),
+                new Point2D(-14, -4),
+                new Point2D(-7, -4),
+                new Point2D(-7, -5),
+                new Point2D(-2, -5),
+                new Point2D(-2, -2),
+                new Point2D(2, -2),
+                new Point2D(2, 2),
+                new Point2D(-2, 2),
+                new Point2D(-2, 0),
+                new Point2D(-3, 0),
+                new Point2D(-3, -4),
+                new Point2D(-6, -4),
+                new Point2D(-6, -2),
+                new Point2D(-14, -2),
+                new Point2D(-16, -1),
+                new Point2D(-16, 0)
+            });
+
+            AddWall(new List<Point2D>
+            {
+                new Point2D(-17, 0),
+                new Point2D(-17, -1),
+                new Point2D(-18, -2),
+                new Point2D(-18, -3),
+                new Point2D(-19, -3)
+            });
+
+            AddWall(new List<Point2D>
+            {
+                new Point2D(-19, -4),
+                new Point2D(-18, -4),
+                new Point2D(-17, -5),
+                new Point2D(-17, -6)
+            });
 
             AddHumanMale(new Point2D(0, 0.15), 90);
 
@@ -107,7 +141,7 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
                 BarrierPoints = wallPoints.Select(_ => new Vector3D(_.Y, 0, _.X)).ToList()
             });
 
-            //AddPolylineBoundary(wallPoints);
+            AddPolylineBoundary(wallPoints.Select(_ => new Vector2D(_.X, -_.Y)));
         }
 
         private void AddCircularBoundary(
@@ -127,13 +161,9 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
         }
 
         private void AddPolylineBoundary(
-            IEnumerable<Point2D> points)
+            IEnumerable<Vector2D> points)
         {
-            //points.AdjacentPairs((p1, p2) =>
-            //{
-
-            //})
-
+            _boundaries.Add(points.ToList());
         }
     }
 }
