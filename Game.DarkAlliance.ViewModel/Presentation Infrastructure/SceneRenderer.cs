@@ -16,8 +16,8 @@ public class SceneRenderer : ISceneRenderer
             {
                 "human male" => GenerateHumanMale(scenePart),
                 "human female" => GenerateHumanFemale(scenePart),
-                "barrel" => GenerateBarrel(scenePart.Position),
-                "ball" => GenerateBall(scenePart.Position),
+                "barrel" => GenerateBarrel(scenePart),
+                "ball" => GenerateBall(scenePart),
                 _ => throw new NotSupportedException($"Unknown Model ID '{scenePart.ModelId}'.")
             };
 
@@ -66,8 +66,13 @@ public class SceneRenderer : ISceneRenderer
     }
 
     private GeometryModel3D GenerateBarrel(
-        Vector3D position)
+        ScenePart scenePart)
     {
+        if (scenePart is not ScenePartPlaceable scenePartPlaceable)
+        {
+            throw new InvalidOperationException("Must be a rotatable scene part");
+        }
+
         var mesh = MeshBuilder.CreateCylinder(new Point3D(0, 0.2, 0), 0.2, 0.4, 20);
 
         var material = new DiffuseMaterial(new SolidColorBrush(Colors.SaddleBrown));
@@ -80,14 +85,22 @@ public class SceneRenderer : ISceneRenderer
         };
 
         // Position in this scene
-        model.Translate(position.X, position.Y, position.Z);
+        model.Translate(
+            scenePartPlaceable.Position.X,
+            scenePartPlaceable.Position.Y,
+            scenePartPlaceable.Position.Z);
 
         return model;
     }
 
     private GeometryModel3D GenerateBall(
-        Vector3D position)
+        ScenePart scenePart)
     {
+        if (scenePart is not ScenePartPlaceable scenePartPlaceable)
+        {
+            throw new InvalidOperationException("Must be a rotatable scene part");
+        }
+
         var radius = 0.1;
         var mesh = MeshBuilder.CreateSphere(new Point3D(0, radius, 0), radius, 10, 10);
 
@@ -101,7 +114,10 @@ public class SceneRenderer : ISceneRenderer
         };
 
         // Position in this scene
-        model.Translate(position.X, position.Y, position.Z);
+        model.Translate(
+            scenePartPlaceable.Position.X,
+            scenePartPlaceable.Position.Y,
+            scenePartPlaceable.Position.Z);
 
         return model;
     }

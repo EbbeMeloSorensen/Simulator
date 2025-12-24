@@ -2,11 +2,11 @@
 
 namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure;
 
-public class RotatableScenePart : ScenePartPlaceable
+public class ScenePartPlaceable : ScenePart
 {
-    public double Orientation { get; init; }
+    public Vector3D Position { get; set; }
 
-    public RotatableScenePart(
+    public ScenePartPlaceable(
         string modelId) : base(modelId)
     {
     }

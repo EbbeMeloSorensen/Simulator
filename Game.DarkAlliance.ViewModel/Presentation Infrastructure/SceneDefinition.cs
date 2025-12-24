@@ -67,7 +67,7 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
         public void AddBarrel(
             Vector3D position)
         {
-            _sceneParts.Add(new ScenePart("barrel")
+            _sceneParts.Add(new ScenePartPlaceable("barrel")
             {
                 Position = position
             });
@@ -82,7 +82,7 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
         public void AddBall(
             Vector3D position)
         {
-            _sceneParts.Add(new ScenePart("ball")
+            _sceneParts.Add(new ScenePartPlaceable("ball")
             {
                 Position = position
             });
