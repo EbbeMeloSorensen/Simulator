@@ -1,7 +1,5 @@
 ﻿using Craft.Math;
 using Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SceneParts;
-using System.Windows.Media.Media3D;
-using Craft.Utils.Linq;
 using Barrier = Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SceneParts.Barrier;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
@@ -11,9 +9,11 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
     {
         private List<ScenePart> _sceneParts;
         private List<List<Vector2D>> _boundaries;
+        private List<Vector2D> _bodies;
 
         public IReadOnlyList<ScenePart> SceneParts => _sceneParts;
         public IReadOnlyList<IReadOnlyList<Vector2D>> Boundaries => _boundaries;
+        public IReadOnlyList<Vector2D> Bodies => _bodies;
 
         public SceneDefinition()
         {
@@ -21,6 +21,7 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
 
             _sceneParts = new List<ScenePart>();
             _boundaries = new List<List<Vector2D>>();
+            _bodies = new List<Vector2D>();
 
             AddWall(new List<Point2D>
             {
@@ -68,6 +69,11 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
             AddBarrel(new Point2D(-0.5, -0.5));
             AddBarrel(new Point2D(-0.5, 0.5));
 
+            //Enumerable.Range(0, 8).ToList().ForEach(_ =>
+            //{
+            //    AddBarrel(new Point2D(-1.75 + _ * 0.5, 1.75));
+            //});
+
             AddBall(new Point2D(-0.5, 0.5), 0.4);
         }
 
@@ -82,11 +88,13 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
                 Orientation = orientation
             });
 
-            var personRadius = 0.1;
+            var personRadius = 0.15;
 
             AddCircularBoundary(
                 new Vector2D(position.X, position.Y),
                 personRadius);
+
+            _bodies.Add(new Vector2D(position.X, position.Y));
         }
 
         public void AddHumanFemale(
@@ -100,11 +108,13 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
                 Orientation = orientation
             });
 
-            var personRadius = 0.1;
+            var personRadius = 0.15;
 
             AddCircularBoundary(
                 new Vector2D(position.X, position.Y),
                 personRadius);
+
+            _bodies.Add(new Vector2D(position.X, position.Y));
         }
 
         public void AddBarrel(
@@ -116,7 +126,7 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
                 Position = new Vector3D(position.Y, height, position.X)
             });
 
-            var barrelRadius = 0.1;
+            var barrelRadius = 0.2;
 
             AddCircularBoundary(
                 new Vector2D(position.X, position.Y),

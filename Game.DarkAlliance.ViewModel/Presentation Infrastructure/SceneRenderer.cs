@@ -77,7 +77,9 @@ public class SceneRenderer : ISceneRenderer
             throw new InvalidOperationException("Must be a rotatable scene part");
         }
 
-        var mesh = MeshBuilder.CreateCylinder(new Point3D(0, 0.2, 0), 0.2, 0.4, 20);
+        var barrelRadius = 0.2;
+
+        var mesh = MeshBuilder.CreateCylinder(new Point3D(0, 0.2, 0), barrelRadius, 0.4, 8);
 
         var material = new DiffuseMaterial(new SolidColorBrush(Colors.SaddleBrown));
 

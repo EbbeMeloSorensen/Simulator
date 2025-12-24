@@ -185,7 +185,7 @@ namespace Game.DarkAlliance.ViewModel
 
         private Scene GenerateScene()
         {
-            var ballRadius = 0.16;
+            var ballRadius = 0.15;
             var initialBallPosition = new Vector2D(1.5, 0);
 
             var initialState = new State();
