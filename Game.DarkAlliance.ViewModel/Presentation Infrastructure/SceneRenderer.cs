@@ -10,14 +10,15 @@ public class SceneRenderer : ISceneRenderer
     {
         var group = new Model3DGroup();
 
-        foreach (var part in sceneDefinition.Parts)
+        foreach (var scenePart in sceneDefinition.SceneParts)
         {
-            var model = part.ModelId switch
+            var model = scenePart.ModelId switch
             {
-                "human male" => GenerateHumanMale(part.Position, part.Orientation),
-                "human female" => GenerateHumanFemale(part.Position, part.Orientation),
-                "barrel" => GenerateBarrel(part.Position),
-                _ => throw new NotSupportedException($"Unknown Model ID '{part.ModelId}'.")
+                "human male" => GenerateHumanMale(scenePart),
+                "human female" => GenerateHumanFemale(scenePart),
+                "barrel" => GenerateBarrel(scenePart.Position),
+                "ball" => GenerateBall(scenePart.Position),
+                _ => throw new NotSupportedException($"Unknown Model ID '{scenePart.ModelId}'.")
             };
 
             group.Children.Add(model);
@@ -27,34 +28,79 @@ public class SceneRenderer : ISceneRenderer
     }
 
     private GeometryModel3D GenerateHumanMale(
-        Vector3D position,
-        double orientation = 0)
+        ScenePart scenePart)
     {
-        //ImportMeshFromFile(
-        //    @"Assets\male.stl",
-        //    )
+        if (scenePart is not RotatableScenePart rotatableScenePart)
+        {
+            throw new InvalidOperationException("Must be a rotatable scene part");
+        }
 
-        var mesh = StlMeshLoader.Load(@"Assets\male.stl");
+        return ImportMeshFromFile(
+            @"Assets\male.stl",
+            new DiffuseMaterial(new SolidColorBrush(Colors.LightPink)),
+            new Vector3D(1, 0, 0),
+            -90,
+            new Vector3D(0, 0, 0),
+            0.003,
+            rotatableScenePart.Position,
+            rotatableScenePart.Orientation);
+    }
 
-        var material = new DiffuseMaterial(new SolidColorBrush(Colors.LightPink));
+    private GeometryModel3D GenerateHumanFemale(
+        ScenePart scenePart)
+    {
+        if (scenePart is not RotatableScenePart rotatableScenePart)
+        {
+            throw new InvalidOperationException("Must be a rotatable scene part");
+        }
+
+        return ImportMeshFromFile(
+            @"Assets\female.stl",
+            new DiffuseMaterial(new SolidColorBrush(Colors.LightPink)),
+            new Vector3D(1, 0, 0),
+            -90,
+            new Vector3D(-132.5, 0, 101),
+            0.015,
+            rotatableScenePart.Position,
+            rotatableScenePart.Orientation);
+    }
+
+    private GeometryModel3D GenerateBarrel(
+        Vector3D position)
+    {
+        var mesh = MeshBuilder.CreateCylinder(new Point3D(0, 0.2, 0), 0.2, 0.4, 20);
+
+        var material = new DiffuseMaterial(new SolidColorBrush(Colors.SaddleBrown));
 
         var model = new GeometryModel3D
         {
             Geometry = mesh,
-            Material = material
+            Material = material,
+            BackMaterial = material
         };
 
-        // Basic transform to normalize the model in this coordinate system
-        model.Rotate(new Vector3D(1, 0, 0), -90);
-        model.Translate(0, 0, 0);
-        model.Scale(0.003, 0.003, 0.003);
+        // Position in this scene
+        model.Translate(position.X, position.Y, position.Z);
+
+        return model;
+    }
+
+    private GeometryModel3D GenerateBall(
+        Vector3D position)
+    {
+        var radius = 0.1;
+        var mesh = MeshBuilder.CreateSphere(new Point3D(0, radius, 0), radius, 10, 10);
+
+        var material = new DiffuseMaterial(new SolidColorBrush(Colors.Orange));
+
+        var model = new GeometryModel3D
+        {
+            Geometry = mesh,
+            Material = material,
+            BackMaterial = material
+        };
 
         // Position in this scene
-        if (Math.Abs(orientation) > 0.00001)
-        {
-            model.Rotate(new Vector3D(0, 1, 0), orientation);
-        }
-
         model.Translate(position.X, position.Y, position.Z);
 
         return model;
@@ -89,56 +135,6 @@ public class SceneRenderer : ISceneRenderer
             model.Rotate(new Vector3D(0, 1, 0), orientation);
         }
 
-        model.Translate(position.X, position.Y, position.Z);
-
-        return model;
-    }
-
-    private GeometryModel3D GenerateHumanFemale(
-        Vector3D position,
-        double orientation = 0)
-    {
-        var mesh = StlMeshLoader.Load(@"Assets\female.stl");
-
-        var material = new DiffuseMaterial(new SolidColorBrush(Colors.LightPink));
-
-        var model = new GeometryModel3D
-        {
-            Geometry = mesh,
-            Material = material
-        };
-
-        // Basic transform to normalize the model in this coordinate system
-        model.Rotate(new Vector3D(1, 0, 0), -90);
-        model.Translate(-132.5, 0, 101);
-        model.Scale(0.015, 0.015, 0.015);
-
-        // Position in this scene
-        if (Math.Abs(orientation) > 0.00001)
-        {
-            model.Rotate(new Vector3D(0, 1, 0), orientation);
-        }
-
-        model.Translate(position.X, position.Y, position.Z);
-
-        return model;
-    }
-
-    private GeometryModel3D GenerateBarrel(
-        Vector3D position)
-    {
-        var mesh = MeshBuilder.CreateCylinder(new Point3D(0, 0.15, 0), 0.1, 0.3, 20);
-
-        var material = new DiffuseMaterial(new SolidColorBrush(Colors.SaddleBrown));
-
-        var model = new GeometryModel3D
-        {
-            Geometry = mesh,
-            Material = material,
-            BackMaterial = material
-        };
-
-        // Position in this scene
         model.Translate(position.X, position.Y, position.Z);
 
         return model;

@@ -10,6 +10,7 @@ using GalaSoft.MvvmLight;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
+using Craft.Utils.Linq;
 using Game.DarkAlliance.ViewModel.Presentation_Infrastructure;
 using LineSegment = Craft.Simulation.Boundaries.LineSegment;
 using Point3D = System.Windows.Media.Media3D.Point3D;
@@ -298,44 +299,6 @@ namespace Game.DarkAlliance.ViewModel
             }
 
             /*
-            var sphereRadius = 0.3;
-
-            var sphereMesh = MeshBuilder.CreateSphere(
-                new Point3D(0, 0.7, 0),
-                sphereRadius,
-                20,
-                20);
-
-            var cylinderMesh = MeshBuilder.CreateCylinder(
-                new Point3D(0, 0.2, 0),
-                0.3,
-                0.4,
-                20);
-
-            var sphereMaterial = propMaterial;
-            var cylinderMaterial = propMaterial;
-
-            var sphereModel = new GeometryModel3D
-            {
-                Geometry = sphereMesh,
-                Material = sphereMaterial,
-                BackMaterial = sphereMaterial
-            };
-
-            var cylinderModel = new GeometryModel3D
-            {
-                Geometry = cylinderMesh,
-                Material = cylinderMaterial,
-                BackMaterial = cylinderMaterial
-            };
-
-            // Transform the sphere and cylinder a bit
-            sphereModel.Translate(0, -0.1, 0);
-            sphereModel.Translate(0.5, 0, 0);
-            cylinderModel.Translate(0.5, 0, 0);
-
-            group.Children.Add(sphereModel);
-            group.Children.Add(cylinderModel);
 
             var floorExtent = 20.0;
 
@@ -356,32 +319,45 @@ namespace Game.DarkAlliance.ViewModel
 
             group.Children.Add(floorModel);
 
-            var humanMesh = StlMeshLoader.Load(@"Assets\low poly guy.stl");
-
-            var humanMaterial = new MaterialGroup();
-            humanMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.LightPink)));
-
-            var humanModel = new GeometryModel3D
-            {
-                Geometry = humanMesh,
-                Material = humanMaterial
-            };
-
-            humanModel.Rotate(new Vector3D(1, 0, 0), -90);
-
-            var scaleFactor = 0.003;
-            humanModel.Scale(scaleFactor, scaleFactor, scaleFactor);
-
-            // (Now the human stands on the Y plane with his face approximately at height 1 and facing in the direction of the z axis)
-
-            group.Children.Add(humanModel);
 
             Scene3D = group;
             */
 
-            // Work in progress
             var sceneDefinition = new SceneDefinition();
             Scene3D = _sceneRenderer.Build(sceneDefinition);
+
+            sceneDefinition.Boundaries
+                .ToList()
+                .ForEach(
+                    boundary =>
+                    {
+                        foreach (var adjacentPair in boundary.AdjacentPairs())
+                        {
+                            scene.AddBoundary(new LineSegment(
+                                adjacentPair.Item1,
+                                adjacentPair.Item2));
+                        }
+                    });
+
+
+
+
+            //foreach (var lineSegment in lineSegments)
+            //{
+            //    scene.AddBoundary(new LineSegment(
+            //        new Vector2D(lineSegment.Point1.X, -lineSegment.Point1.Y),
+            //        new Vector2D(lineSegment.Point2.X, -lineSegment.Point2.Y)));
+
+            //    var rectangleMesh = CreateWall(
+            //        new Point2D(lineSegment.Point1.Y, lineSegment.Point1.X),
+            //        new Point2D(lineSegment.Point2.Y, lineSegment.Point2.X));
+
+            //    var rectangleModel = new GeometryModel3D(rectangleMesh, wallMaterial);
+            //    group.Children.Add(rectangleModel);
+            //}
+
+
+
 
             return scene;
         }
