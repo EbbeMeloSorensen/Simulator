@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media.Media3D;
 
-namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure;
+namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SceneParts;
 
 public class ScenePartPlaceable : ScenePart
 {

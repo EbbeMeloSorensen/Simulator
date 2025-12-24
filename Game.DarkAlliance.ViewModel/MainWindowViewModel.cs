@@ -331,12 +331,12 @@ namespace Game.DarkAlliance.ViewModel
                 .ForEach(
                     boundary =>
                     {
-                        foreach (var adjacentPair in boundary.AdjacentPairs())
+                        boundary.AdjacentPairs().ToList().ForEach(_ =>
                         {
                             scene.AddBoundary(new LineSegment(
-                                adjacentPair.Item1,
-                                adjacentPair.Item2));
-                        }
+                                _.Item1,
+                                _.Item2));
+                        });
                     });
 
 

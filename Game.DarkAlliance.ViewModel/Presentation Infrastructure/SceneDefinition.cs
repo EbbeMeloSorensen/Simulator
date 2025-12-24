@@ -1,4 +1,8 @@
 ﻿using Craft.Math;
+using Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SceneParts;
+using System.Windows.Media.Media3D;
+using Craft.Utils.Linq;
+using Barrier = Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SceneParts.Barrier;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
@@ -18,74 +22,92 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
             _sceneParts = [];
             _boundaries = [];
 
-            AddHumanMale(new Vector3D(0.15, 0, 0), 90);
+            //AddWall([
+            //    new Point2D(-1, 1),
+            //    new Point2D(-1, -1)
+            //]);
 
-            AddHumanFemale(new Vector3D(-0.15, 0, 0));
+            AddHumanMale(new Point2D(0, 0.15), 90);
 
-            AddBarrel(new Vector3D(-0.5, 0, -0.5));
-            AddBarrel(new Vector3D(0.5, 0, -0.5));
-            AddBarrel(new Vector3D(0, 0, 0.5));
+            AddHumanFemale(new Point2D(0, -0.15));
 
-            AddBall(new Vector3D(0.5, 0.3, -0.5));
+            AddBarrel(new Point2D(-0.5, -0.5));
+            AddBarrel(new Point2D(-0.5, 0.5));
+
+            AddBall(new Point2D(-0.5, 0.5), 0.4);
         }
 
         public void AddHumanMale(
-            Vector3D position,
-            double orientation = 0)
+            Point2D position,
+            double orientation = 0,
+            double height = 0)
         {
             _sceneParts.Add(new RotatableScenePart("human male")
             {
-                Position = position,
+                Position = new Vector3D(position.Y, height, position.X),
                 Orientation = orientation
             });
 
             var personRadius = 0.1;
 
             AddCircularBoundary(
-                new Vector2D(position.Z, position.X),
+                new Vector2D(position.X, position.Y),
                 personRadius);
         }
 
         public void AddHumanFemale(
-            Vector3D position,
-            double orientation = 0)
+            Point2D position,
+            double orientation = 0,
+            double height = 0)
         {
             _sceneParts.Add(new RotatableScenePart("human female")
             {
-                Position = position,
+                Position = new Vector3D(position.Y, height, position.X),
                 Orientation = orientation
             });
-
 
             var personRadius = 0.1;
 
             AddCircularBoundary(
-                new Vector2D(position.Z, position.X),
+                new Vector2D(position.X, position.Y),
                 personRadius);
         }
 
         public void AddBarrel(
-            Vector3D position)
+            Point2D position,
+            double height = 0)
         {
             _sceneParts.Add(new ScenePartPlaceable("barrel")
             {
-                Position = position
+                Position = new Vector3D(position.Y, height, position.X)
             });
 
             var barrelRadius = 0.1;
 
             AddCircularBoundary(
-                new Vector2D(position.Z, position.X),
+                new Vector2D(position.X, position.Y),
                 barrelRadius);
         }
 
         public void AddBall(
-            Vector3D position)
+            Point2D position,
+            double height = 0)
         {
             _sceneParts.Add(new ScenePartPlaceable("ball")
             {
-                Position = position
+                Position = new Vector3D(position.Y, height, position.X)
             });
+        }
+
+        public void AddWall(
+            IEnumerable<Point2D> wallPoints)
+        {
+            _sceneParts.Add(new Barrier("wall")
+            {
+                BarrierPoints = wallPoints.Select(_ => new Vector3D(_.Y, 0, _.X)).ToList()
+            });
+
+            //AddPolylineBoundary(wallPoints);
         }
 
         private void AddCircularBoundary(
@@ -102,6 +124,16 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
                 .ToList();
 
             _boundaries.Add(temp);
+        }
+
+        private void AddPolylineBoundary(
+            IEnumerable<Point2D> points)
+        {
+            //points.AdjacentPairs((p1, p2) =>
+            //{
+
+            //})
+
         }
     }
 }

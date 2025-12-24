@@ -1,4 +1,4 @@
-﻿namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure;
+﻿namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SceneParts;
 
 public abstract class ScenePart
 {

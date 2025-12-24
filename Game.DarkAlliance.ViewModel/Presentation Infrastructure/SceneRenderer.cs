@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SceneParts;
 
 namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure;
 
@@ -14,10 +15,11 @@ public class SceneRenderer : ISceneRenderer
         {
             var model = scenePart.ModelId switch
             {
-                "human male" => GenerateHumanMale(scenePart),
-                "human female" => GenerateHumanFemale(scenePart),
+                "wall" => GenerateBall(scenePart),
                 "barrel" => GenerateBarrel(scenePart),
                 "ball" => GenerateBall(scenePart),
+                "human male" => GenerateHumanMale(scenePart),
+                "human female" => GenerateHumanFemale(scenePart),
                 _ => throw new NotSupportedException($"Unknown Model ID '{scenePart.ModelId}'.")
             };
 
@@ -120,6 +122,12 @@ public class SceneRenderer : ISceneRenderer
             scenePartPlaceable.Position.Z);
 
         return model;
+    }
+
+    private GeometryModel3D GenerateWall(
+        ScenePart scenePart)
+    {
+        throw new NotImplementedException();
     }
 
     private GeometryModel3D ImportMeshFromFile(
