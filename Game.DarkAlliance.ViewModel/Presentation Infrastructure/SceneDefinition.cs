@@ -80,9 +80,9 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
                 new Point2D(-17, -6)
             });
 
-            AddHumanMale(new Point2D(0, 0.15), 90);
+            AddHumanMale(new Point2D(0, 0.2), 90);
 
-            AddHumanFemale(new Point2D(0, -0.15));
+            AddHumanFemale(new Point2D(0, -0.2));
 
             AddBarrel(new Point2D(-0.5, -0.5));
             AddBarrel(new Point2D(-0.5, 0.5));
@@ -106,7 +106,7 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
                 Orientation = orientation
             });
 
-            var personRadius = 0.15;
+            var personRadius = 0.095;
 
             AddCircularBoundary(
                 new Vector2D(position.X, position.Y),
@@ -126,7 +126,7 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
                 Orientation = orientation
             });
 
-            var personRadius = 0.15;
+            var personRadius = 0.095;
 
             AddCircularBoundary(
                 new Vector2D(position.X, position.Y),

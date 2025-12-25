@@ -1,3 +1,6 @@
+using System.Windows.Media.Media3D;
+using System.Windows.Threading;
+using GalaSoft.MvvmLight;
 using Craft.Math;
 using Craft.Simulation;
 using Craft.Simulation.Bodies;
@@ -6,10 +9,6 @@ using Craft.Simulation.Engine;
 using Craft.Utils;
 using Craft.ViewModels.Geometry2D.ScrollFree;
 using Craft.ViewModels.Simulation;
-using GalaSoft.MvvmLight;
-using System.Windows.Media;
-using System.Windows.Media.Media3D;
-using System.Windows.Threading;
 using Craft.Utils.Linq;
 using Game.DarkAlliance.ViewModel.Presentation_Infrastructure;
 using LineSegment = Craft.Simulation.Boundaries.LineSegment;
@@ -185,7 +184,7 @@ namespace Game.DarkAlliance.ViewModel
 
         private Scene GenerateScene()
         {
-            var ballRadius = 0.15;
+            var ballRadius = 0.095;
             var initialBallPosition = new Vector2D(1.5, 0);
 
             var initialState = new State();
@@ -264,33 +263,6 @@ namespace Game.DarkAlliance.ViewModel
                 return true;
             };
 
-
-            //var group = new Model3DGroup();
-
-            /*
-
-            var floorExtent = 20.0;
-
-            var floorMesh = MeshBuilder.CreateQuad(
-                new Point3D(floorExtent, 0, floorExtent),
-                new Point3D(floorExtent, 0, -floorExtent),
-                new Point3D(-floorExtent, 0, -floorExtent),
-                new Point3D(-floorExtent, 0, floorExtent));
-
-            var floorMaterial = new MaterialGroup();
-            floorMaterial.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.LightSalmon)));
-
-            var floorModel = new GeometryModel3D
-            {
-                Geometry = floorMesh,
-                Material = floorMaterial,
-            };
-
-            group.Children.Add(floorModel);
-
-            Scene3D = group;
-            */
-
             var sceneDefinition = new SceneDefinition();
             Scene3D = _sceneRenderer.Build(sceneDefinition);
 
@@ -308,17 +280,6 @@ namespace Game.DarkAlliance.ViewModel
                     });
 
             return scene;
-        }
-
-        private MeshGeometry3D CreateWall(
-            Point2D p1,
-            Point2D p2)
-        {
-            return MeshBuilder.CreateQuad(
-                new Point3D(p1.X, 1, p1.Y),
-                new Point3D(p2.X, 1, p2.Y),
-                new Point3D(p2.X, 0, p2.Y),
-                new Point3D(p1.X, 0, p1.Y));
         }
 
         private void StartLightAnimation()
