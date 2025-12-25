@@ -17,8 +17,6 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
 
         public SceneDefinition()
         {
-            // For a start, just hardcode a scene. Later, we will read this from some data source.
-
             // Notice that these coordinates are in "map" coordinates where Z is up
             // In order to generate the 3D scene, these coordinates are transformed into 3D coordinates where Y is up (by convention)
             // The animation engine uses a coordinate system where Y points downwards
@@ -86,11 +84,6 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
 
             AddBarrel(new Point2D(-0.5, -0.5));
             AddBarrel(new Point2D(-0.5, 0.5));
-
-            //Enumerable.Range(0, 8).ToList().ForEach(_ =>
-            //{
-            //    AddBarrel(new Point2D(-1.75 + _ * 0.5, 1.75));
-            //});
 
             AddBall(new Point2D(-0.5, 0.5), 0.4);
         }

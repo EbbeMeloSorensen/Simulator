@@ -151,7 +151,10 @@ namespace Game.DarkAlliance.ViewModel
                 shapeSelectorCallback,
                 shapeUpdateCallback);
 
-            var scene = GenerateScene();
+            // For a start, just hardcode a scene. Later, we will read this from some data source.
+            var sceneDefinition = new SceneDefinition();
+            Scene3D = _sceneRenderer.Build(sceneDefinition);
+            var scene = GenerateScene(sceneDefinition);
 
             GeometryEditorViewModel.InitializeWorldWindow(
                 scene.InitialWorldWindowFocus(),
@@ -182,17 +185,28 @@ namespace Game.DarkAlliance.ViewModel
             Engine.StartOrResumeAnimation();
         }
 
-        private Scene GenerateScene()
+        private Scene GenerateScene(
+            SceneDefinition sceneDefinition)
         {
             var ballRadius = 0.095;
             var initialBallPosition = new Vector2D(1.5, 0);
 
             var initialState = new State();
+
             initialState.AddBodyState(
                 new BodyStateClassic(new CircularBody(1, ballRadius, 1, false), initialBallPosition)
                 {
                     Orientation = Math.PI
                 });
+
+            var bodyId = 2;
+            foreach (var bodyPosition in sceneDefinition.Bodies)
+            {
+                initialState.AddBodyState(
+                    new BodyState(new CircularBody(bodyId, 0.08, 1, false), bodyPosition));
+
+                bodyId++;
+            }
 
             var name = "Exploration";
             var standardGravity = 0.0;
@@ -263,9 +277,6 @@ namespace Game.DarkAlliance.ViewModel
                 return true;
             };
 
-            var sceneDefinition = new SceneDefinition();
-            Scene3D = _sceneRenderer.Build(sceneDefinition);
-
             sceneDefinition.Boundaries
                 .ToList()
                 .ForEach(
@@ -278,7 +289,7 @@ namespace Game.DarkAlliance.ViewModel
                                 _.Item2));
                         });
                     });
-
+            
             return scene;
         }
 
