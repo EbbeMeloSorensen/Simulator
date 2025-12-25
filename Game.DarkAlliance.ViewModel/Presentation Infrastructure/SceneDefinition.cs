@@ -19,9 +19,27 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
         {
             // For a start, just hardcode a scene. Later, we will read this from some data source.
 
+            // Notice that these coordinates are in "map" coordinates where Z is up
+            // In order to generate the 3D scene, these coordinates are transformed into 3D coordinates where Y is up (by convention)
+            // The animation engine uses a coordinate system where Y points downwards
+
             _sceneParts = new List<ScenePart>();
             _boundaries = new List<List<Vector2D>>();
             _bodies = new List<Vector2D>();
+
+            var siteExtent = 20.0;
+
+            AddQuad(
+                new Point3D(siteExtent, siteExtent, 0),
+                new Point3D(-siteExtent, siteExtent, 0),
+                new Point3D(-siteExtent, -siteExtent, 0),
+                new Point3D(siteExtent, -siteExtent, 0));
+
+            AddQuad(
+                new Point3D(siteExtent, siteExtent, 1),
+                new Point3D(siteExtent, -siteExtent, 1),
+                new Point3D(-siteExtent, -siteExtent, 1),
+                new Point3D(-siteExtent, siteExtent, 1));
 
             AddWall(new List<Point2D>
             {
@@ -152,6 +170,23 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
             });
 
             AddPolylineBoundary(wallPoints.Select(_ => new Vector2D(_.X, -_.Y)));
+        }
+
+        public void AddQuad(
+            Point3D point1,
+            Point3D point2,
+            Point3D point3,
+            Point3D point4)
+        {
+            var pt1 = new Vector3D(point1.Y, point1.Z, point1.X);
+
+            _sceneParts.Add(new Quad("quad")
+            {
+                Point1 = new Vector3D(point1.Y, point1.Z, point1.X),
+                Point2 = new Vector3D(point2.Y, point2.Z, point2.X),
+                Point3 = new Vector3D(point3.Y, point3.Z, point3.X),
+                Point4 = new Vector3D(point4.Y, point4.Z, point4.X)
+            });
         }
 
         private void AddCircularBoundary(

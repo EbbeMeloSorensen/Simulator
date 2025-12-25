@@ -17,6 +17,7 @@ public class SceneRenderer : ISceneRenderer
         {
             var model = scenePart.ModelId switch
             {
+                "quad" => GenerateQuad(scenePart),
                 "wall" => GenerateWall(scenePart),
                 "barrel" => GenerateBarrel(scenePart),
                 "ball" => GenerateBall(scenePart),
@@ -124,6 +125,32 @@ public class SceneRenderer : ISceneRenderer
             scenePartPlaceable.Position.X,
             scenePartPlaceable.Position.Y,
             scenePartPlaceable.Position.Z);
+
+        return model;
+    }
+
+    private Model3D GenerateQuad(
+        ScenePart scenePart)
+    {
+        if (scenePart is not Quad quad)
+        {
+            throw new InvalidOperationException("Must be a quad");
+        }
+
+        var mesh = MeshBuilder.CreateQuad(
+            new Point3D(quad.Point1.X, quad.Point1.Y, quad.Point1.Z),
+            new Point3D(quad.Point2.X, quad.Point2.Y, quad.Point2.Z),
+            new Point3D(quad.Point3.X, quad.Point3.Y, quad.Point3.Z),
+            new Point3D(quad.Point4.X, quad.Point4.Y, quad.Point4.Z));
+
+        var material = new MaterialGroup();
+        material.Children.Add(new DiffuseMaterial(new SolidColorBrush(Colors.LightSalmon)));
+
+        var model = new GeometryModel3D
+        {
+            Geometry = mesh,
+            Material = material
+        };
 
         return model;
     }
