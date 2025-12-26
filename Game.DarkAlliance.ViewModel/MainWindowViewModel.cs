@@ -107,7 +107,7 @@ namespace Game.DarkAlliance.ViewModel
                 UpdateModelCallBack = Engine.UpdateModel
             };
 
-            // Bemærk de følgende 2 callbacks, som bruges til at give kuglen et andet skin end det, som er default.
+            // Bemærk de følgende 2 callbacks, som bruges til at give bodies et andet skin end det, som er default.
             // Pågældende skin er taget fra Craft, men man kan også override, ligesom det er gjort for Flappybird, Rocket og Zelda
             ShapeSelectorCallback shapeSelectorCallback = (bs) =>
             {
@@ -118,15 +118,32 @@ namespace Game.DarkAlliance.ViewModel
 
                 var circularBody = bs.Body as CircularBody;
 
-                var bsc = bs as BodyStateClassic;
-                var orientation = bsc == null ? 0 : bsc.Orientation;
-
-                return new RotatableEllipseViewModel
+                switch (bs)
                 {
-                    Width = 2 * circularBody.Radius,
-                    Height = 2 * circularBody.Radius,
-                    Orientation = orientation
-                };
+                    case BodyStateClassic bsc:
+                    {
+                        var orientation = bsc.Orientation;
+
+                        return new RotatableEllipseViewModel
+                        {
+                            Width = 2 * circularBody.Radius,
+                            Height = 2 * circularBody.Radius,
+                            Orientation = orientation
+                        };
+                    }
+                    case BodyState:
+                    {
+                        return new EllipseViewModel
+                        {
+                            Width = 2 * circularBody.Radius,
+                            Height = 2 * circularBody.Radius,
+                        };
+                    }
+                    default:
+                    {
+                        throw new NotSupportedException();
+                    }
+                }
             };
 
             ShapeUpdateCallback shapeUpdateCallback = (shapeViewModel, bs) =>
