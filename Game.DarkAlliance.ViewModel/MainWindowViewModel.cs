@@ -216,14 +216,20 @@ namespace Game.DarkAlliance.ViewModel
                     Orientation = Math.PI
                 });
 
-            var bodyId = 2;
+            var npcId = 2;
+
             foreach (var bodyPosition in sceneDefinition.Bodies)
             {
                 initialState.AddBodyState(
-                    new BodyState(new CircularBody(bodyId, 0.08, 1, false), bodyPosition));
+                    new BodyState(new CircularBody(npcId, 0.08, 1, false), bodyPosition));
 
-                bodyId++;
+                npcId++;
             }
+
+            // Diagnostics (hvorfor detekterer vi ikke collisions?)
+            initialState.AddBodyState(
+                new BodyState(new CircularBody(4, ballRadius, 1, false), new Vector2D(1, 0)));
+
 
             var name = "Exploration";
             var standardGravity = 0.0;
@@ -232,7 +238,7 @@ namespace Game.DarkAlliance.ViewModel
             var gravitationalConstant = 0.0;
             var coefficientOfFriction = 0.0;
             var timeFactor = 1.0;
-            var handleBodyCollisions = false;
+            var handleBodyCollisions = true;
             var deltaT = 0.001;
             var viewMode = SceneViewMode.FocusOnFirstBody;
 
@@ -249,8 +255,38 @@ namespace Game.DarkAlliance.ViewModel
                 deltaT,
                 viewMode);
 
+            sceneDefinition.Boundaries
+                .ToList()
+                .ForEach(
+                    boundary =>
+                    {
+                        boundary.AdjacentPairs().ToList().ForEach(_ =>
+                        {
+                            scene.AddBoundary(new LineSegment(
+                                _.Item1,
+                                _.Item2));
+                        });
+                    });
+
             scene.CollisionBetweenBodyAndBoundaryOccuredCallBack =
                 body => OutcomeOfCollisionBetweenBodyAndBoundary.Block;
+
+            scene.CheckForCollisionBetweenBodiesCallback = (body1, body2) =>
+            {
+                //if (body1 is Enemy || body2 is Enemy)
+                //{
+                //    if (body1 is Projectile || body2 is Projectile)
+                //    {
+                //        return true;
+                //    }
+                //}
+
+                // Ja, vi skal checke for collision mellem disse to bodies
+                return true;
+            };
+
+            CollisionBetweenTwoBodiesOccuredCallBack collisionBetweenTwoBodiesOccuredCallBack =
+                (body1, body2) => OutcomeOfCollisionBetweenTwoBodies.Ignore;
 
             var spaceKeyWasPressed = false;
 
@@ -328,21 +364,13 @@ namespace Game.DarkAlliance.ViewModel
                     nextPunchId++;
                 }
 
+                if (bodyCollisionReports.Any())
+                {
+                    var a = 0;
+                }
+
                 return new PostPropagationResponse();
             };
-
-            sceneDefinition.Boundaries
-                .ToList()
-                .ForEach(
-                    boundary =>
-                    {
-                        boundary.AdjacentPairs().ToList().ForEach(_ =>
-                        {
-                            scene.AddBoundary(new LineSegment(
-                                _.Item1,
-                                _.Item2));
-                        });
-                    });
             
             return scene;
         }
