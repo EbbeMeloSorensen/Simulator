@@ -432,6 +432,7 @@ namespace Simulator.Laboratory.ViewModel
             AddScene(GenerateSceneCollisionRegistrationTest());
             AddScene(GenerateSceneShootEmUp1());
             AddScene(GenerateSceneShootEmUp1b());
+            AddScene(GenerateSceneShootEmUp1c());
             AddScene(GenerateSceneShootEmUp2());
             AddScene(GenerateSceneShootEmUp4());
             AddScene(GenerateSceneShootEmUp5());
@@ -3126,6 +3127,92 @@ namespace Simulator.Laboratory.ViewModel
                     propagatedState.AddBodyState(new BodyStateClassic(
                         new CircularBody(nextBodyId, 0.05, 1, true), propagatedState.BodyStates.First().Position)
                     { NaturalVelocity = new Vector2D(0, -5) });
+
+                    nextBodyId++;
+                }
+
+                return new PostPropagationResponse();
+            };
+
+            return scene;
+        }
+
+        private static Scene GenerateSceneShootEmUp1c()
+        {
+            var initialState = new State();
+            initialState.AddBodyState(new BodyStateClassic(new CircularBody(1, 0.125, 1, true), new Vector2D(1, 2)));
+
+            var scene = new Scene("Interactive: Beat'em up II (Semi-automatic \"punch\" with limited lifetime)", new Point2D(-1.4, -1.3), new Point2D(5, 3), initialState, 0, 0, 0, 1, false, 0.005);
+
+            var spaceKeyWasPressed = false;
+
+            scene.InteractionCallBack = (keyboardState, keyboardEvents, mouseClickPosition, collisions, currentState) =>
+            {
+                spaceKeyWasPressed = keyboardEvents.SpaceDown && keyboardState.SpaceDown;
+
+                var currentStateOfMainBody = currentState.BodyStates.First() as BodyStateClassic;
+                var currentArtificialVelocity = currentStateOfMainBody.ArtificialVelocity;
+
+                var newMovementDirection = new Vector2D(0, 0);
+
+                if (keyboardState.LeftArrowDown)
+                {
+                    newMovementDirection += new Vector2D(-1, 0);
+                }
+
+                if (keyboardState.RightArrowDown)
+                {
+                    newMovementDirection += new Vector2D(1, 0);
+                }
+
+                if (keyboardState.UpArrowDown)
+                {
+                    newMovementDirection += new Vector2D(0, -1);
+                }
+
+                if (keyboardState.DownArrowDown)
+                {
+                    newMovementDirection += new Vector2D(0, 1);
+                }
+
+                var newArtificialVelocity = new Vector2D(0, 0);
+
+                if (newMovementDirection.Length > 0.01)
+                {
+                    var speed = 3;
+                    newArtificialVelocity = speed * newMovementDirection.Normalize();
+                }
+
+                if ((newArtificialVelocity - currentArtificialVelocity).Length < 0.01 && !spaceKeyWasPressed)
+                {
+                    return false;
+                }
+
+                currentStateOfMainBody.ArtificialVelocity = newArtificialVelocity;
+
+                return true;
+            };
+
+            var nextBodyId = 2;
+            var temp = new Dictionary<int, int>();
+
+            scene.PostPropagationCallBack = (propagatedState, boundaryCollisionReports, bodyCollisionReports) =>
+            {
+                // Remove projectile?
+                if (temp.ContainsKey(propagatedState.Index))
+                {
+                    var projectile = propagatedState.TryGetBodyState(temp[propagatedState.Index]);
+                    propagatedState?.RemoveBodyState(projectile);
+                }
+
+                if (spaceKeyWasPressed)
+                {
+                    spaceKeyWasPressed = false;
+
+                    temp[propagatedState.Index + 100] = nextBodyId;
+
+                    propagatedState.AddBodyState(new BodyStateClassic(
+                        new CircularBody(nextBodyId, 0.1, 1, true), propagatedState.BodyStates.First().Position + new Vector2D(0, -0.15)));
 
                     nextBodyId++;
                 }
