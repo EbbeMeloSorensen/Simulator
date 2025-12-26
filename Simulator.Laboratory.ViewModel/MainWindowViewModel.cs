@@ -3194,14 +3194,14 @@ namespace Simulator.Laboratory.ViewModel
             };
 
             var nextBodyId = 2;
-            var temp = new Dictionary<int, int>();
+            var bodyDisposalMap = new Dictionary<int, int>();
 
             scene.PostPropagationCallBack = (propagatedState, boundaryCollisionReports, bodyCollisionReports) =>
             {
-                // Remove projectile?
-                if (temp.ContainsKey(propagatedState.Index))
+                // Remove "punch"?
+                if (bodyDisposalMap.ContainsKey(propagatedState.Index))
                 {
-                    var projectile = propagatedState.TryGetBodyState(temp[propagatedState.Index]);
+                    var projectile = propagatedState.TryGetBodyState(bodyDisposalMap[propagatedState.Index]);
                     propagatedState?.RemoveBodyState(projectile);
                 }
 
@@ -3209,7 +3209,7 @@ namespace Simulator.Laboratory.ViewModel
                 {
                     spaceKeyWasPressed = false;
 
-                    temp[propagatedState.Index + 100] = nextBodyId;
+                    bodyDisposalMap[propagatedState.Index + 100] = nextBodyId;
 
                     propagatedState.AddBodyState(new BodyStateClassic(
                         new CircularBody(nextBodyId, 0.1, 1, true), propagatedState.BodyStates.First().Position + new Vector2D(0, -0.15)));

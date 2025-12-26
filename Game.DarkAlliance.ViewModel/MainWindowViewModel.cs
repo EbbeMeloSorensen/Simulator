@@ -252,8 +252,12 @@ namespace Game.DarkAlliance.ViewModel
             scene.CollisionBetweenBodyAndBoundaryOccuredCallBack =
                 body => OutcomeOfCollisionBetweenBodyAndBoundary.Block;
 
+            var spaceKeyWasPressed = false;
+
             scene.InteractionCallBack = (keyboardState, keyboardEvents, mouseClickPosition, collisions, currentState) =>
             {
+                spaceKeyWasPressed = keyboardEvents.SpaceDown && keyboardState.SpaceDown;
+
                 var currentStateOfMainBody = currentState.BodyStates.First() as BodyStateClassic;
                 var currentRotationalSpeed = currentStateOfMainBody.RotationalSpeed;
                 var currentArtificialSpeed = currentStateOfMainBody.ArtificialVelocity.Length;
@@ -292,6 +296,39 @@ namespace Game.DarkAlliance.ViewModel
                 }
 
                 return true;
+            };
+
+            var nextPunchId = 1000;
+            var bodyDisposalMap = new Dictionary<int, int>();
+
+            scene.PostPropagationCallBack = (propagatedState, boundaryCollisionReports, bodyCollisionReports) =>
+            {
+                // Remove "punch"?
+                if (bodyDisposalMap.ContainsKey(propagatedState.Index))
+                {
+                    var projectile = propagatedState.TryGetBodyState(bodyDisposalMap[propagatedState.Index]);
+                    propagatedState?.RemoveBodyState(projectile);
+                }
+
+                if (spaceKeyWasPressed)
+                {
+                    spaceKeyWasPressed = false;
+
+                    bodyDisposalMap[propagatedState.Index + 100] = nextPunchId;
+
+                    var protagonist = propagatedState.BodyStates.First() as BodyStateClassic;
+
+                    var lookDirection = new Vector2D(
+                        Math.Cos(protagonist!.Orientation),
+                        -Math.Sin(protagonist!.Orientation));
+
+                    propagatedState.AddBodyState(new BodyState(
+                        new CircularBody(nextPunchId, 0.05, 1, true), protagonist!.Position + 0.125 * lookDirection));
+
+                    nextPunchId++;
+                }
+
+                return new PostPropagationResponse();
             };
 
             sceneDefinition.Boundaries
