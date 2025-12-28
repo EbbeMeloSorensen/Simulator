@@ -8,12 +8,8 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
     public class SceneDefinition
     {
         private List<ScenePart> _sceneParts;
-        private List<List<Vector2D>> _boundaries;
-        private List<Vector2D> _bodies;
 
         public IReadOnlyList<ScenePart> SceneParts => _sceneParts;
-        public IReadOnlyList<IReadOnlyList<Vector2D>> Boundaries => _boundaries;
-        public IReadOnlyList<Vector2D> Bodies => _bodies;
 
         public SceneDefinition()
         {
@@ -22,8 +18,6 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
             // The animation engine uses a coordinate system where Y points downwards
 
             _sceneParts = new List<ScenePart>();
-            _boundaries = new List<List<Vector2D>>();
-            _bodies = new List<Vector2D>();
 
             var siteExtent = 20.0;
 
@@ -78,9 +72,9 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
                 new Point2D(-17, -6)
             });
 
-            AddHumanMale(new Point2D(0, 0.2), 90);
+            AddHumanMale("Adam", new Point2D(0, 0.2), 90);
 
-            AddHumanFemale(new Point2D(0, -0.2));
+            AddHumanFemale("Eve", new Point2D(0, -0.2));
 
             AddBarrel(new Point2D(-0.5, -0.5));
             AddBarrel(new Point2D(-0.5, 0.5));
@@ -89,59 +83,41 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
         }
 
         public void AddHumanMale(
+            string tag,
             Point2D position,
             double orientation = 0,
             double height = 0)
         {
-            _sceneParts.Add(new RotatableScenePart("human male")
+            _sceneParts.Add(new NPC("human male")
             {
+                Tag = tag,
                 Position = new Vector3D(position.Y, height, position.X),
                 Orientation = orientation
             });
-
-            var personRadius = 0.095;
-
-            AddCircularBoundary(
-                new Vector2D(position.X, position.Y),
-                personRadius);
-
-            _bodies.Add(new Vector2D(position.X, position.Y));
         }
 
         public void AddHumanFemale(
+            string tag,
             Point2D position,
             double orientation = 0,
             double height = 0)
         {
-            _sceneParts.Add(new RotatableScenePart("human female")
+            _sceneParts.Add(new NPC("human female")
             {
+                Tag = tag,
                 Position = new Vector3D(position.Y, height, position.X),
                 Orientation = orientation
             });
-
-            var personRadius = 0.095;
-
-            AddCircularBoundary(
-                new Vector2D(position.X, position.Y),
-                personRadius);
-
-            _bodies.Add(new Vector2D(position.X, position.Y));
         }
 
         public void AddBarrel(
             Point2D position,
             double height = 0)
         {
-            _sceneParts.Add(new ScenePartPlaceable("barrel")
+            _sceneParts.Add(new Barrel("barrel")
             {
                 Position = new Vector3D(position.Y, height, position.X)
             });
-
-            var barrelRadius = 0.2;
-
-            AddCircularBoundary(
-                new Vector2D(position.X, position.Y),
-                barrelRadius);
         }
 
         public void AddBall(
@@ -161,8 +137,6 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
             {
                 BarrierPoints = wallPoints.Select(_ => new Vector3D(_.Y, 0, _.X)).ToList()
             });
-
-            AddPolylineBoundary(wallPoints.Select(_ => new Vector2D(_.X, -_.Y)));
         }
 
         public void AddQuad(
@@ -180,28 +154,6 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
                 Point3 = new Vector3D(point3.Y, point3.Z, point3.X),
                 Point4 = new Vector3D(point4.Y, point4.Z, point4.X)
             });
-        }
-
-        private void AddCircularBoundary(
-            Vector2D center,
-            double radius)
-        {
-            var nBoundarySegments = 8;
-
-            var temp = Enumerable.Range(0, nBoundarySegments + 1)
-                .Select(_ => _ * 2 * Math.PI / nBoundarySegments)
-                .Select(angle => new Vector2D(
-                    center.X + radius * Math.Sin(angle),
-                    -center.Y + radius * Math.Cos(angle)))
-                .ToList();
-
-            _boundaries.Add(temp);
-        }
-
-        private void AddPolylineBoundary(
-            IEnumerable<Vector2D> points)
-        {
-            _boundaries.Add(points.ToList());
         }
     }
 }

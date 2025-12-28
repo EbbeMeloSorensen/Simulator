@@ -5,14 +5,14 @@ using Craft.Math;
 using Craft.Simulation;
 using Craft.Simulation.Bodies;
 using Craft.Simulation.BodyStates;
+using Craft.Simulation.Boundaries;
 using Craft.Simulation.Engine;
 using Craft.Utils;
+using Craft.Utils.Linq;
 using Craft.ViewModels.Geometry2D.ScrollFree;
 using Craft.ViewModels.Simulation;
-using Craft.Utils.Linq;
 using Game.DarkAlliance.ViewModel.Bodies;
 using Game.DarkAlliance.ViewModel.Presentation_Infrastructure;
-using LineSegment = Craft.Simulation.Boundaries.LineSegment;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
@@ -222,7 +222,7 @@ namespace Game.DarkAlliance.ViewModel
         private Scene GenerateScene(
             SceneDefinition sceneDefinition)
         {
-            var ballRadius = 0.095;
+            var ballRadius = 0.1;
             var initialBallPosition = new Vector2D(1.5, 0);
 
             var initialState = new State();
@@ -233,17 +233,6 @@ namespace Game.DarkAlliance.ViewModel
                 {
                     Orientation = Math.PI
                 });
-
-            var npcId = 2;
-
-            // Add npc's to the scene
-            foreach (var bodyPosition in sceneDefinition.Bodies)
-            {
-                initialState.AddBodyState(
-                    new BodyState(new NPC(npcId, 0.08, "Bamse"), bodyPosition));
-
-                npcId++;
-            }
 
             var name = "Exploration";
             var standardGravity = 0.0;
@@ -269,18 +258,68 @@ namespace Game.DarkAlliance.ViewModel
                 deltaT,
                 viewMode);
 
-            sceneDefinition.Boundaries
-                .ToList()
-                .ForEach(
-                    boundary =>
+            var npcId = 2;
+
+            sceneDefinition.SceneParts.ToList().ForEach(scenePart =>
+            {
+                switch (scenePart)
+                {
+                    case Presentation_Infrastructure.SceneParts.Barrier barrier:
                     {
-                        boundary.AdjacentPairs().ToList().ForEach(_ =>
+                        barrier.BoundaryPoints.AdjacentPairs().ToList().ForEach(_ =>
                         {
                             scene.AddBoundary(new LineSegment(
                                 _.Item1,
                                 _.Item2));
                         });
-                    });
+                        break;
+                    }
+                    case Presentation_Infrastructure.SceneParts.NPC npc:
+                    {
+                        scene.InitialState.AddBodyState(
+                            new BodyState(new NPC(npcId++, 0.1, npc.Tag), new Vector2D(npc.Position.Z, -npc.Position.X)));
+
+                        var nBoundarySegments = 8;
+
+                        Enumerable.Range(0, nBoundarySegments + 1)
+                            .Select(_ => _ * 2 * Math.PI / nBoundarySegments)
+                            .Select(angle => new Vector2D(
+                                npc.Position.Z + 0.1 * Math.Sin(angle),
+                                -npc.Position.X + 0.1 * Math.Cos(angle)))
+                            .AdjacentPairs()
+                            .ToList()
+                            .ForEach(_ =>
+                            {
+                                scene.AddBoundary(new LineSegment(
+                                    _.Item1,
+                                    _.Item2));
+                            });
+
+                        break;
+                    }
+                    case Presentation_Infrastructure.SceneParts.Barrel barrel:
+                    {
+                        var nBoundarySegments = 8;
+                        var barrelRadius = 0.2;
+
+                        Enumerable.Range(0, nBoundarySegments + 1)
+                            .Select(_ => _ * 2 * Math.PI / nBoundarySegments)
+                            .Select(angle => new Vector2D(
+                                barrel.Position.Z + barrelRadius * Math.Sin(angle),
+                                -barrel.Position.X + barrelRadius * Math.Cos(angle)))
+                            .AdjacentPairs()
+                            .ToList()
+                            .ForEach(_ =>
+                            {
+                                scene.AddBoundary(new LineSegment(
+                                    _.Item1,
+                                    _.Item2));
+                            });
+
+                        break;
+                    }
+                }
+            });
 
             // Denne callback returnerer en værdi, der angiver, hvad der skal ske, når en body kolliderer med en boundary
             scene.CollisionBetweenBodyAndBoundaryOccuredCallBack =

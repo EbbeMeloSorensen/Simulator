@@ -294,6 +294,7 @@ Done:
 * Få gulv og loft på igen
 
 Todo:
+* En NPC skal bare være en scene part på lige fod med de andre scene parts
 * Mulighed for at tilføje en body samt en boundary omkring den til scenen
 * Mulighed for at tilføje en box til scenen
 * Mulighed for at tilføje et sammensat objekt til scenen, f.eks. en dør
