@@ -240,7 +240,7 @@ namespace Game.DarkAlliance.ViewModel
             foreach (var bodyPosition in sceneDefinition.Bodies)
             {
                 initialState.AddBodyState(
-                    new BodyState(new NPC(npcId, 0.08, 1, false), bodyPosition));
+                    new BodyState(new NPC(npcId, 0.08, "Bamse"), bodyPosition));
 
                 npcId++;
             }
@@ -397,7 +397,12 @@ namespace Game.DarkAlliance.ViewModel
 
                 if (bodyCollisionReports.Any())
                 {
-                    response.Outcome = "NPC dialogue";
+                    var bcr = bodyCollisionReports.First();
+                    var tag = bcr.Body1 is NPC
+                        ? bcr.Body1.Tag
+                        : bcr.Body2.Tag;
+
+                    response.Outcome = tag;
                     response.IndexOfLastState = propagatedState.Index + 10;
                 }
 
