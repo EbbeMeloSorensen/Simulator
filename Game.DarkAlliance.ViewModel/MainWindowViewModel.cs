@@ -10,6 +10,7 @@ using Craft.Utils;
 using Craft.ViewModels.Geometry2D.ScrollFree;
 using Craft.ViewModels.Simulation;
 using Craft.Utils.Linq;
+using Game.DarkAlliance.ViewModel.Bodies;
 using Game.DarkAlliance.ViewModel.Presentation_Infrastructure;
 using LineSegment = Craft.Simulation.Boundaries.LineSegment;
 using Point3D = System.Windows.Media.Media3D.Point3D;
@@ -211,7 +212,7 @@ namespace Game.DarkAlliance.ViewModel
             var initialState = new State();
 
             initialState.AddBodyState(
-                new BodyStateClassic(new CircularBody(1, ballRadius, 1, false), initialBallPosition)
+                new BodyStateClassic(new Player(1, ballRadius, 1, false), initialBallPosition)
                 {
                     Orientation = Math.PI
                 });
@@ -221,15 +222,13 @@ namespace Game.DarkAlliance.ViewModel
             foreach (var bodyPosition in sceneDefinition.Bodies)
             {
                 initialState.AddBodyState(
-                    new BodyState(new CircularBody(npcId, 0.08, 1, false), bodyPosition));
+                    new BodyState(new NPC(npcId, 0.08, 1, false), bodyPosition));
 
                 npcId++;
             }
 
-            // Diagnostics (hvorfor detekterer vi ikke collisions?)
             initialState.AddBodyState(
-                new BodyState(new CircularBody(4, ballRadius, 1, false), new Vector2D(1, 0)));
-
+                new BodyState(new NPC(4, 0.08, 1, false), new Vector2D(1, 0)));
 
             var name = "Exploration";
             var standardGravity = 0.0;
@@ -268,25 +267,35 @@ namespace Game.DarkAlliance.ViewModel
                         });
                     });
 
+            // Denne callback returnerer en værdi, der angiver, hvad der skal ske, når en body kolliderer med en boundary
             scene.CollisionBetweenBodyAndBoundaryOccuredCallBack =
                 body => OutcomeOfCollisionBetweenBodyAndBoundary.Block;
 
+            // Denne callback returnerer true, hvis der skal tjekkes for kollision mellem to bodies.
+            // Det afhænger sædvanligvis af, hvilke bodies i typehierarkiet, der er tale om
             scene.CheckForCollisionBetweenBodiesCallback = (body1, body2) =>
             {
-                //if (body1 is Enemy || body2 is Enemy)
-                //{
-                //    if (body1 is Projectile || body2 is Projectile)
-                //    {
-                //        return true;
-                //    }
-                //}
+                // Vi checker for om en probe rammer en NPC
+                if (body1 is NPC || body2 is NPC)
+                {
+                    if (body1 is NPC || body2 is NPC)
+                    {
+                        return true;
+                    }
 
-                // Ja, vi skal checke for collision mellem disse to bodies
-                return true;
+                    if (body1 is Player || body2 is Player)
+                    {
+                        return true;
+                    }
+                }
+
+                // Ellers foretages ikke noget check
+                return false;
             };
 
-            CollisionBetweenTwoBodiesOccuredCallBack collisionBetweenTwoBodiesOccuredCallBack =
-                (body1, body2) => OutcomeOfCollisionBetweenTwoBodies.Ignore;
+            // Denne callback returnerer en værdi, der angiver, hvad der skal ske, når to bodies kolliderer
+            scene.CollisionBetweenTwoBodiesOccuredCallBack =
+                (body1, body2) => OutcomeOfCollisionBetweenTwoBodies.Block;
 
             var spaceKeyWasPressed = false;
 
@@ -334,12 +343,14 @@ namespace Game.DarkAlliance.ViewModel
                 return true;
             };
 
-            var nextPunchId = 1000;
+            var nextProbeId = 1000;
             var bodyDisposalMap = new Dictionary<int, int>();
 
+            // Denne callback kales, når tilstanden er propageret.
+            // Her kan man manipulere den propagerede tilstand, f.eks. ved at fjerne eller tilføje bodies
             scene.PostPropagationCallBack = (propagatedState, boundaryCollisionReports, bodyCollisionReports) =>
             {
-                // Remove "punch"?
+                // Remove probe
                 if (bodyDisposalMap.ContainsKey(propagatedState.Index))
                 {
                     var projectile = propagatedState.TryGetBodyState(bodyDisposalMap[propagatedState.Index]);
@@ -350,7 +361,7 @@ namespace Game.DarkAlliance.ViewModel
                 {
                     spaceKeyWasPressed = false;
 
-                    bodyDisposalMap[propagatedState.Index + 100] = nextPunchId;
+                    bodyDisposalMap[propagatedState.Index + 100] = nextProbeId;
 
                     var protagonist = propagatedState.BodyStates.First() as BodyStateClassic;
 
@@ -359,9 +370,12 @@ namespace Game.DarkAlliance.ViewModel
                         -Math.Sin(protagonist!.Orientation));
 
                     propagatedState.AddBodyState(new BodyState(
-                        new CircularBody(nextPunchId, 0.05, 1, true), protagonist!.Position + 0.125 * lookDirection));
+                        new Probe(nextProbeId, 0.05, 1, true), protagonist!.Position)
+                    {
+                        NaturalVelocity = 3.0 * lookDirection
+                    });
 
-                    nextPunchId++;
+                    nextProbeId++;
                 }
 
                 if (bodyCollisionReports.Any())
