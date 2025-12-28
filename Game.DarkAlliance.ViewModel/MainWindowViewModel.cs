@@ -31,6 +31,7 @@ namespace Game.DarkAlliance.ViewModel
         private Vector3D _lookDirection;
         private Vector3D _directionalLight1;
         private Vector3D _directionalLight2;
+        private string _outcome;
 
         public Point3D CameraPosition
         {
@@ -82,6 +83,16 @@ namespace Game.DarkAlliance.ViewModel
             }
         }
 
+        public string Outcome
+        {
+            get { return _outcome; }
+            set
+            {
+                _outcome = value;
+                RaisePropertyChanged();
+            }
+        }
+
         private Model3D _scene3D;
 
         public Model3D Scene3D
@@ -102,6 +113,11 @@ namespace Game.DarkAlliance.ViewModel
             _sceneRenderer = new SceneRenderer();
 
             Engine = new Engine(null);
+
+            Engine.AnimationCompleted += (s, e) =>
+            {
+                Outcome = Engine.EngineCore.Outcome as string;
+            };
 
             GeometryEditorViewModel = new GeometryEditorViewModel()
             {
@@ -211,6 +227,7 @@ namespace Game.DarkAlliance.ViewModel
 
             var initialState = new State();
 
+            // Add the player to the scene
             initialState.AddBodyState(
                 new BodyStateClassic(new Player(1, ballRadius, 1, false), initialBallPosition)
                 {
@@ -219,6 +236,7 @@ namespace Game.DarkAlliance.ViewModel
 
             var npcId = 2;
 
+            // Add npc's to the scene
             foreach (var bodyPosition in sceneDefinition.Bodies)
             {
                 initialState.AddBodyState(
@@ -226,9 +244,6 @@ namespace Game.DarkAlliance.ViewModel
 
                 npcId++;
             }
-
-            initialState.AddBodyState(
-                new BodyState(new NPC(4, 0.08, 1, false), new Vector2D(1, 0)));
 
             var name = "Exploration";
             var standardGravity = 0.0;
@@ -370,7 +385,7 @@ namespace Game.DarkAlliance.ViewModel
                         -Math.Sin(protagonist!.Orientation));
 
                     propagatedState.AddBodyState(new BodyState(
-                        new Probe(nextProbeId, 0.05, 1, true), protagonist!.Position)
+                        new Probe(nextProbeId, 0.05, 1, true, false), protagonist!.Position)
                     {
                         NaturalVelocity = 3.0 * lookDirection
                     });
@@ -378,12 +393,15 @@ namespace Game.DarkAlliance.ViewModel
                     nextProbeId++;
                 }
 
+                var response = new PostPropagationResponse();
+
                 if (bodyCollisionReports.Any())
                 {
-                    var a = 0;
+                    response.Outcome = "NPC dialogue";
+                    response.IndexOfLastState = propagatedState.Index + 10;
                 }
 
-                return new PostPropagationResponse();
+                return response;
             };
             
             return scene;

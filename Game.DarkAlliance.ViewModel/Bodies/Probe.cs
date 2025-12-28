@@ -8,7 +8,8 @@ namespace Game.DarkAlliance.ViewModel.Bodies
             int id,
             double radius,
             double mass,
-            bool affectedByGravity) : base(id, radius, mass, affectedByGravity)
+            bool affectedByGravity,
+            bool affectedByBoundaries) : base(id, radius, mass, affectedByGravity, affectedByBoundaries)
         {
         }
     }
