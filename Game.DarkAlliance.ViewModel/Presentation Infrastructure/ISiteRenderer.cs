@@ -2,7 +2,7 @@
 
 namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure;
 
-public interface ISceneRenderer
+public interface ISiteRenderer
 {
-    Model3D Build(SceneDefinition sceneDefinition);
+    Model3D Build(SiteSpecs siteSpecs);
 }

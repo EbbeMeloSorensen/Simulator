@@ -13,6 +13,9 @@ using Craft.ViewModels.Geometry2D.ScrollFree;
 using Craft.ViewModels.Simulation;
 using Game.DarkAlliance.ViewModel.Bodies;
 using Game.DarkAlliance.ViewModel.Presentation_Infrastructure;
+using Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SiteComponents;
+using Barrier = Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SiteComponents.Barrier;
+using NPC = Game.DarkAlliance.ViewModel.Bodies.NPC;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
@@ -20,7 +23,7 @@ namespace Game.DarkAlliance.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private ISceneRenderer _sceneRenderer;
+        private ISiteRenderer _siteRenderer;
 
         private DispatcherTimer _timer;
         private double _angle = 0;
@@ -110,7 +113,7 @@ namespace Game.DarkAlliance.ViewModel
 
         public MainWindowViewModel()
         {
-            _sceneRenderer = new SceneRenderer();
+            _siteRenderer = new SiteRenderer();
 
             Engine = new Engine(null);
 
@@ -186,8 +189,8 @@ namespace Game.DarkAlliance.ViewModel
                 shapeUpdateCallback);
 
             // For a start, just hardcode a scene. Later, we will read this from some data source.
-            var sceneDefinition = new SceneDefinition();
-            Scene3D = _sceneRenderer.Build(sceneDefinition);
+            var sceneDefinition = new SiteSpecs();
+            Scene3D = _siteRenderer.Build(sceneDefinition);
             var scene = GenerateScene(sceneDefinition);
 
             GeometryEditorViewModel.InitializeWorldWindow(
@@ -220,7 +223,7 @@ namespace Game.DarkAlliance.ViewModel
         }
 
         private Scene GenerateScene(
-            SceneDefinition sceneDefinition)
+            SiteSpecs siteSpecs)
         {
             var ballRadius = 0.1;
             var initialBallPosition = new Vector2D(1.5, 0);
@@ -260,11 +263,11 @@ namespace Game.DarkAlliance.ViewModel
 
             var npcId = 2;
 
-            sceneDefinition.SceneParts.ToList().ForEach(scenePart =>
+            siteSpecs.SceneParts.ToList().ForEach(scenePart =>
             {
                 switch (scenePart)
                 {
-                    case Presentation_Infrastructure.SceneParts.Barrier barrier:
+                    case Barrier barrier:
                     {
                         barrier.BoundaryPoints.AdjacentPairs().ToList().ForEach(_ =>
                         {
@@ -274,7 +277,7 @@ namespace Game.DarkAlliance.ViewModel
                         });
                         break;
                     }
-                    case Presentation_Infrastructure.SceneParts.NPC npc:
+                    case Presentation_Infrastructure.SiteComponents.NPC npc:
                     {
                         scene.InitialState.AddBodyState(
                             new BodyState(new NPC(npcId++, 0.1, npc.Tag), new Vector2D(npc.Position.Z, -npc.Position.X)));
@@ -297,7 +300,7 @@ namespace Game.DarkAlliance.ViewModel
 
                         break;
                     }
-                    case Presentation_Infrastructure.SceneParts.Barrel barrel:
+                    case Barrel barrel:
                     {
                         var nBoundarySegments = 8;
                         var barrelRadius = 0.2;

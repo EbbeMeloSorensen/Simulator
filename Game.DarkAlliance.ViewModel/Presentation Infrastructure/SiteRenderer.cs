@@ -1,19 +1,19 @@
 ﻿using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using Craft.Utils.Linq;
-using Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SceneParts;
-using Barrier = Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SceneParts.Barrier;
+using Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SiteComponents;
+using Barrier = Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SiteComponents.Barrier;
 
 namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure;
 
-public class SceneRenderer : ISceneRenderer
+public class SiteRenderer : ISiteRenderer
 {
     public Model3D Build(
-        SceneDefinition sceneDefinition)
+        SiteSpecs siteSpecs)
     {
         var group = new Model3DGroup();
 
-        foreach (var scenePart in sceneDefinition.SceneParts)
+        foreach (var scenePart in siteSpecs.SceneParts)
         {
             var model = scenePart.ModelId switch
             {
@@ -33,9 +33,9 @@ public class SceneRenderer : ISceneRenderer
     }
 
     private Model3D GenerateHumanMale(
-        ScenePart scenePart)
+        SiteComponent siteComponent)
     {
-        if (scenePart is not RotatableScenePart rotatableScenePart)
+        if (siteComponent is not RotatableSiteComponent rotatableScenePart)
         {
             throw new InvalidOperationException("Must be a rotatable scene part");
         }
@@ -52,9 +52,9 @@ public class SceneRenderer : ISceneRenderer
     }
 
     private Model3D GenerateHumanFemale(
-        ScenePart scenePart)
+        SiteComponent siteComponent)
     {
-        if (scenePart is not RotatableScenePart rotatableScenePart)
+        if (siteComponent is not RotatableSiteComponent rotatableScenePart)
         {
             throw new InvalidOperationException("Must be a rotatable scene part");
         }
@@ -71,9 +71,9 @@ public class SceneRenderer : ISceneRenderer
     }
 
     private Model3D GenerateBarrel(
-        ScenePart scenePart)
+        SiteComponent siteComponent)
     {
-        if (scenePart is not ScenePartPlaceable scenePartPlaceable)
+        if (siteComponent is not SiteComponentPlaceable scenePartPlaceable)
         {
             throw new InvalidOperationException("Must be a rotatable scene part");
         }
@@ -101,9 +101,9 @@ public class SceneRenderer : ISceneRenderer
     }
 
     private Model3D GenerateBall(
-        ScenePart scenePart)
+        SiteComponent siteComponent)
     {
-        if (scenePart is not ScenePartPlaceable scenePartPlaceable)
+        if (siteComponent is not SiteComponentPlaceable scenePartPlaceable)
         {
             throw new InvalidOperationException("Must be a rotatable scene part");
         }
@@ -130,9 +130,9 @@ public class SceneRenderer : ISceneRenderer
     }
 
     private Model3D GenerateQuad(
-        ScenePart scenePart)
+        SiteComponent siteComponent)
     {
-        if (scenePart is not Quad quad)
+        if (siteComponent is not Quad quad)
         {
             throw new InvalidOperationException("Must be a quad");
         }
@@ -156,9 +156,9 @@ public class SceneRenderer : ISceneRenderer
     }
 
     private Model3D GenerateWall(
-        ScenePart scenePart)
+        SiteComponent siteComponent)
     {
-        if (scenePart is not Barrier barrier)
+        if (siteComponent is not Barrier barrier)
         {
             throw new InvalidOperationException("Must be a barrier");
         }

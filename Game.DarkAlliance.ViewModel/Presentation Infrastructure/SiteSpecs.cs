@@ -1,23 +1,23 @@
 ﻿using Craft.Math;
-using Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SceneParts;
-using Barrier = Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SceneParts.Barrier;
+using Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SiteComponents;
+using Barrier = Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SiteComponents.Barrier;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
 {
-    public class SceneDefinition
+    public class SiteSpecs
     {
-        private List<ScenePart> _sceneParts;
+        private List<SiteComponent> _sceneParts;
 
-        public IReadOnlyList<ScenePart> SceneParts => _sceneParts;
+        public IReadOnlyList<SiteComponent> SceneParts => _sceneParts;
 
-        public SceneDefinition()
+        public SiteSpecs()
         {
             // Notice that these coordinates are in "map" coordinates where Z is up
             // In order to generate the 3D scene, these coordinates are transformed into 3D coordinates where Y is up (by convention)
             // The animation engine uses a coordinate system where Y points downwards
 
-            _sceneParts = new List<ScenePart>();
+            _sceneParts = new List<SiteComponent>();
 
             var siteExtent = 20.0;
 
@@ -124,7 +124,7 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
             Point2D position,
             double height = 0)
         {
-            _sceneParts.Add(new ScenePartPlaceable("ball")
+            _sceneParts.Add(new SiteComponentPlaceable("ball")
             {
                 Position = new Vector3D(position.Y, height, position.X)
             });
