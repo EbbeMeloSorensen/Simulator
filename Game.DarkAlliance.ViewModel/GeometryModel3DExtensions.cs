@@ -4,21 +4,6 @@ namespace Game.DarkAlliance.ViewModel;
 
 public static class GeometryModel3DExtensions
 {
-    public static Transform3DGroup EnsureTransformGroup(
-        this GeometryModel3D model)
-    {
-        if (model.Transform is Transform3DGroup group)
-            return group;
-
-        group = new Transform3DGroup();
-
-        if (model.Transform != null && model.Transform != Transform3D.Identity)
-            group.Children.Add(model.Transform);
-
-        model.Transform = group;
-        return group;
-    }
-
     public static GeometryModel3D Translate(
         this GeometryModel3D model,
         double x,
@@ -59,6 +44,21 @@ public static class GeometryModel3DExtensions
                 new AxisAngleRotation3D(axis, angleDegrees)));
 
         return model;
+    }
+
+    private static Transform3DGroup EnsureTransformGroup(
+        this GeometryModel3D model)
+    {
+        if (model.Transform is Transform3DGroup group)
+            return group;
+
+        group = new Transform3DGroup();
+
+        if (model.Transform != null && model.Transform != Transform3D.Identity)
+            group.Children.Add(model.Transform);
+
+        model.Transform = group;
+        return group;
     }
 }
 
