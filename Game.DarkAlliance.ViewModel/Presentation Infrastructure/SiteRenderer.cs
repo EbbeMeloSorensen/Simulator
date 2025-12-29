@@ -13,7 +13,7 @@ public class SiteRenderer : ISiteRenderer
     {
         var group = new Model3DGroup();
 
-        foreach (var scenePart in siteSpecs.SceneParts)
+        foreach (var scenePart in siteSpecs.SiteComponents)
         {
             var model = scenePart.ModelId switch
             {

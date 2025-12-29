@@ -7,9 +7,9 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
 {
     public class SiteSpecs
     {
-        private List<SiteComponent> _sceneParts;
+        private List<SiteComponent> _siteComponents;
 
-        public IReadOnlyList<SiteComponent> SceneParts => _sceneParts;
+        public IReadOnlyList<SiteComponent> SiteComponents => _siteComponents;
 
         public SiteSpecs()
         {
@@ -17,7 +17,7 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
             // In order to generate the 3D scene, these coordinates are transformed into 3D coordinates where Y is up (by convention)
             // The animation engine uses a coordinate system where Y points downwards
 
-            _sceneParts = new List<SiteComponent>();
+            _siteComponents = new List<SiteComponent>();
 
             var siteExtent = 20.0;
 
@@ -88,7 +88,7 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
             double orientation = 0,
             double height = 0)
         {
-            _sceneParts.Add(new NPC("human male")
+            _siteComponents.Add(new NPC("human male")
             {
                 Tag = tag,
                 Position = new Vector3D(position.Y, height, position.X),
@@ -102,7 +102,7 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
             double orientation = 0,
             double height = 0)
         {
-            _sceneParts.Add(new NPC("human female")
+            _siteComponents.Add(new NPC("human female")
             {
                 Tag = tag,
                 Position = new Vector3D(position.Y, height, position.X),
@@ -114,7 +114,7 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
             Point2D position,
             double height = 0)
         {
-            _sceneParts.Add(new Barrel("barrel")
+            _siteComponents.Add(new Barrel("barrel")
             {
                 Position = new Vector3D(position.Y, height, position.X)
             });
@@ -124,7 +124,7 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
             Point2D position,
             double height = 0)
         {
-            _sceneParts.Add(new SiteComponentPlaceable("ball")
+            _siteComponents.Add(new SiteComponentPlaceable("ball")
             {
                 Position = new Vector3D(position.Y, height, position.X)
             });
@@ -133,7 +133,7 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
         public void AddWall(
             IEnumerable<Point2D> wallPoints)
         {
-            _sceneParts.Add(new Barrier("wall")
+            _siteComponents.Add(new Barrier("wall")
             {
                 BarrierPoints = wallPoints.Select(_ => new Vector3D(_.Y, 0, _.X)).ToList()
             });
@@ -147,7 +147,7 @@ namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure
         {
             var pt1 = new Vector3D(point1.Y, point1.Z, point1.X);
 
-            _sceneParts.Add(new Quad("quad")
+            _siteComponents.Add(new Quad("quad")
             {
                 Point1 = new Vector3D(point1.Y, point1.Z, point1.X),
                 Point2 = new Vector3D(point2.Y, point2.Z, point2.X),

@@ -263,7 +263,7 @@ namespace Game.DarkAlliance.ViewModel
 
             var npcId = 2;
 
-            siteSpecs.SceneParts.ToList().ForEach(scenePart =>
+            siteSpecs.SiteComponents.ToList().ForEach(scenePart =>
             {
                 switch (scenePart)
                 {
