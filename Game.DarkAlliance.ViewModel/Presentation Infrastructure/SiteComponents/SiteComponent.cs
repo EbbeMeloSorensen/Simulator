@@ -4,7 +4,7 @@ public abstract class SiteComponent
 {
     public string ModelId { get; init; }
 
-    public SiteComponent(
+    protected SiteComponent(
         string modelId)
     {
         ModelId = modelId;
