@@ -335,12 +335,7 @@ namespace Game.DarkAlliance.ViewModel
                 // Vi checker for om en probe rammer en NPC
                 if (body1 is NPC || body2 is NPC)
                 {
-                    if (body1 is NPC || body2 is NPC)
-                    {
-                        return true;
-                    }
-
-                    if (body1 is Player || body2 is Player)
+                    if (body1 is Probe || body2 is Probe)
                     {
                         return true;
                     }
