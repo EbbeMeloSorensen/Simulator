@@ -1,6 +1,6 @@
-﻿namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SceneParts
+﻿namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SiteComponents
 {
-    public class NPC : RotatableScenePart
+    public class NPC : RotatableSiteComponent
     {
         public string Tag { get; init; }
 

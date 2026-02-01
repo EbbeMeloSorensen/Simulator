@@ -1,8 +1,8 @@
 ﻿using System.Windows.Media.Media3D;
 
-namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SceneParts;
+namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SiteComponents;
 
-public class Quad : ScenePart
+public class Quad : SiteComponent
 {
     public Vector3D Point1 { get; set; }
     public Vector3D Point2 { get; set; }

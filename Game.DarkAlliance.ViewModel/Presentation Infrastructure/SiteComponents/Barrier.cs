@@ -1,9 +1,9 @@
 ﻿using Craft.Math;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
-namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SceneParts;
+namespace Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SiteComponents;
 
-public class Barrier : ScenePart
+public class Barrier : SiteComponent
 {
     public List<Vector3D> BarrierPoints { get; set; }
 
