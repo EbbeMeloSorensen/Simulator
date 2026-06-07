@@ -118,7 +118,7 @@ namespace Game.FlappyBird.ViewModel
                 });
 
             var scene = new Scene("Flappy Bird", new Point2D(-1, -1.1), new Point2D(5, 3.1),
-                initialState, 9.82, 0, 0, 1, false, 0.005, SceneViewMode.MaintainFocusInVicinityOfPoint,
+                initialState, 9.82, 0, 0, 1, true, false, 0.005, SceneViewMode.MaintainFocusInVicinityOfPoint,
                 double.MinValue, double.MinValue, double.MaxValue, double.MaxValue, 0, 1E200, 0.25);
 
             scene.CollisionBetweenBodyAndBoundaryOccuredCallBack = body => OutcomeOfCollisionBetweenBodyAndBoundary.Block;

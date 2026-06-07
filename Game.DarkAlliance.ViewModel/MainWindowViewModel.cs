@@ -244,6 +244,7 @@ namespace Game.DarkAlliance.ViewModel
             var gravitationalConstant = 0.0;
             var coefficientOfFriction = 0.0;
             var timeFactor = 1.0;
+            var handleBoundaryCollisions = true;
             var handleBodyCollisions = true;
             var deltaT = 0.001;
             var viewMode = SceneViewMode.FocusOnFirstBody;
@@ -257,6 +258,7 @@ namespace Game.DarkAlliance.ViewModel
                 gravitationalConstant,
                 coefficientOfFriction,
                 timeFactor,
+                handleBoundaryCollisions,
                 handleBodyCollisions,
                 deltaT,
                 viewMode);
