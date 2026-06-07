@@ -46,7 +46,6 @@ namespace Game.FlappyBird.ViewModel
             ILogger logger)
         {
             _logger = logger;
-            _logger = null; // Disable logging (it should only be used for debugging purposes)
 
             Engine = new Engine(_logger);
             Engine.AnimationCompleted += (s, e) =>

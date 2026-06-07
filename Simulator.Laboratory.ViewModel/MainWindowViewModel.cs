@@ -93,7 +93,6 @@ namespace Simulator.Laboratory.ViewModel
             _shapeUpdateCallbacks = new Dictionary<Scene, ShapeUpdateCallback>();
 
             _logger = logger;
-            _logger = null; // Disable logging (it should only be used for debugging purposes)
             _logger?.WriteLine(LogMessageCategory.Information, "Simulator - Starting up");
 
             Outcome = null;

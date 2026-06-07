@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Craft.Utils" Version="1.0.19" />
-    <PackageReference Include="Craft.ViewModels" Version="1.0.19" />
+    <PackageReference Include="Craft.Utils" Version="1.0.20" />
+    <PackageReference Include="Craft.ViewModels" Version="1.0.20" />
     <PackageReference Include="MvvmLightLibsStd10" Version="5.4.1.1" />
   </ItemGroup>
 

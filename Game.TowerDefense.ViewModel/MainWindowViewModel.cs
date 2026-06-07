@@ -96,7 +96,7 @@ namespace Game.TowerDefense.ViewModel
             ILogger logger)
         {
             _logger = logger;
-            _logger = null; // Disable logging (it should only be used for debugging purposes)
+            //_logger = null; // Disable logging (it should only be used for debugging purposes)
             _stopwatch = new Stopwatch();
 
             UnlockedLevelsViewModel = new UnlockedLevelsViewModel();

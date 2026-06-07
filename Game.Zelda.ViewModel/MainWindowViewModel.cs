@@ -58,7 +58,6 @@ namespace Game.Zelda.ViewModel
             ILogger logger)
         {
             _logger = logger;
-            _logger = null; // Disable logging (it should only be used for debugging purposes)
             _stopwatch = new Stopwatch();
 
             UnlockedLevelsViewModel = new UnlockedLevelsViewModel();
@@ -410,12 +409,12 @@ namespace Game.Zelda.ViewModel
             var scene = new Scene("Scene 1a", 
                 new Point2D(x0 - wallWidth / 2, y0 - wallWidth / 2), 
                 new Point2D(x1 + wallWidth / 2, y1 + wallWidth / 2), 
-                initialState, 0, 0, 0, 1, false)
+                initialState, 0, 0, 0, 1, true, false)
             {
                 IncludeCustomForces = true,
                 CollisionBetweenBodyAndBoundaryOccuredCallBack = collisionBetweenBodyAndBoundaryOccuredCallBack,
                 PostPropagationCallBack = postPropagationCallBack,
-                InteractionCallBack = interactionCallBack
+                InteractionCallBack = interactionCallBack,
             };
 
             scene.InitializationCallback = (state, message) =>
@@ -470,7 +469,7 @@ namespace Game.Zelda.ViewModel
             var scene = new Scene("Scene 1b",
                 new Point2D(x0 - wallWidth / 2, y0 - wallWidth / 2),
                 new Point2D(x1 + wallWidth / 2, y1 + wallWidth / 2),
-                initialState, 0, 0, 0, 1, false)
+                initialState, 0, 0, 0, 1, true, false)
             {
                 IncludeCustomForces = true,
                 CollisionBetweenBodyAndBoundaryOccuredCallBack = collisionBetweenBodyAndBoundaryOccuredCallBack,
@@ -561,7 +560,7 @@ namespace Game.Zelda.ViewModel
             var scene = new Scene("Scene 1c",
                 new Point2D(x0 - wallWidth / 2, y0 - wallWidth / 2),
                 new Point2D(x1 + wallWidth / 2, y1 + wallWidth / 2),
-                initialState, 0, 0, 0, 1, false)
+                initialState, 0, 0, 0, 1, true, false)
             {
                 IncludeCustomForces = true,
                 CollisionBetweenBodyAndBoundaryOccuredCallBack = collisionBetweenBodyAndBoundaryOccuredCallBack,
@@ -604,7 +603,7 @@ namespace Game.Zelda.ViewModel
             initialState.AddBodyState(new BodyStateZelda(new Bodies.Zelda(1, 0.125, 1, true), new Vector2D(-1.5, -0.5)));
 
             var scene = new Scene("Scene 2", 
-                new Point2D(-1.9321428571428569, -1.0321428571428573), new Point2D(5, 3), initialState, 0, 0, 0, 1, false)
+                new Point2D(-1.9321428571428569, -1.0321428571428573), new Point2D(5, 3), initialState, 0, 0, 0, 1, true, false)
             {
                 IncludeCustomForces = true,
                 CollisionBetweenBodyAndBoundaryOccuredCallBack = collisionBetweenBodyAndBoundaryOccuredCallBack,
@@ -637,7 +636,7 @@ namespace Game.Zelda.ViewModel
             initialState.AddBodyState(new BodyStateZelda(new Bodies.Zelda(1, 0.125, 1, true), new Vector2D(-1.5, -0.5)));
 
             var scene = new Scene("Scene 2", 
-                new Point2D(-1.9321428571428569, -1.0321428571428573), new Point2D(5, 3), initialState, 0, 0, 0, 1, false)
+                new Point2D(-1.9321428571428569, -1.0321428571428573), new Point2D(5, 3), initialState, 0, 0, 0, 1, true, false)
             {
                 IncludeCustomForces = true,
                 CollisionBetweenBodyAndBoundaryOccuredCallBack = collisionBetweenBodyAndBoundaryOccuredCallBack,

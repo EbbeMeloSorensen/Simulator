@@ -53,7 +53,6 @@ namespace Game.Rocket.ViewModel
             ILogger logger)
         {
             _logger = logger;
-            _logger = null; // Disable logging (it should only be used for debugging purposes)
 
             UnlockedLevelsViewModel = new UnlockedLevelsViewModel();
 

@@ -1,5 +1,6 @@
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
+using Craft.Logging;
 using GalaSoft.MvvmLight;
 using Craft.Math;
 using Craft.Simulation;
@@ -24,6 +25,7 @@ namespace Game.DarkAlliance.ViewModel
     public class MainWindowViewModel : ViewModelBase
     {
         private ISiteRenderer _siteRenderer;
+        private ILogger _logger;
 
         private DispatcherTimer _timer;
         private double _angle = 0;
@@ -111,11 +113,13 @@ namespace Game.DarkAlliance.ViewModel
         public Engine Engine { get; }
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(
+            ILogger logger)
         {
             _siteRenderer = new SiteRenderer();
+            _logger = logger;
 
-            Engine = new Engine(null);
+            Engine = new Engine(_logger);
 
             Engine.AnimationCompleted += (s, e) =>
             {
