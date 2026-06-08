@@ -749,9 +749,9 @@ namespace Simulator.Laboratory.ViewModel
                 return true;
             };
 
-            scene.AddRectangularBoundary(-1, 3, -1, 3);
-            scene.AddRectangularBoundary(0, 0.5, 0, 3);
-            scene.AddRectangularBoundary(1.5, 2, -1, 2);
+            scene.AddRectangularBoundary(-1, 3, -1, 3, false);
+            scene.AddRectangularBoundary(0, 0.5, 0, 3, false);
+            scene.AddRectangularBoundary(1.5, 2, -1, 2, false);
 
             scene.AddBoundary(new LineSegment(new Vector2D(2, -0.95), new Vector2D(3, -0.95), "Exit") { Visible = false });
 
@@ -947,8 +947,8 @@ namespace Simulator.Laboratory.ViewModel
             };
 
             scene.AddEnclosureOfHalfPlanes(-1, 3, -0.3, 1);
-            scene.AddRectangularBoundary(0, 0.5, 0.2, 0.7);
-            scene.AddRectangularBoundary(1.5, 2, 0.2, 0.7);
+            scene.AddRectangularBoundary(0, 0.5, 0.2, 0.7, false);
+            scene.AddRectangularBoundary(1.5, 2, 0.2, 0.7, false);
 
             var extraBodies = Enumerable.Range(1, 20)
                 .Select(i => new
@@ -1500,7 +1500,7 @@ namespace Simulator.Laboratory.ViewModel
                 return true;
             };
 
-            scene.AddRectangularBoundary(0, 2, -0.3, 2);
+            scene.AddRectangularBoundary(0, 2, -0.3, 2, false);
             return scene;
         }
 
@@ -1558,8 +1558,8 @@ namespace Simulator.Laboratory.ViewModel
                 return true;
             };
 
-            scene.AddRectangularBoundary(-1, 3, -0.3, 2);
-            scene.AddRectangularBoundary(0, 2, 0.6, 1.1);
+            scene.AddRectangularBoundary(-1, 3, -0.3, 2, false);
+            scene.AddRectangularBoundary(0, 2, 0.6, 1.1, false);
             return scene;
         }
 
@@ -1604,8 +1604,8 @@ namespace Simulator.Laboratory.ViewModel
 
             scene.StandardInteractionCallback = StandardInteractionCallback.DungeonCrawler8Directions;
             scene.AddEnclosureOfHalfPlanes(-1, 3, -0.3, 1);
-            scene.AddRectangularBoundary(0, 0.5, 0.2, 0.7);
-            scene.AddRectangularBoundary(1.5, 2, 0.2, 0.7);
+            scene.AddRectangularBoundary(0, 0.5, 0.2, 0.7, false);
+            scene.AddRectangularBoundary(1.5, 2, 0.2, 0.7, false);
             return scene;
         }
 
@@ -1657,7 +1657,7 @@ namespace Simulator.Laboratory.ViewModel
             {
                 Enumerable.Range(0, 10).ToList().ForEach(y =>
                 {
-                    scene.AddRectangularBoundary(x - boxWidth / 2, x + boxWidth / 2, y - boxHeight / 2, y + boxHeight / 2);
+                    scene.AddRectangularBoundary(x - boxWidth / 2, x + boxWidth / 2, y - boxHeight / 2, y + boxHeight / 2, false);
                 });
             });
 
@@ -1685,7 +1685,7 @@ namespace Simulator.Laboratory.ViewModel
             {
                 Enumerable.Range(0, 10).ToList().ForEach(y =>
                 {
-                    scene.AddRectangularBoundary(x - boxWidth / 2, x + boxWidth / 2, y - boxHeight / 2, y + boxHeight / 2);
+                    scene.AddRectangularBoundary(x - boxWidth / 2, x + boxWidth / 2, y - boxHeight / 2, y + boxHeight / 2, false);
                 });
             });
 
@@ -2555,13 +2555,13 @@ namespace Simulator.Laboratory.ViewModel
             // Local Function
             void AddObstacleFloor(double x, double width, double height)
             {
-                scene.AddRectangularBoundary(x - width / 2, x + width / 2, floorLevel - height, floorLevel);
+                scene.AddRectangularBoundary(x - width / 2, x + width / 2, floorLevel - height, floorLevel, false);
             }
 
             // Local Function
             void AddObstacleCeiling(double x, double width, double height)
             {
-                scene.AddRectangularBoundary(x - width / 2, x + width / 2, ceilingLevel, ceilingLevel + height);
+                scene.AddRectangularBoundary(x - width / 2, x + width / 2, ceilingLevel, ceilingLevel + height, false);
             }
 
             // Local Function
@@ -4030,9 +4030,8 @@ namespace Simulator.Laboratory.ViewModel
                 return response;
             };
 
-            scene.AddRectangularBoundary(-1, 3, -1, 3);
-
-            scene.AddRectangularBoundary(1, 2, 2, 2.1);
+            scene.AddRectangularBoundary(-1, 3, -1, 3, false);
+            scene.AddRectangularBoundary(1, 2, 2, 2.1, false);
 
             return scene;
         }
@@ -4486,7 +4485,7 @@ namespace Simulator.Laboratory.ViewModel
                 {
                     if (index == 0 || index == 11 || random.Next(0, 100) < 25)
                     {
-                        scene.AddRectangularBoundary(x - boxWidth / 2, x + boxWidth / 2, y - boxHeight / 2, y + boxHeight / 2);
+                        scene.AddRectangularBoundary(x - boxWidth / 2, x + boxWidth / 2, y - boxHeight / 2, y + boxHeight / 2, false, false);
                     }
 
                     index++;
@@ -4563,7 +4562,7 @@ namespace Simulator.Laboratory.ViewModel
 
             scene.StandardInteractionCallback = StandardInteractionCallback.DungeonCrawler8Directions;
 
-            scene.AddRectangularBoundary(-1.2, 3.3, -1.1, 3.2);
+            scene.AddRectangularBoundary(-1.2, 3.3, -1.1, 3.2, false);
             scene.AddBoundary(new LineSegment(new Vector2D(2.4, -1.05), new Vector2D(3.2, -1.05), "Maze, room 2"));
 
             return scene;
@@ -4604,7 +4603,7 @@ namespace Simulator.Laboratory.ViewModel
 
             scene.StandardInteractionCallback = StandardInteractionCallback.DungeonCrawler8Directions;
 
-            scene.AddRectangularBoundary(-1.2, 3.3, -1.1, 3.2);
+            scene.AddRectangularBoundary(-1.2, 3.3, -1.1, 3.2, false);
             scene.AddBoundary(new LineSegment(new Vector2D(-1.1, 3.15), new Vector2D(-0.3, 3.15), "Maze, room 1"));
 
             return scene;

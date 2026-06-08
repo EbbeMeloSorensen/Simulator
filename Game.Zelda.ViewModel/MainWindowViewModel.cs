@@ -612,7 +612,7 @@ namespace Game.Zelda.ViewModel
             };
 
             var margin = 0.3;
-            scene.AddRectangularBoundary(-1.9, 5.25, -1, 3);
+            scene.AddRectangularBoundary(-1.9, 5.25, -1, 3, false);
             AddWall(scene, -1.9 - margin, 5.25 + margin, -1 - margin, -1, false, false, false, false);
             AddWall(scene, -1.9 - margin, 5.25 + margin, 3, 3 + margin, false, false, false, false);
             AddWall(scene, -1.9 - margin, -1.9, -1, 3, false, false, false, false);
@@ -645,7 +645,7 @@ namespace Game.Zelda.ViewModel
             };
 
             var margin = 0.3;
-            scene.AddRectangularBoundary(-1.9, 5.25, -1, 3);
+            scene.AddRectangularBoundary(-1.9, 5.25, -1, 3, false);
             AddWall(scene, -1.9 - margin, 5.25 + margin, -1 - margin, -1, false, false, false, false);
             AddWall(scene, -1.9 - margin, 5.25 + margin, 3, 3 + margin, false, false, false, false);
             AddWall(scene, -1.9 - margin, -1.9, -1, 3, false, false, false, false);

@@ -153,13 +153,13 @@ namespace Game.FlappyBird.ViewModel
             // Local Function
             void AddObstacleFloor(double x, double width, double height)
             {
-                scene.AddRectangularBoundary(x - width / 2, x + width / 2, floorLevel - height, floorLevel);
+                scene.AddRectangularBoundary(x - width / 2, x + width / 2, floorLevel - height, floorLevel, false);
             }
 
             // Local Function
             void AddObstacleCeiling(double x, double width, double height)
             {
-                scene.AddRectangularBoundary(x - width / 2, x + width / 2, ceilingLevel, ceilingLevel + height);
+                scene.AddRectangularBoundary(x - width / 2, x + width / 2, ceilingLevel, ceilingLevel + height, false);
             }
 
             // Local Function

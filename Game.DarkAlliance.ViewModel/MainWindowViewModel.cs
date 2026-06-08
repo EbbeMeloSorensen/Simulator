@@ -196,6 +196,7 @@ namespace Game.DarkAlliance.ViewModel
             var sceneDefinition = new SiteSpecs();
             Scene3D = _siteRenderer.Build(sceneDefinition);
             var scene = GenerateScene(sceneDefinition);
+            scene.InitializeBoundaryDataStore();
 
             GeometryEditorViewModel.InitializeWorldWindow(
                 scene.InitialWorldWindowFocus(),
