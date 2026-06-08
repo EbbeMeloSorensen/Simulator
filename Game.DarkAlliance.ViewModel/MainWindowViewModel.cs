@@ -197,6 +197,9 @@ namespace Game.DarkAlliance.ViewModel
             Scene3D = _siteRenderer.Build(sceneDefinition);
             var scene = GenerateScene(sceneDefinition);
 
+            // Dette fucker det op... du vil skulle reproducere det i selve Craft
+            //scene.InitializeBoundaryDataStore();
+
             GeometryEditorViewModel.InitializeWorldWindow(
                 scene.InitialWorldWindowFocus(),
                 scene.InitialWorldWindowSize(),
