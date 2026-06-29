@@ -8,6 +8,7 @@ using Craft.Simulation.Bodies;
 using Craft.Simulation.BodyStates;
 using Craft.Simulation.Boundaries;
 using Craft.Simulation.Engine;
+using Craft.Simulation.Props;
 using Craft.Utils;
 using Craft.Utils.Linq;
 using Craft.ViewModels.Geometry2D.ScrollFree;
@@ -313,6 +314,9 @@ namespace Game.DarkAlliance.ViewModel
 
                         scene.AddBoundary(new CircularBoundary(new Vector2D(
                             barrel.Position.Z, -barrel.Position.X), barrelRadius));
+
+                        scene.Props.Add(new PropCircle(shapeId++, barrelRadius * 2, new Vector2D(
+                            barrel.Position.Z, -barrel.Position.X)));
 
                         break;
                     }
