@@ -251,7 +251,7 @@ namespace Game.DarkAlliance.ViewModel
             var coefficientOfFriction = 0.0;
             var timeFactor = 1.0;
             var handleBoundaryCollisions = true;
-            var handleBodyCollisions = true;
+            var handleBodyCollisions = false;
             var deltaT = 0.001;
             var viewMode = SceneViewMode.FocusOnFirstBody;
 
@@ -287,24 +287,13 @@ namespace Game.DarkAlliance.ViewModel
                     }
                     case Presentation_Infrastructure.SiteComponents.NPC npc:
                     {
-                        scene.InitialState.AddBodyState(
-                            new BodyState(new NPC(shapeId++, 0.1, npc.Tag), new Vector2D(npc.Position.Z, -npc.Position.X)));
+                        var npcRadius = 0.1;
 
-                        var nBoundarySegments = 8;
+                        scene.AddBoundary(new CircularBoundary(new Vector2D(
+                            npc.Position.Z, -npc.Position.X), npcRadius, npc.Tag));
 
-                        Enumerable.Range(0, nBoundarySegments + 1)
-                            .Select(_ => _ * 2 * Math.PI / nBoundarySegments)
-                            .Select(angle => new Vector2D(
-                                npc.Position.Z + 0.1 * Math.Sin(angle),
-                                -npc.Position.X + 0.1 * Math.Cos(angle)))
-                            .AdjacentPairs()
-                            .ToList()
-                            .ForEach(_ =>
-                            {
-                                scene.AddBoundary(new LineSegment(
-                                    _.Item1,
-                                    _.Item2));
-                            });
+                        scene.Props.Add(new PropCircle(shapeId++, npcRadius * 2, new Vector2D(
+                            npc.Position.Z, -npc.Position.X)));
 
                         break;
                     }
@@ -324,29 +313,7 @@ namespace Game.DarkAlliance.ViewModel
             });
 
             // Denne callback returnerer en værdi, der angiver, hvad der skal ske, når en body kolliderer med en boundary
-            scene.CollisionBetweenBodyAndBoundaryOccuredCallBack =
-                body => OutcomeOfCollisionBetweenBodyAndBoundary.Block;
-
-            // Denne callback returnerer true, hvis der skal tjekkes for kollision mellem to bodies.
-            // Det afhænger sædvanligvis af, hvilke bodies i typehierarkiet, der er tale om
-            scene.CheckForCollisionBetweenBodiesCallback = (body1, body2) =>
-            {
-                // Vi checker for om en probe rammer en NPC
-                if (body1 is NPC || body2 is NPC)
-                {
-                    if (body1 is Probe || body2 is Probe)
-                    {
-                        return true;
-                    }
-                }
-
-                // Ellers foretages ikke noget check
-                return false;
-            };
-
-            // Denne callback returnerer en værdi, der angiver, hvad der skal ske, når to bodies kolliderer
-            scene.CollisionBetweenTwoBodiesOccuredCallBack =
-                (body1, body2) => OutcomeOfCollisionBetweenTwoBodies.Block;
+            scene.CollisionBetweenBodyAndBoundaryOccuredCallBack = _ => OutcomeOfCollisionBetweenBodyAndBoundary.Block;
 
             var spaceKeyWasPressed = false;
 
@@ -421,7 +388,7 @@ namespace Game.DarkAlliance.ViewModel
                         -Math.Sin(protagonist!.Orientation));
 
                     propagatedState.AddBodyState(new BodyState(
-                        new Probe(nextProbeId, 0.05, 1, true, false), protagonist!.Position)
+                        new Probe(nextProbeId, 0.05, 1, false, true), protagonist!.Position)
                     {
                         NaturalVelocity = 3.0 * lookDirection
                     });
@@ -431,15 +398,16 @@ namespace Game.DarkAlliance.ViewModel
 
                 var response = new PostPropagationResponse();
 
-                if (bodyCollisionReports.Any())
+                if (boundaryCollisionReports.Any())
                 {
-                    var bcr = bodyCollisionReports.First();
-                    var tag = bcr.Body1 is NPC
-                        ? bcr.Body1.Tag
-                        : bcr.Body2.Tag;
+                    var bcrWithTag = boundaryCollisionReports.FirstOrDefault(
+                        _ => _.BodyState.Body is Probe && _.Boundary.Tag != null);
 
-                    response.Outcome = tag;
-                    response.IndexOfLastState = propagatedState.Index + 10;
+                    if (bcrWithTag != null)
+                    {
+                        response.Outcome = bcrWithTag.Boundary.Tag;
+                        response.IndexOfLastState = propagatedState.Index + 10;
+                    }
                 }
 
                 return response;
