@@ -268,7 +268,7 @@ namespace Game.DarkAlliance.ViewModel
                 deltaT,
                 viewMode);
 
-            var npcId = 2;
+            var shapeId = 2;
 
             siteSpecs.SiteComponents.ToList().ForEach(scenePart =>
             {
@@ -287,7 +287,7 @@ namespace Game.DarkAlliance.ViewModel
                     case Presentation_Infrastructure.SiteComponents.NPC npc:
                     {
                         scene.InitialState.AddBodyState(
-                            new BodyState(new NPC(npcId++, 0.1, npc.Tag), new Vector2D(npc.Position.Z, -npc.Position.X)));
+                            new BodyState(new NPC(shapeId++, 0.1, npc.Tag), new Vector2D(npc.Position.Z, -npc.Position.X)));
 
                         var nBoundarySegments = 8;
 
@@ -309,22 +309,10 @@ namespace Game.DarkAlliance.ViewModel
                     }
                     case Barrel barrel:
                     {
-                        var nBoundarySegments = 8;
                         var barrelRadius = 0.2;
 
-                        Enumerable.Range(0, nBoundarySegments + 1)
-                            .Select(_ => _ * 2 * Math.PI / nBoundarySegments)
-                            .Select(angle => new Vector2D(
-                                barrel.Position.Z + barrelRadius * Math.Sin(angle),
-                                -barrel.Position.X + barrelRadius * Math.Cos(angle)))
-                            .AdjacentPairs()
-                            .ToList()
-                            .ForEach(_ =>
-                            {
-                                scene.AddBoundary(new LineSegment(
-                                    _.Item1,
-                                    _.Item2));
-                            });
+                        scene.AddBoundary(new CircularBoundary(new Vector2D(
+                            barrel.Position.Z, -barrel.Position.X), barrelRadius));
 
                         break;
                     }
