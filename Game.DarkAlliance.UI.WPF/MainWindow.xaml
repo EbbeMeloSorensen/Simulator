@@ -15,7 +15,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -24,7 +24,7 @@
 
         <scrollFree:GeometryEditorView Grid.Row="0" Grid.Column="0" DataContext="{Binding GeometryEditorViewModel}"/>
 
-        <Viewport3D Grid.Row="0" Grid.Column="1" Name="viewport">
+        <Viewport3D Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Name="viewport">
 
             <Viewport3D.Camera>
                 <PerspectiveCamera
@@ -88,14 +88,8 @@
 
         </Viewport3D>
 
-        <TextBlock Grid.Row="0" Grid.Column="1" Foreground="White" FontWeight="Bold"
+        <TextBlock Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Foreground="White" FontWeight="Bold"
                    FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"
                    Text="{Binding Outcome}"/>
-
-        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-            <TextBlock Text="{Binding LightPosition.X}"/>
-            <TextBlock Text="{Binding LightPosition.Y}"/>
-            <TextBlock Text="{Binding LightPosition.Z}"/>
-        </StackPanel>
     </Grid>
 </Window>
