@@ -1,5 +1,7 @@
+using System.Windows;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
+using GalaSoft.MvvmLight;
 using Craft.Logging;
 using Craft.Math;
 using Craft.Simulation;
@@ -11,9 +13,9 @@ using Craft.Simulation.Props;
 using Craft.Utils;
 using Craft.Utils.Linq;
 using Craft.ViewModels.Geometry2D.Reborn;
+using Craft.ViewModels.Geometry2D.Reborn.GeometricModels;
 using Craft.ViewModels.Geometry2D.ScrollFree;
 using Craft.ViewModels.Simulation;
-using GalaSoft.MvvmLight;
 using Game.DarkAlliance.ViewModel.Bodies;
 using Game.DarkAlliance.ViewModel.Presentation_Infrastructure;
 using Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SiteComponents;
@@ -30,8 +32,10 @@ namespace Game.DarkAlliance.ViewModel
 
         private DispatcherTimer _timer;
         private double _angle = 0;
+        private Scene _scene;
 
         private SceneViewController _sceneViewController;
+        private GeometryDataStore _geometryDataStore;
         private Point3D _cameraPosition;
         private Point3D _playerLightPosition;
         private Vector3D _lookDirection;
@@ -137,7 +141,7 @@ namespace Game.DarkAlliance.ViewModel
 
             GeometryViewModel = new GeometryViewModel()
             {
-                ShowCoordinateSystem = true,
+                ShowCoordinateSystem = false,
                 LockAspectRatio = true,
                 DampFocusShifts = false
             };
@@ -209,15 +213,83 @@ namespace Game.DarkAlliance.ViewModel
             // For a start, just hardcode a scene. Later, we will read this from some data source.
             var sceneDefinition = new SiteSpecs();
             Scene3D = _siteRenderer.Build(sceneDefinition);
-            var scene = GenerateScene(sceneDefinition);
-            scene.InitializeBoundaryDataStore();
+            _scene = GenerateScene(sceneDefinition);
+            _scene.InitializeBoundaryDataStore();
 
             GeometryEditorViewModel.InitializeWorldWindow(
-                scene.InitialWorldWindowFocus(),
-                scene.InitialWorldWindowSize(),
+                _scene.InitialWorldWindowFocus(),
+                _scene.InitialWorldWindowSize(),
                 false);
 
-            _sceneViewController.ActiveScene = scene;
+            _sceneViewController.ActiveScene = _scene;
+
+            // Prepare the geometry data store, i.e the MxCifQuadTree based repository of geometric objects
+            var staticGeometryObjects = new List<object>();
+
+            _scene.Boundaries.ForEach(boundary =>
+            {
+                if (!boundary.Visible) return;
+
+                switch (boundary)
+                {
+                    case HorizontalLineSegment horizontalLineSegment:
+                        staticGeometryObjects.Add(new LineModel
+                        {
+                            P1 = new Point(horizontalLineSegment.X0, horizontalLineSegment.Y),
+                            P2 = new Point(horizontalLineSegment.X1, horizontalLineSegment.Y)
+                        });
+                        break;
+                    case VerticalLineSegment verticalLineSegment:
+                        staticGeometryObjects.Add(new LineModel
+                        {
+                            P1 = new Point(verticalLineSegment.X, verticalLineSegment.Y0),
+                            P2 = new Point(verticalLineSegment.X, verticalLineSegment.Y1)
+                        });
+                        break;
+                    case LineSegment lineSegment:
+                        staticGeometryObjects.Add(new LineModel
+                        {
+                            P1 = new Point(lineSegment.Point1.X, lineSegment.Point1.Y),
+                            P2 = new Point(lineSegment.Point2.X, lineSegment.Point2.Y)
+                        });
+                        break;
+                    case BoundaryPoint boundaryPoint:
+                        staticGeometryObjects.Add(new PointModel()
+                        {
+                            P = new Point(boundaryPoint.Point.X, boundaryPoint.Point.Y)
+                        });
+                        break;
+                    case CircularBoundary circularBoundary:
+                        staticGeometryObjects.Add(new CircleModel()
+                        {
+                            Center = new Point(circularBoundary.Center.X, circularBoundary.Center.Y),
+                            Radius = circularBoundary.Radius
+                        });
+                        break;
+                    default:
+                        throw new ArgumentException();
+                }
+            });
+
+            var boundingBoxes = staticGeometryObjects.Select(geometryObject =>
+            {
+                return geometryObject switch
+                {
+                    LineModel line => line.ComputeBoundingBox(),
+                    PointModel point => point.ComputeBoundingBox(),
+                    CircleModel circle => circle.ComputeBoundingBox(),
+                    _ => throw new InvalidOperationException(),
+                };
+            });
+
+            _geometryDataStore = new GeometryDataStore(
+                new Craft.DataStructures.Geometry.BoundingBox(
+                    boundingBoxes.Min(b => b.MinX),
+                    boundingBoxes.Max(b => b.MaxX),
+                    boundingBoxes.Min(b => b.MinY),
+                    boundingBoxes.Max(b => b.MaxY)));
+
+            staticGeometryObjects.ForEach(_geometryDataStore.AddStaticGeometryObject);
 
             Engine.CurrentStateChanged += (s, e) =>
             {
@@ -238,6 +310,23 @@ namespace Game.DarkAlliance.ViewModel
 
         public void HandleLoaded()
         {
+            var initialWorldWindowFocus = _scene.InitialWorldWindowFocus();
+            var initialWorldWindowSize = _scene.InitialWorldWindowSize();
+
+            GeometryViewModel.RequestedWorldWindow = new Craft.DataStructures.Geometry.BoundingBox(
+                initialWorldWindowFocus.X - initialWorldWindowSize.Width / 2,
+                initialWorldWindowFocus.X + initialWorldWindowSize.Width / 2,
+                initialWorldWindowFocus.Y - initialWorldWindowSize.Height / 2,
+                initialWorldWindowFocus.Y + initialWorldWindowSize.Height / 2);
+
+            UpdateStaticGeometricObjects();
+            UpdateGeometricObjects(_scene.InitialState);
+
+            if (_scene.ViewMode == SceneViewMode.FocusOnFirstBody)
+            {
+                UpdateFocus(_scene.InitialState.BodyStates.First().Position);
+            }
+
             Engine.StartOrResumeAnimation();
         }
 
@@ -451,31 +540,45 @@ namespace Game.DarkAlliance.ViewModel
             object? sender,
             CurrentStateChangedEventArgs e)
         {
-            // Todo: Get thit to work like in Craft.Simulation.Reborn.GuiTest
+            UpdateGeometricObjects(e.State);
 
-            //if (SceneListViewModel.ActiveScene == null)
-            //{
-            //    return;
-            //}
-
-            //UpdateGeometricObjects(e.State);
-
-            //if (SceneListViewModel.ActiveScene.ViewMode == SceneViewMode.FocusOnFirstBody)
-            //{
-            //    UpdateFocus(e.State.BodyStates.First().Position);
-            //}
+            if (_scene.ViewMode == SceneViewMode.FocusOnFirstBody)
+            {
+                UpdateFocus(e.State.BodyStates.First().Position);
+            }
         }
 
         private void UpdateStaticGeometricObjects()
         {
             GeometryViewModel.ClearLayer(false);
 
-            // Todo: Get thit to work like in Craft.Simulation.Reborn.GuiTest
-            //if (_geometryDataStore != null)
-            //{
-            //    GeometryViewModel.AddStaticGeometryLayer(
-            //        _geometryDataStore.Query(GeometryViewModel.WorldWindowExpanded));
-            //}
+            if (_geometryDataStore != null)
+            {
+                GeometryViewModel.AddStaticGeometryLayer(
+                    _geometryDataStore.Query(GeometryViewModel.WorldWindowExpanded));
+            }
+        }
+
+        private void UpdateGeometricObjects(
+            State state)
+        {
+            var geometricObjects = state.BodyStates.Select(bs => new CircleModel
+            {
+                Center = new Point(bs.Position.X, bs.Position.Y),
+                Radius = (bs.Body as CircularBody)!.Radius
+            });
+
+            GeometryViewModel.ReplaceDynamicGeometryLayer(geometricObjects);
+        }
+
+        private void UpdateFocus(
+            Vector2D focus)
+        {
+            GeometryViewModel.RequestedWorldFocus = new WorldFocusRequest
+            {
+                WorldPoint = new Point(focus.X, focus.Y),
+                ViewportRatio = new System.Windows.Size(0.5, 0.5)
+            };
         }
 
         private void StartLightAnimation()
