@@ -1,7 +1,6 @@
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 using Craft.Logging;
-using GalaSoft.MvvmLight;
 using Craft.Math;
 using Craft.Simulation;
 using Craft.Simulation.Bodies;
@@ -11,19 +10,20 @@ using Craft.Simulation.Engine;
 using Craft.Simulation.Props;
 using Craft.Utils;
 using Craft.Utils.Linq;
+using Craft.ViewModels.Geometry2D.Reborn;
 using Craft.ViewModels.Geometry2D.ScrollFree;
 using Craft.ViewModels.Simulation;
+using GalaSoft.MvvmLight;
 using Game.DarkAlliance.ViewModel.Bodies;
 using Game.DarkAlliance.ViewModel.Presentation_Infrastructure;
 using Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SiteComponents;
 using Barrier = Game.DarkAlliance.ViewModel.Presentation_Infrastructure.SiteComponents.Barrier;
-using NPC = Game.DarkAlliance.ViewModel.Bodies.NPC;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace Game.DarkAlliance.ViewModel
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelBase, IFrameAware
     {
         private ISiteRenderer _siteRenderer;
         private ILogger _logger;
@@ -112,7 +112,9 @@ namespace Game.DarkAlliance.ViewModel
         }
 
         public Engine Engine { get; }
+
         public GeometryEditorViewModel GeometryEditorViewModel { get; }
+        public GeometryViewModel GeometryViewModel { get; }
 
         public MainWindowViewModel(
             ILogger logger)
@@ -129,8 +131,19 @@ namespace Game.DarkAlliance.ViewModel
 
             GeometryEditorViewModel = new GeometryEditorViewModel()
             {
-                UpdateModelCallBack = Engine.UpdateModel
+                // Dette gør vi i stedet i OnFrame, fordi vi er i gang med at sadle om til Reborn
+                //UpdateModelCallBack = Engine.UpdateModel
             };
+
+            GeometryViewModel = new GeometryViewModel()
+            {
+                ShowCoordinateSystem = true,
+                LockAspectRatio = true,
+                DampFocusShifts = false
+            };
+
+            GeometryViewModel.PropertyChanged += GeometryViewModel_PropertyChanged;
+            Engine.CurrentStateChanged += Engine_CurrentStateChanged;
 
             // Bemærk de følgende 2 callbacks, som bruges til at give bodies et andet skin end det, som er default.
             // Pågældende skin er taget fra Craft, men man kan også override, ligesom det er gjort for Flappybird, Rocket og Zelda
@@ -226,6 +239,14 @@ namespace Game.DarkAlliance.ViewModel
         public void HandleLoaded()
         {
             Engine.StartOrResumeAnimation();
+        }
+
+        public void OnFrame(
+            TimeSpan time,
+            double dt)
+        {
+            // Bemærk, at man ikke bruger parametrene her
+            Engine.UpdateModel();
         }
 
         private Scene GenerateScene(
@@ -414,6 +435,47 @@ namespace Game.DarkAlliance.ViewModel
             };
             
             return scene;
+        }
+
+        private void GeometryViewModel_PropertyChanged(
+            object? sender,
+            System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(GeometryViewModel.WorldWindowExpanded))
+            {
+                UpdateStaticGeometricObjects();
+            }
+        }
+
+        private void Engine_CurrentStateChanged(
+            object? sender,
+            CurrentStateChangedEventArgs e)
+        {
+            // Todo: Get thit to work like in Craft.Simulation.Reborn.GuiTest
+
+            //if (SceneListViewModel.ActiveScene == null)
+            //{
+            //    return;
+            //}
+
+            //UpdateGeometricObjects(e.State);
+
+            //if (SceneListViewModel.ActiveScene.ViewMode == SceneViewMode.FocusOnFirstBody)
+            //{
+            //    UpdateFocus(e.State.BodyStates.First().Position);
+            //}
+        }
+
+        private void UpdateStaticGeometricObjects()
+        {
+            GeometryViewModel.ClearLayer(false);
+
+            // Todo: Get thit to work like in Craft.Simulation.Reborn.GuiTest
+            //if (_geometryDataStore != null)
+            //{
+            //    GeometryViewModel.AddStaticGeometryLayer(
+            //        _geometryDataStore.Query(GeometryViewModel.WorldWindowExpanded));
+            //}
         }
 
         private void StartLightAnimation()

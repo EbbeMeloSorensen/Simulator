@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Game.DarkAlliance.UI.WPF"
         xmlns:scrollFree="clr-namespace:Craft.UIElements.Geometry2D.ScrollFree;assembly=Craft.UIElements"
+        xmlns:reborn="clr-namespace:Craft.UIElements.Geometry2D.Reborn;assembly=Craft.UIElements"
         mc:Ignorable="d"
         Title="Dark Alliance" Height="450" Width="800"
         DataContext="{Binding Path=MainWindowViewModel, Source={StaticResource BootStrapper}}"
@@ -23,6 +24,10 @@
         </Grid.ColumnDefinitions>
 
         <scrollFree:GeometryEditorView Grid.Row="0" Grid.Column="0" DataContext="{Binding GeometryEditorViewModel}"/>
+
+        <reborn:GeometryView Grid.Row="1" Grid.Column="0"
+                             DataContext="{Binding}"
+                             FrameHandler="{Binding}"/>
 
         <Viewport3D Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Name="viewport">
 
